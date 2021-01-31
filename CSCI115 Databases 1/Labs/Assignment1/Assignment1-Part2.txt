@@ -1,0 +1,31 @@
+STUDENT(studentNumber, first-name, last-name, date-of-birth, email, phone-number, degree, 
+student-type, project-title, thesis-title)
+PRIMARY KEY= (studentNumber)
+FOREIGN KEY = (studentNumber) REFERENCES RUNNING SUBJECT(studentNumber)
+CANDIDATE KEY1 = (first-name, last-name, date-of-birth)
+CANDIDATE KEY2 = (email)
+CANDIDATE KEY3 = (phone-number)
+
+ENROLMENT(studentNumber, code, year, session, enrolment-date, withdraw-date)
+PRIMARY KEY = (studentNumber, code, enrolment-date) 
+FOREIGN KEY1 = (studentNumber) REFERENCES STUDENT(studentNumber)
+FOREIGN KEY2 = (code, year, session) REFERENCES RUNNING SUBJECT(code, year, session)
+CANDIDATE KEY = (studentNumber, code, year, session)
+
+RUNNING SUBJECT(code, year, session, staff-number)
+PRIMARY KEY = (code, year, session)
+FOREIGN KEY1 = (code) REFERENCES SUBJECT(code)
+FOREIGN KEY2 = (staff-number) REFERENCES LECTURER(staff-number)
+
+SUBJECT(code, title, credits, description)
+PRIMARY KEY = (code)
+CANDIDATE KEY = (title)
+
+LECTURE(bldg-number, room-number, code, year, session, length, day, time, capacity)
+PRIMARY KEY = (code, day, time, length)
+FOREIGN KEY2 = (code, year, session) REFERENCES RUNNING SUBJECT(code, year, session)
+
+LECTURER(staff-number, first-name, last-name, position, title, school, faculty)
+PRIMARY KEY = (staff-number)
+CANDIDATE KEY1 = (first-name, last-name)
+

@@ -1,0 +1,251 @@
+mysql> source solution1.sql;
+--------------
+/*
+Insert into the file the implementations of the following queries as SELECT statements of SQL.
+Your implementation must directly follow a comment with a specification of a subtask.
+*/
+
+/*
+(1)	Find the pub names which located at KING ST. or OXFORD ST..
+*/
+
+SELECT PUB 
+FROM LOCATED 
+WHERE STREET IN ('OXFORD ST.', 'KING ST.')
+--------------
+
++---------------+
+| PUB           |
++---------------+
+| CAPTAIN MOORE |
+| LITTLE PIRATE |
+| SWEET DREAMS  |
++---------------+
+3 rows in set (0.00 sec)
+
+--------------
+/*
+(2)	Find the pub names that serve WHISKY, or VODKA, or COGNAC.
+	Display each pub name only once.
+*/
+
+SELECT DISTINCT PUB 
+FROM SERVES
+WHERE DRINK IN ('WHISKY', 'VODKA', 'COGNAC')
+--------------
+
++---------------+
+| PUB           |
++---------------+
+| LAZY LOBSTER  |
+| LONG JOHN     |
+| LITTLE PIRATE |
++---------------+
+3 rows in set (0.00 sec)
+
+--------------
+/*
+(3)	Find the drinkers who have ordered drinks in January 2020. 
+    Display each drinker only once.
+*/
+
+SELECT DISTINCT DRINKER
+FROM ORDERS 
+WHERE ORDERS.ODATE BETWEEN STR_TO_DATE('01-JAN-2020', '%d-%M-%Y') AND STR_TO_DATE('31-JAN-2020', '%d-%M-%Y')
+--------------
+
++---------+
+| DRINKER |
++---------+
+| CLAUDE  |
+| JAMES   |
+| JANUSZ  |
+| JOHN    |
+| MARY    |
+| PETER   |
+| SERGIEY |
++---------+
+7 rows in set (0.00 sec)
+
+--------------
+/*
+(4)	Find the drinkers who have ordered the drink WHITE WINE at LONG JOHN. 
+    Display each drinker only once.
+*/
+
+SELECT DISTINCT DRINKER 
+FROM ORDERS
+WHERE PUB = "LONG JOHN" AND DRINK = "WHITE WINE"
+--------------
+
++---------+
+| DRINKER |
++---------+
+| CLAUDE  |
+| JANUSZ  |
+| JOHN    |
+| PETER   |
++---------+
+4 rows in set (0.00 sec)
+
+--------------
+/*
+(5)	Find the drink and the rating of drinks that liked.  
+    The results must be displayed in the descending order of the ratings, and 
+	for all drinks that have the same rating the results must be displayed in the ascending order of drinks. 
+    Display each pair only once.
+*/
+
+SELECT DISTINCT DRINK, RATING 
+FROM LIKES
+ORDER BY RATING DESC, DRINK ASC
+--------------
+
++------------+--------+
+| DRINK      | RATING |
++------------+--------+
+| BEER       |      6 |
+| CHAMPAGNE  |      6 |
+| RED WINE   |      6 |
+| RUM        |      6 |
+| VODKA      |      6 |
+| WHISKY     |      6 |
+| CHAMPAGNE  |      5 |
+| COGNAC     |      5 |
+| PORT       |      5 |
+| RUM        |      5 |
+| WHITE WINE |      5 |
+| CHAMPAGNE  |      4 |
+| COGNAC     |      4 |
+| RUM        |      4 |
+| CHAMPAGNE  |      3 |
+| COGNAC     |      3 |
+| RUM        |      3 |
+| WHISKY     |      3 |
+| VODKA      |      2 |
+| VODKA      |      1 |
+| WHISKY     |      1 |
++------------+--------+
+21 rows in set (0.00 sec)
+
+--------------
+/* 
+(6)	Find the drink and the lowest price of each drink served in pubs. 
+*/
+
+SELECT ANY_VALUE(DRINK), MIN(PRICE)
+FROM SERVES
+GROUP BY PUB
+--------------
+
++------------------+------------+
+| ANY_VALUE(DRINK) | MIN(PRICE) |
++------------------+------------+
+| BEER             |       4.50 |
+| BEER             |       5.20 |
+| BEER             |       5.00 |
+| BEER             |       4.50 |
+| BEER             |       5.90 |
+| BEER             |       3.00 |
++------------------+------------+
+6 rows in set (0.00 sec)
+
+--------------
+/*
+(7)	Find the drinker and the total number of drinks ordered by each drinker in the first three months of 2020. 
+*/
+
+SELECT ANY_VALUE(DRINKER), COUNT(DRINKER)
+FROM ORDERS
+WHERE ORDERS.ODATE BETWEEN STR_TO_DATE('01-JAN-2020', '%d-%M-%Y') AND STR_TO_DATE('31-MAR-2020', '%d-%M-%Y')
+GROUP BY DRINKER
+--------------
+
++--------------------+----------------+
+| ANY_VALUE(DRINKER) | COUNT(DRINKER) |
++--------------------+----------------+
+| CLAUDE             |              8 |
+| JAMES              |              6 |
+| JANUSZ             |             38 |
+| JOHN               |             11 |
+| MARY               |              3 |
+| PETER              |              8 |
+| SERGIEY            |             14 |
++--------------------+----------------+
+7 rows in set (0.00 sec)
+
+--------------
+/*
+(8)	Find the drink and the total amount of ratings of drinks for each drink. Do not display a drink if it hasn’t been rated.
+*/
+
+SELECT DRINK, COUNT(DRINK) AS TOTALAMOUNTOFRATINGS
+FROM LIKES
+GROUP BY DRINK
+--------------
+
++------------+----------------------+
+| DRINK      | TOTALAMOUNTOFRATINGS |
++------------+----------------------+
+| BEER       |                    3 |
+| CHAMPAGNE  |                    7 |
+| COGNAC     |                    4 |
+| PORT       |                    1 |
+| RED WINE   |                    2 |
+| RUM        |                    5 |
+| VODKA      |                    4 |
+| WHISKY     |                    3 |
+| WHITE WINE |                    2 |
++------------+----------------------+
+9 rows in set (0.00 sec)
+
+--------------
+/*
+(9)	Find the pub and the total number of drinks served in each pub that has more than three types of drinks.
+*/
+
+SELECT PUB, COUNT(PUB) AS TOTALNUMBEROFDRINKS 
+FROM SERVES
+GROUP BY PUB
+HAVING COUNT(PUB) > 3
+--------------
+
++---------------+---------------------+
+| PUB           | TOTALNUMBEROFDRINKS |
++---------------+---------------------+
+| LAZY LOBSTER  |                   5 |
+| LITTLE PIRATE |                   7 |
+| LONG JOHN     |                   7 |
++---------------+---------------------+
+3 rows in set (0.00 sec)
+
+--------------
+/*
+(10)	Find the pub, the drink, and the price of pubs that drinks contain a letter E. 
+*/
+
+SELECT *
+FROM SERVES 
+WHERE (DRINK LIKE "%E%")
+--------------
+
++---------------+------------+-------+
+| PUB           | DRINK      | PRICE |
++---------------+------------+-------+
+| CAPTAIN MOORE | BEER       |  4.50 |
+| GREASY FORK   | BEER       |  5.20 |
+| GREASY FORK   | RED WINE   |  7.40 |
+| LAZY LOBSTER  | BEER       |  5.00 |
+| LAZY LOBSTER  | RED WINE   |  7.00 |
+| LITTLE PIRATE | BEER       |  4.50 |
+| LITTLE PIRATE | CHAMPAGNE  | 10.90 |
+| LITTLE PIRATE | RED WINE   |  7.90 |
+| LITTLE PIRATE | WHITE WINE |  5.40 |
+| LONG JOHN     | BEER       |  5.90 |
+| LONG JOHN     | RED WINE   |  8.00 |
+| LONG JOHN     | WHITE WINE |  9.00 |
+| SWEET DREAMS  | BEER       |  3.00 |
++---------------+------------+-------+
+13 rows in set (0.00 sec)
+
+mysql> notee;

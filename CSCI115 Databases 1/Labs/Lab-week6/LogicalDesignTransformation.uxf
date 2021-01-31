@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>704</x>
+      <y>384</y>
+      <w>88</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>AIRLINE
+--
+name PK
+phone CK
+fax
+web
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>72</x>
+      <y>240</y>
+      <w>312</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>FLIGHT
+--
+number PK
+departure
+destination
+departure-date-time PK
+arrive-date-time
+name FK1 REFERENCES AIRLINE(name)
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>72</x>
+      <y>112</y>
+      <w>512</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>SEAT
+--
+number PK FK1 REFERENCES FLIGHT(number, departure-date-time)
+departure-date-time PK 
+class PK
+price
+number-available
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>592</x>
+      <y>392</y>
+      <w>104</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>CUSTOMER
+--
+cnumber PK
+first-name
+last-name
+address
+phone
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>816</x>
+      <y>264</y>
+      <w>104</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>HOTEL
+--
+name PK
+location PK
+phone
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>592</x>
+      <y>112</y>
+      <w>400</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>ROOM
+--
+type PK
+name PK FK1 REFERENCES HOTEL(name, location)
+location PK
+price
+number-available
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>392</x>
+      <y>240</y>
+      <w>416</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>HOTEL BOOKING
+--
+arrive-date
+number-of-night
+cnumber PK FK1 REFERENCES CUSTOMER(cnumber)
+name PK FK2 REFERENCES HOTEL(name, location)
+location PK
+date-time PK
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>72</x>
+      <y>384</y>
+      <w>512</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>FLIGHT-BOOKING
+--
+number PK FK1 REFERENCES FLIGHT(number, departue-date-time)
+departure-date-time PK
+cnumber PK FK2 REFERENCES CUSTOMER(cnumber)
+date-time
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

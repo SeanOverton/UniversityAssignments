@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>16</x>
+      <y>88</y>
+      <w>88</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>AIRLINE
+--
+name ID1
+phone ID2
+fax
+web
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>184</x>
+      <y>80</y>
+      <w>176</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>FLIGHT
+--
+number ID
+departure
+destination
+departure-date-time ID
+arrive-date-time
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>512</x>
+      <y>96</y>
+      <w>144</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>SEAT
+--
+price
+number-available
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>232</x>
+      <y>272</y>
+      <w>104</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>CUSTOMER
+--
+cnumber ID
+first-name
+last-name
+address
+phone
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>496</x>
+      <y>272</y>
+      <w>104</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>HOTEL
+--
+name ID
+location ID
+phone
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>752</x>
+      <y>272</y>
+      <w>136</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>ROOM
+--
+price
+number-available
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>344</x>
+      <y>384</y>
+      <w>144</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>HOTEL BOOKING
+--
+arrive-date
+number-of-night
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>16</x>
+      <y>208</y>
+      <w>160</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>FLIGHT-BOOKING
+--
+date-time
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>96</x>
+      <y>112</y>
+      <w>104</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=1..*
+Has &gt;</panel_attributes>
+    <additional_attributes>10.0;30.0;110.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>248</x>
+      <y>184</y>
+      <w>88</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=*
+Books ^</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>168</x>
+      <y>232</y>
+      <w>104</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>120</y>
+      <w>80</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>class
+...  
+bg=#dddddd</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>112</y>
+      <w>96</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=0..1
+Has &gt;</panel_attributes>
+    <additional_attributes>10.0;30.0;100.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>328</x>
+      <y>296</y>
+      <w>184</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+r1=
+m2=*
+Books &gt;</panel_attributes>
+    <additional_attributes>10.0;30.0;210.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>376</x>
+      <y>320</y>
+      <w>80</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>date-time
+...  
+bg=#dddddd</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>344</y>
+      <w>24</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>304</y>
+      <w>80</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>type
+...  
+bg=#dddddd</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>672</x>
+      <y>296</y>
+      <w>96</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=0..1
+Has &gt;</panel_attributes>
+    <additional_attributes>10.0;30.0;100.0;30.0</additional_attributes>
+  </element>
+</diagram>

@@ -1,0 +1,184 @@
+mysql> source solution3.sql;
+--------------
+/*
+Insert into the file the implementations of the following queries as SELECT statements of SQL.
+
+Your implementation must directly follow a comment with a specification of a subtask.
+*/
+
+/* The queries listed below must be implemented as nested SELECT statements with 
+   IN/NOT IN set membership operation.
+*/
+
+/* 
+(1)	Find the distinct drinkers who have ordered drinks at a pub on VICTORIA AVE. in March 2020.
+*/
+SELECT DISTINCT DRINKER 
+FROM ORDERS
+WHERE PUB IN (SELECT PUB 
+			  FROM LOCATED 
+			  WHERE STREET="VICTORIA AVE.") AND ODATE BETWEEN STR_TO_DATE('01-MAR-2020', '%d-%M-%Y') 
+                                AND STR_TO_DATE('30-MAR-2020', '%d-%M-%Y')
+--------------
+
++---------+
+| DRINKER |
++---------+
+| PETER   |
++---------+
+1 row in set (0.00 sec)
+
+--------------
+/* 
+(2)	Find the drinker and the drink liked by the drinker but the drinker hasn’t order the drink so far. 
+    Sort the drinker and the drink pairs in the ascending order of drinkers and drinks.
+*/
+
+SELECT DRINKER, DRINK
+FROM LIKES
+WHERE (DRINKER, DRINK) NOT IN (SELECT DRINKER, DRINK
+			     FROM ORDERS)
+ORDER BY DRINKER, DRINK
+--------------
+
++---------+-----------+
+| DRINKER | DRINK     |
++---------+-----------+
+| CLAUDE  | CHAMPAGNE |
+| CLAUDE  | COGNAC    |
+| CLAUDE  | WHISKY    |
+| JAMES   | CHAMPAGNE |
+| JAMES   | RUM       |
+| JANUSZ  | RUM       |
+| JANUSZ  | VODKA     |
+| JOHN    | CHAMPAGNE |
+| JOHN    | RUM       |
+| JOHN    | VODKA     |
+| JOHN    | WHISKY    |
+| MARY    | CHAMPAGNE |
+| MARY    | COGNAC    |
+| MARY    | VODKA     |
+| PETER   | CHAMPAGNE |
+| PETER   | COGNAC    |
+| PETER   | RUM       |
+| PETER   | WHISKY    |
+| SERGIEY | CHAMPAGNE |
+| SERGIEY | RUM       |
+| TOM     | BEER      |
++---------+-----------+
+21 rows in set (0.00 sec)
+
+--------------
+        
+/* The queries listed below must be implemented as nested queries with 
+   EXISTS/NOT EXISTS clauses.
+*/
+
+/* 
+(3)	Find the distinct drinkers who have ordered drinks at a pub on VICTORIA AVE. in March 2020.
+*/
+
+SELECT DISTINCT DRINKER 
+FROM ORDERS AS O 
+WHERE EXISTS (SELECT * 
+			FROM LOCATED 
+            WHERE O.PUB = LOCATED.PUB AND LOCATED.STREET = "VICTORIA AVE.")
+            AND O.ODATE BETWEEN STR_TO_DATE('01-MAR-2020', '%d-%M-%Y') 
+                                AND STR_TO_DATE('30-MAR-2020', '%d-%M-%Y')
+--------------
+
++---------+
+| DRINKER |
++---------+
+| PETER   |
++---------+
+1 row in set (0.00 sec)
+
+--------------
+                                
+/* 
+(4)	Find the drinker and the drink liked by the drinker but the drinker hasn’t order the drink so far. 
+    Sort the drinker and the drink pairs in the ascending order of drinkers and drinks.
+*/
+
+SELECT DRINKER, DRINK
+FROM LIKES AS L
+WHERE NOT EXISTS (SELECT *
+			     FROM ORDERS AS O
+                 WHERE (L.DRINKER = O.DRINKER) AND (L.DRINK = O.DRINK))
+ORDER BY DRINKER, DRINK
+--------------
+
++---------+-----------+
+| DRINKER | DRINK     |
++---------+-----------+
+| CLAUDE  | CHAMPAGNE |
+| CLAUDE  | COGNAC    |
+| CLAUDE  | WHISKY    |
+| JAMES   | CHAMPAGNE |
+| JAMES   | RUM       |
+| JANUSZ  | RUM       |
+| JANUSZ  | VODKA     |
+| JOHN    | CHAMPAGNE |
+| JOHN    | RUM       |
+| JOHN    | VODKA     |
+| JOHN    | WHISKY    |
+| MARY    | CHAMPAGNE |
+| MARY    | COGNAC    |
+| MARY    | VODKA     |
+| PETER   | CHAMPAGNE |
+| PETER   | COGNAC    |
+| PETER   | RUM       |
+| PETER   | WHISKY    |
+| SERGIEY | CHAMPAGNE |
+| SERGIEY | RUM       |
+| TOM     | BEER      |
++---------+-----------+
+21 rows in set (0.00 sec)
+
+--------------
+/* A query listed below must be implemented with a set algebra operation.               */
+
+/* 
+(5)	Find the distinct drinkers who like either BEER or RED WINE.
+*/
+
+SELECT DISTINCT DRINKER
+FROM LIKES
+WHERE DRINK="BEER" OR DRINK="RED WINE"
+--------------
+
++---------+
+| DRINKER |
++---------+
+| JANUSZ  |
+| JOHN    |
+| TOM     |
+| CLAUDE  |
++---------+
+4 rows in set (0.00 sec)
+
+--------------
+/* 
+A query listed below must be implemented as a nested query. 
+*/
+
+/*
+(6)	Find the distinct drinkers that ordered both VODKA and WHISKY.
+*/
+
+SELECT DISTINCT DRINKER 
+FROM ORDERS
+WHERE DRINK IN ("VODKA") AND DRINKER IN (SELECT DRINKER 
+		FROM ORDERS
+        WHERE DRINK = "WHISKY")
+--------------
+
++---------+
+| DRINKER |
++---------+
+| SERGIEY |
++---------+
+1 row in set (0.00 sec)
+
+mysql> NOTEE;

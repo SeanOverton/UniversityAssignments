@@ -1,0 +1,171 @@
+mysql> source solution2.sql;
+--------------
+/*
+Insert into the file the implementations of the following queries as SELECT statements of SQL.
+
+Your implementation must directly follow a comment with a specification of a subtask.
+
+The queries listed below must be implemented as SELECT statements with JOIN or LEFT / RIGHT OUTER JOIN operation.
+*/
+
+/*
+(1) Find the distinct drinkers who have ordered drinks at a pub on VICTORIA AVE. in March 2020.
+*/
+
+SELECT DISTINCT DRINKER
+FROM ORDERS JOIN LOCATED 
+			ON LOCATED.PUB = ORDERS.PUB
+WHERE LOCATED.STREET= "VICTORIA AVE." AND
+								ORDERS.ODATE BETWEEN STR_TO_DATE('01-MAR-2020', '%d-%M-%Y') 
+                                AND STR_TO_DATE('31-MAR-2020', '%d-%M-%Y')
+--------------
+
++---------+
+| DRINKER |
++---------+
+| PETER   |
++---------+
+1 row in set (0.00 sec)
+
+--------------
+/*
+(2)	Find the drinker, total number of times that the drinker rated drinks for all drinkers.
+    Include drinkers who haven’t rated a drink.
+*/
+
+SELECT DRINKERS.DRINKER, COUNT(LIKES.DRINKER)
+FROM DRINKERS LEFT JOIN LIKES
+			ON DRINKERS.DRINKER = LIKES.DRINKER
+GROUP BY DRINKERS.DRINKER
+--------------
+
++---------+----------------------+
+| DRINKER | COUNT(LIKES.DRINKER) |
++---------+----------------------+
+| CLAUDE  |                    5 |
+| JAMES   |                    3 |
+| JANUSZ  |                    7 |
+| JOHN    |                    5 |
+| MARY    |                    3 |
+| MIKE    |                    0 |
+| PETER   |                    4 |
+| SERGIEY |                    3 |
+| TOM     |                    1 |
++---------+----------------------+
+9 rows in set (0.00 sec)
+
+--------------
+/*
+(3)	Find the drinker and total amount of money spent on drinks for all drinkers in February 2020.
+    Include drinkers who haven’t ordered a drink in this period.
+*/
+
+SELECT DRINKERS.DRINKER, TOTAL
+FROM DRINKERS LEFT JOIN (SELECT DRINKER, SUM(PRICE) as TOTAL
+			FROM ORDERS LEFT JOIN SERVES
+				ON SERVES.DRINK = ORDERS.DRINK AND SERVES.PUB = ORDERS.PUB
+			WHERE ORDERS.ODATE BETWEEN STR_TO_DATE('01-FEB-2020', '%d-%M-%Y') AND STR_TO_DATE('31-FEB-2020', '%d-%M-%Y') 
+			GROUP BY DRINKER) a
+ON DRINKERS.DRINKER = a.DRINKER
+GROUP BY DRINKERS.DRINKER
+--------------
+
++---------+-------+
+| DRINKER | TOTAL |
++---------+-------+
+| CLAUDE  |  NULL |
+| JAMES   | 30.60 |
+| JANUSZ  | 89.20 |
+| JOHN    | 72.00 |
+| MARY    |  7.00 |
+| MIKE    |  NULL |
+| PETER   |  8.00 |
+| SERGIEY | 17.70 |
+| TOM     |  NULL |
++---------+-------+
+9 rows in set (0.00 sec)
+
+--------------
+/*
+(4)	Find the drinkers who haven’t ordered any drinks so far.
+*/
+
+SELECT DRINKERS.DRINKER
+FROM DRINKERS LEFT JOIN ORDERS
+        ON DRINKERS.DRINKER = ORDERS.DRINKER
+WHERE ORDERS.ODATE IS NULL
+--------------
+
++---------+
+| DRINKER |
++---------+
+| MIKE    |
+| TOM     |
++---------+
+2 rows in set (0.00 sec)
+
+--------------
+/*
+(5)	Find the drinkers who haven’t order any drinks in April 2020.
+*/
+
+SELECT DRINKERS.DRINKER 
+FROM DRINKERS 
+WHERE DRINKERS.DRINKER NOT IN
+	(SELECT DRINKERS.DRINKER
+	FROM DRINKERS LEFT JOIN ORDERS
+			ON DRINKERS.DRINKER = ORDERS.DRINKER
+	WHERE ORDERS.ODATE BETWEEN STR_TO_DATE('01-APR-2020', '%d-%M-%Y') AND STR_TO_DATE('31-APR-2020', '%d-%M-%Y')
+	GROUP BY DRINKERS.DRINKER)
+--------------
+
++---------+
+| DRINKER |
++---------+
+| JAMES   |
+| MIKE    |
+| TOM     |
++---------+
+3 rows in set (0.00 sec)
+
+--------------
+/*
+(6)	Find the drinker and the drink liked by the drinker but the drinker hasn’t order the drink so far. 
+    Sort the drinker and the drink pairs in the ascending order of drinkers and drinks.
+*/
+
+SELECT LIKES.DRINKER, LIKES.DRINK 
+FROM LIKES LEFT JOIN ORDERS 
+        ON LIKES.DRINK=ORDERS.DRINK AND LIKES.DRINKER=ORDERS.DRINKER
+WHERE ODATE IS NULL
+ORDER BY LIKES.DRINKER, LIKES.DRINK
+--------------
+
++---------+-----------+
+| DRINKER | DRINK     |
++---------+-----------+
+| CLAUDE  | CHAMPAGNE |
+| CLAUDE  | COGNAC    |
+| CLAUDE  | WHISKY    |
+| JAMES   | CHAMPAGNE |
+| JAMES   | RUM       |
+| JANUSZ  | RUM       |
+| JANUSZ  | VODKA     |
+| JOHN    | CHAMPAGNE |
+| JOHN    | RUM       |
+| JOHN    | VODKA     |
+| JOHN    | WHISKY    |
+| MARY    | CHAMPAGNE |
+| MARY    | COGNAC    |
+| MARY    | VODKA     |
+| PETER   | CHAMPAGNE |
+| PETER   | COGNAC    |
+| PETER   | RUM       |
+| PETER   | WHISKY    |
+| SERGIEY | CHAMPAGNE |
+| SERGIEY | RUM       |
+| TOM     | BEER      |
++---------+-----------+
+21 rows in set (0.00 sec)
+
+mysql> notee;

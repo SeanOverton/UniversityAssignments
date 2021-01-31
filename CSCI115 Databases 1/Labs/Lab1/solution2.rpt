@@ -1,0 +1,36 @@
+mysql> source task2.sql;
+Database changed
+--------------
+CREATE TABLE DEPARTMENT(
+	name VARCHAR(30) NOT NULL, 
+    address VARCHAR(100) NOT NULL, 
+    phone VARCHAR(20) NOT NULL, 
+    CONSTRAINT DEPT_PK PRIMARY KEY(name) )
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+INSERT INTO DEPARTMENT VALUES ('Sales', '123 Market Street, Wollongong', '024123567')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+SELECT * FROM DEPARTMENT
+--------------
+
++-------+-------------------------------+-----------+
+| name  | address                       | phone     |
++-------+-------------------------------+-----------+
+| Sales | 123 Market Street, Wollongong | 024123567 |
++-------+-------------------------------+-----------+
+1 row in set (0.00 sec)
+
+--------------
+DROP TABLE DEPARTMENT
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> notee;

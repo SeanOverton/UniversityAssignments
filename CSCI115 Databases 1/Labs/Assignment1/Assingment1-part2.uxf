@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>594</x>
+      <y>405</y>
+      <w>108</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>SUBJECT
+--
+code PK 
+title CK
+credits
+description 
+ 
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>99</x>
+      <y>405</y>
+      <w>486</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>RUNNING SUBJECT
+--
+code PK FK REFERENCES SUBJECT(code)
+year PK
+session PK
+staff-number FK REFERENCES LECTURER(staff-number)
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>99</x>
+      <y>0</y>
+      <w>576</w>
+      <h>234</h>
+    </coordinates>
+    <panel_attributes>STUDENT
+--
+studentNumber PK FK REFERENCES ENROLMENT(studentNumber)
+first-name CK2
+last-name CK2
+date-of-birth CK3
+email CK4
+phone-number CK5
+degree
+student-type
+project-title [0..1]
+thesis-title [0..1]
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>684</x>
+      <y>225</y>
+      <w>144</w>
+      <h>171</h>
+    </coordinates>
+    <panel_attributes>LECTURER
+--
+staff-number PK
+first-name
+last-name
+position
+title
+school
+faculty
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>99</x>
+      <y>243</y>
+      <w>558</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>ENROLMENT
+--
+studentNumber PK FK REFERENCES STUDENT(studentNumber)
+code PK FK REFERENCES RUNNING SUBJECT(code, year, session)
+year
+session
+enrolment-date PK
+withdraw-date [0..1]
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>99</x>
+      <y>531</y>
+      <w>432</w>
+      <h>171</h>
+    </coordinates>
+    <panel_attributes>LECTURE
+--
+code FK REFERENCES RUNNING SUBJECT(code, year, session)
+year
+session
+day PK
+time PK
+length PK
+bldg-number   
+room-number 
+capacity
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

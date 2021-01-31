@@ -1,0 +1,166 @@
+mysql> source Desktop/solution1.sql;
+Database changed
+--------------
+CREATE TABLE AIRLINE(
+    name VARCHAR(30) NOT NULL,
+    phone DECIMAL(15) NOT NULL,
+    fax DECIMAL(10) NOT NULL, 
+    web VARCHAR(50) NOT NULL,
+    CONSTRAINT airline_pkey PRIMARY KEY(name),
+    CONSTRAINT airline_ckey UNIQUE(phone)
+)
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+CREATE TABLE HOTEL(
+    name VARCHAR(30) NOT NULL,  
+    location VARCHAR(30) NOT NULL,
+    phone DECIMAL(15) NOT NULL,
+    CONSTRAINT hotel_pkey PRIMARY KEY(name, location)
+)
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+CREATE TABLE CUSTOMER(
+    cnumber DECIMAL(10) NOT NULL,
+    first_name VARCHAR(15) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    address VARCHAR(30) NOT NULL,
+    phone DECIMAL(15) NOT NULL,
+    CONSTRAINT cstmer_pkey PRIMARY KEY(cnumber)
+)
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+CREATE TABLE FLIGHT(
+    number CHAR(10) NOT NULL,
+    departure VARCHAR(30) NOT NULL,
+    destination VARCHAR(30) NOT NULL,
+    departure_date_time DATETIME NOT NULL,
+    arrive_date_time DATETIME NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    CONSTRAINT flight_pkey PRIMARY KEY(number, departure_date_time),
+    CONSTRAINT airline_fkey FOREIGN KEY(name) REFERENCES AIRLINE(name)
+)
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+CREATE TABLE SEAT(
+    number CHAR(10) NOT NULL,
+    departure_date_time DATETIME NOT NULL,
+    class VARCHAR(8) NOT NULL,
+    price DECIMAL(6, 2) NOT NULL,
+    number_available DECIMAL(3) NULL,
+    CONSTRAINT seat_pkey PRIMARY KEY(number, departure_date_time, class),
+    CONSTRAINT flight_fkey1 FOREIGN KEY (number, departure_date_time) 
+    REFERENCES FLIGHT(number, departure_date_time), 
+    CONSTRAINT seat_check1 CHECK (class in ("FIRST", "BUSINESS", "ECONOMY"))
+)
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+CREATE TABLE ROOM(
+    type VARCHAR(6) NOT NULL, 
+    name VARCHAR(30) NOT NULL,
+    location VARCHAR(30) NOT NULL,
+    price DECIMAL(6, 2) NOT NULL,
+    number_available DECIMAL(3) NULL,
+    CONSTRAINT room_pkey PRIMARY KEY(type, name, location),
+    CONSTRAINT hotel_fkey1 FOREIGN KEY (name, location) 
+    REFERENCES HOTEL(name, location),
+    CONSTRAINT room_check1 CHECK (type in ("SINGLE", "DOUBLE", "TRIPLE", "QUAD"))
+)
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+CREATE TABLE HOTELBOOKING(
+    arrive_date DATETIME NOT NULL,
+    number_of_night DECIMAL(2) NOT NULL,
+    cnumber DECIMAL(10) NOT NULL,
+    name VARCHAR(30) NOT NULL, 
+    location VARCHAR(30) NOT NULL,
+    date_time DATETIME NOT NULL, 
+    CONSTRAINT hotelbook_pkey PRIMARY KEY(cnumber, name, location, date_time),
+    CONSTRAINT cstmer_fkey1 FOREIGN KEY(cnumber) REFERENCES CUSTOMER(cnumber),
+    CONSTRAINT hotel_fkey2 FOREIGN KEY(name, location) REFERENCES HOTEL(name, location)
+)
+--------------
+
+Query OK, 0 rows affected (0.35 sec)
+
+--------------
+CREATE TABLE FLIGHTBOOKING(
+    number CHAR(10) NOT NULL, 
+    departure_date_time DATETIME NOT NULL,
+    cnumber DECIMAL(10) NOT NULL,
+    date_time DATETIME NOT NULL,
+    CONSTRAINT flightbook_pkey PRIMARY KEY(number, departure_date_time, cnumber),
+    CONSTRAINT flight_fkey2 FOREIGN KEY(number, departure_date_time)
+    REFERENCES FLIGHT(number, departure_date_time),
+    CONSTRAINT cstmer_fkey2 FOREIGN KEY(cnumber) REFERENCES CUSTOMER(cnumber)
+)
+--------------
+
+Query OK, 0 rows affected (0.05 sec)
+
+--------------
+DROP TABLE FLIGHTBOOKING
+--------------
+
+Query OK, 0 rows affected (0.03 sec)
+
+--------------
+DROP TABLE HOTELBOOKING
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+DROP TABLE ROOM
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+DROP TABLE SEAT
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+DROP TABLE FLIGHT
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+DROP TABLE CUSTOMER
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+DROP TABLE HOTEL
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+DROP TABLE AIRLINE
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> notee;
