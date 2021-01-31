@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <title>
+        Question 2 
+    </title>
+    <script>
+        function searchAirport(){
+            //create an XHTML request
+            var xhttpRequest = new XMLHttpRequest();
+            
+            //create handler for readystate change
+            xhttpRequest.onreadystatechange = function(){
+                readyStateChangeHandler(xhttpRequest);
+            };
+            
+            //make query by async call
+            xhttpRequest.open("GET", "airport.json", true);
+            xhttpRequest.send();
+            
+        }   
+
+        //handler for changes on button
+        function readyStateChangeHandler(xhttp){
+            if(xhttp.readyState == 4){
+                //this means its DONE
+                if(xhttp.status == 200){
+                    //success
+                    handleStatusSuccess(xhttp);
+                }else{
+                    //status is not OK
+                    handleStatusFailure(xhttp);
+                }
+            }
+        }
+        
+        //OK response success handler
+        function handleStatusFailure(xhttp){
+            alert("Failed getting data. Response status: " + xhttp.status);
+        }
+        
+        function handleStatusSuccess(xhttp){
+            //store json response
+            var jsonText = xhttp.responseText;
+            
+            //parse JSON into js object
+            var jsObject = JSON.parse(jsonText);
+            
+            //display
+            display(jsObject);
+        }
+        
+        //creates html for display
+        function display(obj){
+            var html = "<br/>";
+            
+            html = html + "<b>Search Query: </b>" + obj.searchQuery + "<br/>";
+            
+            //create display of table
+            html = html + "<br/><table border=1><tr><th>Airport</th><th>ICAO</th><th>IATA</th><th>Location</th></tr>";
+            
+            for(var i = 0; i < obj.searchResult.length; i++){
+                html = html + "<tr><td>" + obj.searchResult[i].airportName + "</td>";
+                html = html + "<td>" + obj.searchResult[i].ICAO + "</td>";
+                html = html + "<td>" + obj.searchResult[i].IATA + "</td>";
+                html = html + "<td>" + obj.searchResult[i].city + ", " + obj.searchResult[i].country + "</td></tr>";
+            }
+
+            html = html + "</table>"
+            
+            var display = document.getElementById("display");
+            display.innerHTML = html;
+        }
+        
+    </script>
+</head>
+
+<body>
+    <button onClick="searchAirport()">Search Aiport</button>
+    <br/>
+    <div id="display"></div>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<html>
+<head>
+    <title>Assignment 2 Q6</title>
+</head>
+<script>
+function executeCommand(){
+    var command = document.getElementById("command").value;
+    var output = document.getElementById("output");
+    switch(command){
+        case "make duck noise":
+            output.style.color = "red";
+            output.innerHTML = "<h1>QUACK QUACK</h1>"
+            break;
+        case "make rooster noise":
+            output.style.color = "blue";
+            output.innerHTML = "<h1>COCK-A-DOODLE-DOO</h1>" 
+            break;  
+        case "show duck image":
+            output.innerHTML="<img width='250' src='https://upload.wikimedia.org/wikipedia/commons/a/a1/Mallard2.jpg' alt='duck image'/>";
+            break;
+        case "show rooster image":
+            output.innerHTML="<img width='250' src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Roosterhawaii.jpg/1200px-Roosterhawaii.jpg' alt='rooster image'/>"
+            break;
+        case "show frog face":
+            output.innerHTML = "&#x1F438;";
+            break;
+        default:
+            alert("You have entered an invalid command.");
+    }
+}
+</script>
+<body>
+    <h1>Sean Overton SN:6421490</h1>
+    <h1>Question 6</h1>
+    Enter command: <input id="command" type="text"/> 
+    <br/>
+    <br/>
+    <button onClick="executeCommand();">Execute Command</button>
+    <br/>
+    <br/>
+    <div id="output"></div>
+</body>
+</html>

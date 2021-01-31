@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>Question 2</title>
+</head>
+<script>
+    var animationSchedule;
+    var frog = true;
+    var running = false;
+    
+    function startAnimation(){
+        if(!running){
+           animationSchedule = setInterval(frogLion, 500); 
+           running = true;
+        }
+    }
+        
+    //the function that actually does the animation "work"
+    function frogLion(){
+        var display = document.getElementById("display");
+                
+        if(frog){
+            //set it to false and display lion 
+            frog = false;
+            display.alt="lion";
+            display.src = "images/lion.jpg";
+        } 
+        else{
+            //otherwise set it to true and display frog
+            frog = true;
+            display.alt="lion";
+            display.src = "images/frog.jpg";
+        }    
+    }
+    
+    function stopAnimation(){
+        clearInterval(animationSchedule);
+        running = false;
+    }
+</script>
+
+<body>
+    <button onclick="startAnimation()">Start Animation</button>
+    <button onclick="stopAnimation()">Stop Animation</button>
+    <br/>
+    <br/>
+    <img id="display" height=150 />
+</body>
+</html>

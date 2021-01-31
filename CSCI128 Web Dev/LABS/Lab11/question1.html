@@ -1,0 +1,102 @@
+<html>
+
+<head>
+    <title>Question 1</title>
+    <script>
+        function drawTriangle(){
+            //get the canvas’ 2D context
+            var canvas = document.getElementById("display");
+            var context = canvas.getContext("2d");
+            
+            //get input coordinates
+            var x1 = document.getElementById("x1").value;
+            var y1 = document.getElementById("y1").value;
+            var x2 = document.getElementById("x2").value;
+            var y2 = document.getElementById("y2").value;
+            var x3 = document.getElementById("x3").value;
+            var y3 = document.getElementById("y3").value;
+            
+            //specify the path
+            context.beginPath();
+            context.moveTo(x1, y1);
+            context.lineTo(x2, y2);
+            context.lineTo(x3, y3);
+            context.closePath(); //makes final stroke to back where it began ie. (50, 10)
+
+            //make the stroke along the path
+            context.strokeStyle = "purple";
+            context.lineWidth = "6";
+            context.stroke(); //actually makes the stroke
+            context.fillStyle = "#DDA0DD"; //fills the shape
+            context.fill();
+
+            //draw other medians lines
+            context.beginPath();
+            context.moveTo(x1, y1);
+            var a = ((Number(x2)+Number(x3))/2);
+            var b = ((Number(y2)+Number(y3))/2);
+            context.lineTo(a, b);
+            context.closePath();
+            
+            context.strokeStyle = "white";
+            context.lineWidth = "4";
+            context.stroke();
+            
+            context.beginPath();
+            context.moveTo(x2, y2);
+            a = ((Number(x1)+Number(x3))/2);
+            b = ((Number(y1)+Number(y3))/2);
+            context.lineTo(a, b);
+            context.closePath();
+            
+            context.strokeStyle = "white";
+            context.lineWidth = "4";
+            context.stroke();
+            
+            context.beginPath();
+            context.moveTo(x3, y3);
+            a = ((Number(x2)+Number(x1))/2);
+            b = ((Number(y2)+Number(y1))/2);
+            context.lineTo(a, b);
+            context.closePath();
+            
+            context.strokeStyle = "white";
+            context.lineWidth = "4";
+            context.stroke();
+            
+            //mark the letters over the top
+            context.fillStyle = "black";
+            context.font = "small-caps bold 30px Arial";
+            context.fillText("A", x1, y1);
+            
+            context.fillText("B", x2, y2);
+            
+            context.fillText("C", x3, y3);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Question 1</h1>
+    Enter a coordinate for the 1st point: 
+    X = <input id="x1" type="text"/> Y = 
+    <input id="y1" type="text"/> 
+    <br/>
+    <br/>
+    Enter a coordinate for the 2nd point: 
+    X = <input id="x2" type="text"/> Y = 
+    <input id="y2" type="text"/> 
+    <br/>
+    <br/>
+    Enter a coordinate for the 3rd point: 
+    X = <input id="x3" type="text"/> Y = 
+    <input id="y3" type="text"/> 
+    <br/>
+    <br/>
+    <canvas id="display" width="400" height="300" style="border: 5px dashed black;">Your browser does not support canvas</canvas>
+    <br/>
+    <br/>
+    <button onclick="drawTriangle()">Draw Triangle</button>
+</body>
+
+</html>

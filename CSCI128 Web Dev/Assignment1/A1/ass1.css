@@ -1,0 +1,12 @@
+table.q5 {
+        color: blue;
+        font-size: 30px;
+        }
+table.q5 td{
+        padding: 30px;
+        text-align: center;
+        vertical-align: bottom;
+        text-align: centre;
+        font-size: 30px;
+        background-color: lightblue;
+        }

@@ -1,0 +1,118 @@
+<html>
+
+<head>
+    <title>
+        Question 4 
+    </title>
+    <script>
+        function getResultsQuery(){
+            //create an XHTML request
+            var xhttpRequest = new XMLHttpRequest();
+            
+            //create handler for readystate change
+            xhttpRequest.onreadystatechange = function(){
+                readyStateChangeHandler(xhttpRequest);
+            };
+            
+            //make query by async call
+            xhttpRequest.open("GET", "Question4.json", true);
+            xhttpRequest.send();
+            
+        }   
+
+        //handler for changes on button
+        function readyStateChangeHandler(xhttp){
+            if(xhttp.readyState == 4){
+                //this means its DONE
+                if(xhttp.status == 200){
+                    //success
+                    handleStatusSuccess(xhttp);
+                }else{
+                    //status is not OK
+                    handleStatusFailure(xhttp);
+                }
+            }
+        }
+        
+        //OK response success handler
+        function handleStatusFailure(xhttp){
+            alert("Failed getting data. Response status: " + xhttp.status);
+        }
+        
+        function handleStatusSuccess(xhttp){
+            //store json response
+            var jsonText = xhttp.responseText;
+            
+            //parse JSON into js object
+            var jsObject = JSON.parse(jsonText);
+            
+            //display
+            display(jsObject);
+        }
+        
+        //creates html for display
+        function display(obj){
+            var html = "";
+            
+            html = html + "<h1>Test Result. Student Reference: " + obj.studentRefNumber +"</h1>"
+            
+            //calculates score for display
+            var mark = calculateMark(obj);
+            html = html + "You scored " + mark + " out of 10."
+            + "<br/><table><tr style='text-align:left;'>"
+            + "<th style='padding:10px;'>Question</th><th style='padding:10px;'>Content</th>"
+            + "<th style='padding:10px;'>Topic</th><th>Correct Answer</th>" + 
+            "<th style='padding:10px;'>Your Answer</th><th style='padding:10px;'>Difficulty</th></tr>";
+             
+            var i;
+            for( i = 0; i < obj.testResult.length; i++){
+                if(obj.testResult[i].correctAnswer == obj.testResult[i].yourAnswer){
+                    incorrectStyle1 = "'";
+                    incorrectStyle2 = " color:green;'> &#10003;";
+                }
+                else{
+                    incorrectStyle1 = " background-color:lightgrey;'";
+                    incorrectStyle2 = "'>" + obj.testResult[i].yourAnswer;
+                }
+                html = html + "<tr><td style='text-align:center; padding:15px;" + incorrectStyle1 + ">" + obj.testResult[i].questionNumber + "</td>";
+                
+                html = html + "<td style='padding:15px;'>" + obj.testResult[i].content + "</td>";
+                html = html + "<td style='padding:15px;'>" + obj.testResult[i].topic + "</td>";
+                
+                html = html + "<td style='text-align:center; padding:15px;'>" + obj.testResult[i].correctAnswer + "</td>";
+                html = html + "<td style='text-align:center; padding:15px;" + incorrectStyle2 + "</td>";
+                
+                //creates stars
+                var stars = "";
+                for(var a = 0; a < obj.testResult[i].difficultyLevel; a++){
+                    stars += "&#11088;"
+                }
+
+                html = html + "<td>" + stars + "</td></tr>";
+                stars = "";
+            }
+            
+            var display = document.getElementById("display");
+            display.innerHTML = html;
+        }
+        
+        function calculateMark(obj){
+            var mark = 0;
+            for(var i = 0; i < obj.testResult.length; i++){
+                if(obj.testResult[i].correctAnswer == obj.testResult[i].yourAnswer){
+                    mark += 1;
+                }
+            }
+            
+            return mark;
+        }
+    </script>
+</head>
+
+<body>
+    <button onClick="getResultsQuery()">Get Test Result</button>
+    <br/>
+    <div id="display"></div>
+</body>
+
+</html>

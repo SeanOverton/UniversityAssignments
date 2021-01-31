@@ -1,0 +1,67 @@
+<html>
+
+<head>
+    <title>Question 3</title>
+    <script>
+        function displayJSON(){
+            //get all elements
+            var sName = document.getElementById("sName");
+            var sNum = document.getElementById("sNum");
+            var subCode = document.getElementById("subjectCode");
+            var subTitle = document.getElementById("subjectTitle");
+            var declaration = document.getElementById("declaration");
+            
+            //create empty object
+            var student = {};
+            
+            student.studName = sName.value;
+            student.studNum = Number(sNum.value);
+            student.subCode = subCode.value;
+            student.subTitle = subTitle.value;
+            student.declaration = declaration.value;
+            
+            var JSONobj = JSON.stringify(student, null, 2);
+            
+            //get display elements
+            var display = document.getElementById("display");
+            
+            display.value = JSONobj;
+        }
+    </script>
+    <style>
+        .col1{
+            text-align:right;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td class="col1">Enter full name:</td>
+            <td><input id="sName" type="text" size="65"></input></td>
+        </tr>
+        <tr>
+            <td class="col1">Enter student number:</td>
+            <td><input id="sNum" type="text" size="65"></></input></td>
+        </tr>
+        <tr>
+            <td class="col1">Enter subject code:</td>
+            <td><input id="subjectCode" type="text" size="65"></></input></td>
+        </tr>
+        <tr>
+            <td class="col1">Enter subject title:</td>
+            <td><input id="subjectTitle" type="text" size="65"></></input></td>
+        </tr>
+        <tr>
+            <td class="col1">Enter plagiarism declaration:</td>
+            <td><textarea id="declaration" cols="70" rows="5"></textarea></td>
+        </tr>
+        <tr>
+            <td class="col1"><button onClick="displayJSON();">JSON Stringify</button></td>
+            <td><textarea id="display" cols="70" rows="7"></textarea></td>
+        </tr>
+    </table>
+</body>
+
+</html>

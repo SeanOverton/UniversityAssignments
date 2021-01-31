@@ -1,0 +1,75 @@
+<html>
+
+<head>
+    <title>
+        Question 1 
+    </title>
+    <script>
+        function getFacultyDetails(){
+            //create an XHTML request
+            var xhttpRequest = new XMLHttpRequest();
+            
+            //create handler for readystate change
+            xhttpRequest.onreadystatechange = function(){
+                readyStateChangeHandler(xhttpRequest);
+            };
+            
+            //make query by async call
+            xhttpRequest.open("GET", "faculty.json", true);
+            xhttpRequest.send();
+            
+        }   
+
+        //handler for changes on button
+        function readyStateChangeHandler(xhttp){
+            if(xhttp.readyState == 4){
+                //this means its DONE
+                if(xhttp.status == 200){
+                    //success
+                    handleStatusSuccess(xhttp);
+                }else{
+                    //status is not OK
+                    handleStatusFailure(xhttp);
+                }
+            }
+        }
+        
+        //OK response success handler
+        function handleStatusFailure(xhttp){
+            alert("Failed getting data. Response status: " + xhttp.status);
+        }
+        
+        function handleStatusSuccess(xhttp){
+            //store json response
+            var jsonText = xhttp.responseText;
+            
+            //parse JSON into js object
+            var jsObject = JSON.parse(jsonText);
+            
+            //display
+            display(jsObject);
+        }
+        
+        //creates html for display
+        function display(obj){
+            var html = "<br/>";
+            
+            html = html + "<b>Name: </b>" + obj.name + "<br/>";
+            html = html + "<b>Abbreviation: </b>" + obj.abbreviation + "<br/>";
+            html = html + "<b>Email: </b>" + obj.email + "<br/>";
+            html = html + "<b>Website: </b>" + obj.web + "<br/>";
+            
+            var display = document.getElementById("display");
+            display.innerHTML = html;
+        }
+        
+    </script>
+</head>
+
+<body>
+    <button onClick="getFacultyDetails()">Get Faculty Details</button>
+    <br/>
+    <div id="display"></div>
+</body>
+
+</html>

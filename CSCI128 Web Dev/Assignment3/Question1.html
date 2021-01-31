@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <title>Question 1</title>
+        <script>
+            var message = "You have entered ";
+            var hyphen = false;
+            
+            function enterNum(num){
+                if(hyphen){
+                    message += "-";
+                }
+                else{
+                    hyphen = true;
+                }
+                
+                switch(num){
+                    case 0: 
+                        message +="zero";
+                        break;
+                    case 1: 
+                        message +="one";
+                        break;
+                    case 2: 
+                        message +="two";
+                        break;
+                    case 3: 
+                        message +="three";
+                        break;
+                    case 4: 
+                        message +="four";
+                        break;
+                    case 5: 
+                        message +="five";
+                        break;
+                    case 6: 
+                        message +="six";
+                        break;
+                    case 7: 
+                        message +="seven";
+                        break;
+                    case 8: 
+                        message +="eight";
+                        break;
+                    case 9: 
+                        message +="nine";
+                        break;
+                }
+                
+                //gets element for display
+                var display = document.getElementById("display");
+                
+                //actually displays element
+                display.innerHTML=message;
+            }
+        </script>
+    </head>
+    <body>
+        <button onclick="enterNum(0)">0</button>
+        <button onclick="enterNum(1)">1</button>
+        <button onclick="enterNum(2)">2</button>
+        <button onclick="enterNum(3)">3</button>
+        <button onclick="enterNum(4)">4</button>
+        <button onclick="enterNum(5)">5</button>
+        <button onclick="enterNum(6)">6</button>
+        <button onclick="enterNum(7)">7</button>
+        <button onclick="enterNum(8)">8</button>
+        <button onclick="enterNum(9)">9</button>
+        <br/>
+        <br/>
+        <h3 id="display"></h3>
+    </body>
+</html>

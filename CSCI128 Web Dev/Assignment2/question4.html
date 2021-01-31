@@ -1,0 +1,49 @@
+<html>
+<head>
+    <title>Assignment 2 Q4</title>
+<script>
+function calculate(){
+    var num1 = document.getElementById("box1");
+    var num2 = document.getElementById("box2");
+    var display = document.getElementById("display");
+    if(num1 > num2){
+        var max = num1.value;
+        var min = num2.value;
+    }
+    else{
+        var max = num2.value;
+        var min = num1.value;
+    }
+    var sum = parseInt(num1.value) + parseInt(num2.value);
+    display.innerHTML = "Min=" + min + ", Max=" + max + ", " + "Sum=" + sum;
+    
+}
+</script>
+</head>
+<body>
+    <h1>Sean Overton SN:6421490</h1>
+    <h1>Question 4</h1>
+    <table>
+        <tr>
+            <td>
+                Enter first number: <input id="box1" type="text"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Enter second number: <input id="box2" type="text"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button onClick="calculate();">Calculate</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span id="display"></span>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

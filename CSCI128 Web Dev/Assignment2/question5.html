@@ -1,0 +1,39 @@
+<html>
+<head>
+    <title>Assignment 2 Q5</title>
+</head>
+<script>
+function switchAnimals(num){
+    var animal1 = document.getElementById(num);
+    var animal2 = document.getElementById(num + 1);
+    var temp = animal1.src;
+    animal1.src = animal2.src;
+    animal2.src = temp;
+}
+</script>
+<body>
+    <h1>Sean Overton SN:6421490</h1>
+    <h1>Question 5</h1>
+    <table>
+        <tr>
+            <td><img id="1" width="100" src="https://www.pinclipart.com/picdir/middle/95-951990_transparent-background-animal-clipart-png-download.png"/></td>
+            <td>
+                <button onClick="switchAnimals(1);">Switch</button>
+            </td>
+            <td><img id="2" width="100" src="https://www.clipartkey.com/mpngs/m/9-93147_animal-clipart-animals-cartoon-collection-clip-art-cartoon.png"/></td>
+            <td>
+                <button onClick="switchAnimals(2);">Switch</button>
+            </td>
+            <td><img id="3" width="100" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTYqZWnLgVaLuoH35dZfw5r6hyOCwXsLNjjDg&usqp=CAU"/></td>
+            <td>
+                <button onClick="switchAnimals(3);">Switch</button>
+            </td>
+            <td><img id="4" width="100" src="https://www.pngitem.com/pimgs/m/267-2677506_free-farm-animals-clipart-transparent-farm-animals-clipart.png"/></td>
+            <td>
+                <button onClick="switchAnimals(4);">Switch</button>
+            </td>
+            <td><img id="5" width="100" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTPWXu7xp5rWfpRn_3eNkDMjQfI2FLobhuvOA&usqp=CAU"/></td>
+        </tr>
+    <table>
+</body>
+</html>

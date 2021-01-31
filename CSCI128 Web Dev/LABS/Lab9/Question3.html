@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <title>Question 3</title>
+    <script>
+        function displayJSON(){
+            //get all elements
+            var code = document.getElementById("subjectCode");
+            var title = document.getElementById("subjectTitle");
+            var creditPoint = document.getElementById("subjectCP");
+            var core = document.getElementById("coreFlag");
+            
+            //create empty object
+            var subject = {};
+            
+            subject.code = code.value;
+            subject.title = title.value;
+            subject.cp = Number(creditPoint.value);
+            if(core.checked){
+                subject.coreFlag = true;
+            }
+            else{
+                subject.coreFlag = false;
+            }
+            
+            
+            var JSONobj = JSON.stringify(subject, null, 2);
+            
+            //get display elements
+            var display = document.getElementById("display");
+            
+            display.value = JSONobj;
+        }
+    </script>
+</head>
+
+<body>
+    Subject Code: <input id="subjectCode" type="text"></input>
+    <br/>
+    Subject Title: <input id="subjectTitle" type="text"></input>
+    <br/>
+    Subject Credit Point: <input id="subjectCP" type="text"></input>
+    <br/>
+    Core Subject: <input id="coreFlag" type="checkbox" value="true"></input>
+    <br/>
+    <button onClick="displayJSON();">View JSON</button>
+    <br/>
+    <textarea id="display" cols="25" rows="6"></textarea>
+</body>
+
+</html>

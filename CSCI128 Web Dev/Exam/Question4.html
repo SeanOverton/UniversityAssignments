@@ -1,0 +1,53 @@
+<html>
+<head>
+	<title>Question 4</title>
+	<script>
+	//global variables that need to be accessible in variety of functions
+	var countAnimation;
+	var count = 0;
+	var studentNumber = 6421490;
+	var answer = 0;
+	var run = false;
+	
+	function startCounter(){
+		//this conditional means only one animation object exists
+		if(!run){
+			run = true;
+			countAnimation = setInterval(increaseCounter, 1000);
+		}
+	}
+	
+	function increaseCounter(){
+		//increase count
+		count++;
+		
+		answer = count + studentNumber; 
+		
+		//display new count
+		document.getElementById('display').innerHTML = studentNumber 
+		+ " + " + count + " = " + answer;
+	}
+	
+	function stopCounter(){
+		if(run){
+			clearInterval(countAnimation);
+			run = false;
+		}
+	}
+	</script>
+</head>
+<body>
+	<h1>Question 4</h1>
+	
+	<button onClick="startCounter();">Start Animation</button>
+	
+	<button onClick="stopCounter();">Stop Animation</button>
+	
+	<br/>
+	<br/>
+	
+	<font size="7">
+		<span id='display'></span>
+	</font>	
+</body>
+</html>

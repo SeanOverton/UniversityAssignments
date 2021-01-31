@@ -1,0 +1,91 @@
+<html>
+<head>
+    <title>Question 5</title>
+	<script>
+	function executeCommand(){
+		var command = document.getElementById("command").value;
+		
+		var splitCommand = command.split(" ");
+		
+		if(splitCommand[0] == "Change" && splitCommand[2] == "to"){
+			//checks inputs are not the same image
+			if(splitCommand[1] == (splitCommand[3])){
+				alert("You have entered an invalid command.");
+				return;
+			}
+			
+			//checks first input is valid
+			switch(splitCommand[1]){
+				case "frog":
+					break;
+				case "table":
+					break;
+				case "chair":
+					break;
+				case "phone":
+					break;
+				case "car":
+					break;
+				default:
+					alert("You have entered an invalid command.");
+					return;
+			}
+			
+			//checks second input is valid
+			switch(splitCommand[3]){
+				case "frog":
+					changeImages(splitCommand[1], splitCommand[3]);
+					break;
+				case "table":
+					changeImages(splitCommand[1], splitCommand[3]);
+					break;
+				case "chair":
+					changeImages(splitCommand[1], splitCommand[3]);
+					break;
+				case "phone":
+					changeImages(splitCommand[1], splitCommand[3]);
+					break;
+				case "car":
+					changeImages(splitCommand[1], splitCommand[3]);
+					break;
+				default:
+					alert("You have entered an invalid command.");
+					return;
+			}
+			
+
+		}
+		else{
+			alert("You have entered an invalid command.");
+		}
+	}
+
+	function changeImages(image1, image2){	
+		var imageStr1 = image1 + ".jpg";
+		for(var i = 0; i < 5; i++){
+			var element = document.getElementById(i);
+			var imageStr2 = element.src.split("images/");
+			if(imageStr2[1] == imageStr1){
+				element.src = "images/" + image2 + ".jpg";
+			}
+		}
+	}
+	</script>
+</head>
+
+<body>
+    <h1>Question 5</h1>
+    Enter command: <input id="command" type="text"/> 
+    <br/>
+    <br/>
+    <button onClick="executeCommand();">Execute Command</button>
+    <br/>
+	<br/>
+	<img id="0" src='images/frog.jpg' height=150></img>
+	<img id="1" src='images/table.jpg' height=150></img>
+	<img id="2" src='images/chair.jpg' height=150></img>
+	<img id="3" src='images/phone.jpg' height=150></img>
+	<img id="4" src='images/car.jpg' height=150></img>
+</body>
+
+</html>

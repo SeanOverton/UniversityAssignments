@@ -1,0 +1,43 @@
+<html>
+
+<head>
+	<title>Question 1</title>
+	<script>
+		function validateJSON(){
+			//get elements and create js variables for input and output
+			var input = document.getElementById("input");
+			
+			var display = document.getElementById("display");
+			
+			try{
+				JSON.parse(input.value);
+				display.innerHTML = "<span style='color:green;'>JSON is valid!</span>";
+			}
+			catch(error){
+				display.innerHTML = "<span style='color:red;'>Error: " + error.message + "</span>";
+			}
+			
+		}
+		
+		function localStorageEx(){
+			if (typeof(Storage) !== "undefined") { 
+				// code for web storage ... 
+			} 
+			else { 
+				console.log("Web Storage not supported"); 
+			}
+
+		}
+	</script>
+</head>
+
+<body>
+	Enter JSON to validate:
+	<br/>
+	<textarea id="input" rows=10 cols=25></textarea>
+	<br/>
+	<button onclick="validateJSON();">Validate JSON</button>
+	<span id="display"></span>
+</body>
+
+</html>

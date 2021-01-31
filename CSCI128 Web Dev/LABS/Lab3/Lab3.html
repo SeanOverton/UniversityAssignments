@@ -1,0 +1,114 @@
+<html>
+<head>
+<title>Lab 3</title>
+<script>
+function lionq2(){
+    // get the text field element 
+    var displayField = document.getElementById("displayq2"); 
+    // show lion message 
+    displayField.value =  "The Lion Button is clicked";
+    }
+
+function frogq2(){
+    // get the text field element 
+    var displayField = document.getElementById("displayq2"); 
+    // show frog message 
+    displayField.value =  "The Frog Button is clicked";
+    }
+    
+function lionq3(){
+    // get the text field element 
+    var displayField = document.getElementById("displayq3"); 
+    // show lion image 
+    displayField.src =  "https://www.abc.net.au/cm/rimage/7701966-3x4-large.jpg?v=2";
+    }
+
+function frogq3(){
+    // get the text field element 
+    var displayField = document.getElementById("displayq3"); 
+    // show frog image 
+    displayField.src =  "https://images.theconversation.com/files/73210/original/image-20150226-1761-1f9a4ox.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1356&h=668&fit=crop";
+    }
+
+function lionq4(){
+    // get the text field element 
+    var displayField = document.getElementById("displayq4"); 
+    // show lion message 
+    displayField.style = "color:orange;";
+    displayField.innerHTML = "Roar!";
+    }
+
+function frogq4(){
+    // get the text field element 
+    var displayField = document.getElementById("displayq4"); 
+    // show frog message 
+    displayField.style = "color:green;";
+    displayField.innerHTML = "Ribbit!";
+    }
+
+//global variables that hold state of page
+var frogClicks = 0;
+var lionClicks = 0;
+
+function lionq5(){
+    // get the text field element 
+    var displayField = document.getElementById("lionClicks"); 
+    // show lion message after increasing count
+    lionClicks += 1;
+    displayField.style = "color:orange;";
+    displayField.innerHTML = "Number of Lion clicks: " + lionClicks;
+    }
+
+function frogq5(){
+    // get the text field element 
+    var displayField = document.getElementById("frogClicks"); 
+    // show frog message after increasing count
+    frogClicks +=1;
+    displayField.style = "color:green;";
+    displayField.innerHTML = "Number of Frog clicks: " + frogClicks;
+    }
+
+//state variable for amount of frogs
+var frogs = "";
+function frogq6(){
+    // get the text field element 
+    var displayField = document.getElementById("displayq6"); 
+    // show frog message after increasing count
+    frogs += "&#x1F438;";
+    displayField.innerHTML = frogs;
+    }
+
+</script>
+</head>
+<body> 
+    <h1>Question 1</h1>
+    <button onClick="console.log('Hi there! JavaScript is cool!');">Console Hi</button>
+    <button onClick="alert('Hi there! JavaScript is cool!');">Alert Hi</button>
+    <hr/>
+    <h1>Question 2</h1>
+    <button onClick="lionq2();">Lion</button>
+    <button onClick="frogq2();">Frog</button>
+    <input type="text" size="50" id="displayq2"></input>
+    <hr/>
+    <h1>Question 3</h1>
+    <button onClick="lionq3();">Lion</button>
+    <button onClick="frogq3();">Frog</button>
+    <br/>
+    <img width="300" src="" id="displayq3"/>
+    <hr/>
+    <h1>Question 4</h1>
+    <img onClick="lionq4();" width="300" src="https://www.abc.net.au/cm/rimage/7701966-3x4-large.jpg?v=2"/>
+    <img onClick="frogq4();" width="300" src="https://images.theconversation.com/files/73210/original/image-20150226-1761-1f9a4ox.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1356&h=668&fit=crop"/>
+    <h3 id="displayq4"></h3>
+    <hr/>
+    <h1>Question 5</h1>
+    <img onClick="lionq5();" width="300" src="https://www.abc.net.au/cm/rimage/7701966-3x4-large.jpg?v=2"/>
+    <img onClick="frogq5();" width="300" src="https://images.theconversation.com/files/73210/original/image-20150226-1761-1f9a4ox.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1356&h=668&fit=crop"/>
+    <h3 id="lionClicks"></h3>
+    <h3 id="frogClicks"></h3>
+    <hr/>
+    <h1>Question 6</h1>
+    <img onClick="frogq6();" width="300" src="https://images.theconversation.com/files/73210/original/image-20150226-1761-1f9a4ox.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1356&h=668&fit=crop"/>
+    <h3 id="displayq6"></h3>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:element name="exam">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="contestant" minOccurs="0" maxOccurs="unbounded">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="score" type="xsd:integer">
+                            <xsd:element name="band" type="xsd:string">
+                            <xsd:element name="digitalSignature" type="xsd:string">
+                        </xsd:sequence>
+                        <xsd:attribute name="cid" type="xsd:string" />
+                    </xsd:complexType>
+                </xsd:element>
+            <xsd:sequence>
+            <xsd:attribute name="eid" type="xsd:string" />
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

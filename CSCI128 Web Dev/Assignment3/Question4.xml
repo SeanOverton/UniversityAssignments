@@ -1,0 +1,32 @@
+<?xml version="1.0"  encoding="UTF-8" standalone="yes" ?>
+<!DOCTYPE audit [ 
+ <!ELEMENT audit (subject*)>
+ <!ELEMENT subject (code,title,statistics)>
+ <!ELEMENT statistics(enrol, withdrawn) 
+ <!ELEMENT code (#PCDATA)>
+ <!ELEMENT title (#PCDATA)>
+ <!ELEMENT enrol (#PCDATA)>
+ <!ELEMENT withdrawn (#PCDATA)>
+ <!ATTLIST audit campus CDATA #REQUIRED>
+ <!ATTLIST audit year CDATA #REQUIRED>
+ <!ATTLIST audit session CDATA #REQUIRED>
+ <!ATTLIST subject sid CDATA #REQUIRED>
+]>
+<audit campus="Woolloomooloo" year="2000" session="A">
+ <subject sid="0769642">
+    <code>MATH101</code>
+    <title>Calculus</title>
+    <statistics>
+         <enrol>170</enrol>
+         <withdrawn>31</withdrawn>
+    </statistics>
+ </subject>
+ <subject sid="1734231">
+    <code>MATH234</code>
+    <title>Abstract Algebra</title>
+     <statistics>
+         <enrol>40</enrol>
+         <withdrawn>15</withdrawn>
+     </statistics>
+ </subject>
+</audit>

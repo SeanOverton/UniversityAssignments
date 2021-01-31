@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <title>Question 2</title>
+        
+        <style>
+    
+          .animalText {
+            font-size: 40px;
+            border-style: solid;
+            border-color: black;
+            border-width: 1px;
+          }
+
+        </style>
+        
+        <script>
+        var dogsDropped = 0;
+        var catsDropped = 0;
+        
+        function dragStart(event){//fired when user starts dragging element
+            //get the dragged element id, so we know what object is being dragged
+            var dragId = event.target.id;
+
+            //store dragged element ID into the data transfer object
+            event.dataTransfer.setData("dragId", dragId);
+        }
+
+        function drop(event){ //fired when element is dropped on valid drop target
+            //get drop element id same as above
+            var dropId = event.target.id;
+            console.log("Drop ID: " + dropId);
+            
+            //retrieve the dragged element ID from teh dataTransfer object
+            var dragId = event.dataTransfer.getData("dragId");
+            console.log("Received Drag ID: " + dragId);
+            
+            //do the dropping logic using target element now
+            if(dragId == "dogImage" && dropId == "dogCount"){
+                //adds one to dogsdroppped count
+                dogsDropped++;
+                
+                //updates the display
+                var count = document.getElementById("dogCount");
+                count.innerHTML = "dogs " + dogsDropped;
+            }
+            else if(dragId == "catImage" && dropId == "catCount"){
+                //adss one to catsdroppped count
+                catsDropped++;
+                
+                //updates the display
+                var count = document.getElementById("catCount");
+                count.innerHTML = "cats " + catsDropped;
+            }
+            
+        }
+
+        //calling preventDefault() method during dragOver event will indicate taht location as droppable
+        function dragOver(event){
+            event.preventDefault();
+        }
+        </script>
+    </head>
+    
+    <body>
+        
+    Drag an animal and drop it on the corresponding text.
+    <br /><br />
+        
+        <table>
+            <tr>
+                <td>
+                    <span class="animalText">
+                        <span id="dogCount" onDrop="drop(event)" onDragOver="dragOver(event)">dog 0</span>
+                    </span>
+                </td>    
+                <td>
+                    <span class="animalText">
+                        <span id="catCount" onDrop="drop(event)" onDragOver="dragOver(event)">cat 0</span>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td><img id="dogImage" src="dog.png" height=100 draggable="true" onDragStart="dragStart(event)"/></td>
+                <td><img id="catImage" src="cat.png" height=100 draggable="true" onDragStart="dragStart(event)"/></td>
+            </tr>
+        </table>
+    </body>
+    
+</html>

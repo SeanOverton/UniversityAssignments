@@ -1,0 +1,81 @@
+<html>
+<head>
+    <title>Question 3</title>
+    <script>
+        var score;
+        var running = false;
+        var animationSchedule;
+        
+        function startGame(){
+            score = 0;
+            //start animation
+            startAnimation();
+        }
+        
+        function startAnimation(){
+            if(!running){
+                animationSchedule = setInterval(game, 500); 
+                running = true;
+            }
+        }
+        
+        function game(){
+            //random integer number between 0 and 4 
+            var choice = Math.floor(Math.random()*5);
+            
+            //get element tag
+            var display = document.getElementById("display");
+            
+            //image displayed
+            switch(choice){
+                case 0:
+                    display.innerHTML = "<div id='message'><h3>Your score is " + score + "</h3></div><br/><img onClick=point(1) src='images/frog.jpg' height=150 ></img>";
+                    break;
+                case 1:
+                    display.innerHTML = "<div id='message'><h3>Your score is " + score + "</h3></div><br/><img onClick=point(-1) src='images/table.jpg' height=150 ></img>";
+                    break;
+                case 2:
+                    display.innerHTML = "<div id='message'><h3>Your score is " + score + "</h3></div><br/><img onClick=point(-1) src='images/chair.jpg' height=150 ></img>";
+                    break;
+                case 3:
+                    display.innerHTML = "<div id='message'><h3>Your score is " + score + "</h3></div><br/><img onClick=point(-1) src='images/phone.jpg' height=150 ></img>";
+                    break;
+                case 4:
+                    display.innerHTML = "<div id='message'><h3>Your score is " + score + "</h3></div><br/><img onClick=point(-1) src='images/car.jpg' height=150 ></img>";
+                    break;
+            }
+        }
+        
+        function stopAnimation(){
+            clearInterval(animationSchedule);
+            running = false;
+        }
+        
+        function point(x){
+            score += x;
+            
+            if(score == 5){
+                //stop animation
+                stopAnimation();
+                
+                //display you won message
+                var message = document.getElementById("message");
+                message.innerHTML = "<h3>Your score is 5. You win!</h3>"
+                
+            }
+            else if(score == -5){
+                //stop animation
+                stopAnimation();
+                
+                //display you lost message
+                var message = document.getElementById("message");
+                message.innerHTML = "<h3>Your score is -5. You lost!</h3>"
+            }
+        }
+    </script>
+</head>
+<body>
+    <button onclick="startGame()">Start frog Game</button>
+    <div id="display"></div>
+</body>
+</html>

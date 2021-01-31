@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="Question1.xsl"?>
+<timetable due="5 minutes">
+    <service>Wollongong-Kiama</service>
+        <station>
+            <name>Wollongong</name>
+            <platform>P2</platform>
+            <time>08:54</time>
+        </station>
+        <station>
+            <name>Coniston</name>
+            <platform>P2</platform>
+            <time>08:56</time>
+        </station>
+        <station>
+            <name>Unanderra</name>
+            <platform>P1</platform>
+            <time>09:01</time>
+        </station>
+        <station>
+            <name>Dapto</name>
+            <platform>P2</platform>
+            <time>09:07</time>
+        </station>
+        <station>
+            <name>Albion Park</name>
+            <platform>P2</platform>
+            <time>09:15</time>
+        </station>
+        <station>
+            <name>Oak Flats</name>
+            <platform>P1</platform>
+            <time>09:21</time>
+        </station>
+        <station>
+            <name>Shell Harbour Junction</name>
+            <platform>P2</platform>
+            <time>09:25</time>
+        </station>
+        <station>
+            <name>Minnamurra</name>
+            <platform>P1</platform>
+            <time>09:29</time>
+        </station>
+        <station>
+            <name>Bombo</name>
+            <platform>P1</platform>
+            <time>09:34</time>
+        </station>
+        <station>
+            <name>Kiama</name>
+            <platform>P2</platform>
+            <time>09:38</time>
+        </station>
+</timetable>

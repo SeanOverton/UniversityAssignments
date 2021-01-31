@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<player>
+	<playerID>0460123</playerID>
+	<name>John Smith</name>
+	<ratingNational>5</ratingNational>
+	<ratingInternational>146</ratingInternational>
+	<country>Australia</country>
+	<majorMatchHistory>
+		<match>
+			<date>25/03/2001</date>
+			<player>Naskov Boris</player>
+			<result>win</result>
+		</match>
+		<match>
+			<date>02/04/2001</date>
+			<player>Joseph Valentin</player>
+			<result>draw</result>
+		</match>
+		<match>
+			<date>03/07/2002</date>
+			<player>Martin Tome</player>
+			<result>win</result>
+		</match>
+		<match>
+			<date>21/08/2003</date>
+			<player>Boja Tomica</player>
+			<result>loss</result>
+		</match>
+	</majorMatchHistory>
+</player>

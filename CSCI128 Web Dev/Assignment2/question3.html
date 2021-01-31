@@ -1,0 +1,43 @@
+<html>
+<head>
+    <title>Assignment 2 Q3</title>
+<script>
+    function swapText(){
+        var box1 = document.getElementById("box1");
+        var box2 = document.getElementById("box2");
+        var temporary = box1.value;
+        box1.value = box2.value;
+        box2.value = temporary;
+    }
+
+    function clearText(){
+        var box1 = document.getElementById("box1");
+        var box2 = document.getElementById("box2");
+        box1.value = "";
+        box2.value = "";
+    }
+</script>
+</head>
+<body>
+    <h1>Sean Overton SN:6421490</h1>
+    <h1>Question 3</h1>
+    <table>
+        <tr>
+            <td>
+                Text Box 1<input id="box1" type="text"/>
+            </td>
+            <td>
+                Text Box 2<input id="box2" type="text"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button onClick="swapText();">Swap Text</button>
+            </td>
+            <td>
+                <button onClick="clearText();">Clear Text</button>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

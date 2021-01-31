@@ -1,0 +1,59 @@
+<html>
+<head>
+	<title>Question 2</title>
+	<script>
+	function check(){
+		//get number values
+		var num1 = Number(document.getElementById('input1').value);
+		var num2 = Number(document.getElementById('input2').value);
+		
+		//users number
+		var num3 = Number(document.getElementById('answer').value);
+		
+		//get operation and do calculation
+		var answer;
+		var selectedOperation = document.getElementById('operationSelect').value;
+		if(selectedOperation=='add'){
+			answer = num1 + num2;
+		}
+		else if(selectedOperation=='subtract'){
+			answer = num1 - num2;
+		}
+		else if(selectedOperation=='multiply'){
+			answer = num1 * num2;
+		}
+		
+		//check answer
+		var checkMessage;
+		if(answer==num3){
+			checkMessage = "Correct!";
+		}
+		else{
+			checkMessage = "Incorrect, please try again.";
+		}
+		
+		//display checkMessage
+		document.getElementById('output').innerHTML = checkMessage;
+	}
+	</script>
+</head>
+<body>
+	<h1>Question 2</h1>
+	
+	<input type="text" id="input1" />
+	
+	<select id="operationSelect">
+		<option value="add">+</option>
+		<option value="subtract">-</option>
+		<option value="multiply">X</option>
+	</select>
+	
+	<input type="text" id="input2" />
+	=
+	<input type="text" id="answer" />
+	
+	<button onClick="check()">Check</button>
+	
+	<span id="output"></span>
+</body>
+</html>

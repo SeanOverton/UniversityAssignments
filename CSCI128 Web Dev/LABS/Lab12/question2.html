@@ -1,0 +1,55 @@
+<html>
+
+<head>
+	<title>Question 2</title>
+	<script>
+		function validateJSON(){
+			//get elements and create js variables for input and output
+			var input = document.getElementById("input");
+			
+			var display = document.getElementById("display");
+			
+			try{
+				var jsonObj = JSON.parse(input.value);
+				
+				if (typeof(Storage) !== "undefined"){
+					localStorage.setItem("JSONArray", JSON.stringify(jsonObj) );
+				}
+
+				display.innerHTML = "<span style='color:green;'>JSON is valid!</span>";
+			}
+			catch(error){
+				display.innerHTML = "<span style='color:red;'>Error: " + error.message + "</span>";
+			}
+			
+		}
+		
+		function initApp(){
+			if (typeof(Storage) !== "undefined") { 
+				// get the previous JSON from local storage 
+				var JSONObj = localStorage.getItem("JSONArray");
+				
+				// parse the JSON to the toDoList 
+				if(JSONObj != null){ 
+					//JSONArray = JSON.parse(JSONObj); 
+					var input = document.getElementById("input");
+					input.value = JSONObj;
+				}
+			} 
+			else { 
+				console.log("Web Storage not supported"); 
+			}
+		}
+	</script>
+</head>
+
+<body onLoad="initApp();">
+	Enter JSON to validate:
+	<br/>
+	<textarea id="input" rows=10 cols=25></textarea>
+	<br/>
+	<button onclick="validateJSON();">Validate JSON</button>
+	<span id="display"></span>
+</body>
+
+</html>

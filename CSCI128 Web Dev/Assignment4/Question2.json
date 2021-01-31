@@ -1,0 +1,56 @@
+{
+    "service":"Wollongong-Kiama",
+    "due": "5 minutes",
+    "stops": [
+            {
+                "station": "Wollongong",
+                "platform": 2,
+                "time": "08:54",
+            },
+            {
+                "station": "Coniston",
+                "platform": 2,
+                "time": "08:56",
+            },
+            {
+                "station": "Unanderra",
+                "platform": 1,
+                "time": "09:01",
+            },
+            {
+                "station": "Dapto",
+                "platform": 2,
+                "time": "09:07",
+            },
+            {
+                "station": "Albion Park",
+                "platform": 2,
+                "time": "09:15",
+            },
+            {
+                "station": "Oak Flats",
+                "platform": 1,
+                "time": "09:21",
+            },
+            {
+                "station": "Shell Harbour Junction",
+                "platform": 2,
+                "time": "09:25",
+            },
+            {
+                "station": "Minnamurra",
+                "platform": 1,
+                "time": "09:29",
+            },
+            {
+                "station": "Bombo",
+                "platform": 1,
+                "time": "09:34",
+            },
+            {
+                "station": "Kiama",
+                "platform": 2,
+                "time": "09:38",
+            },
+        ]
+}
