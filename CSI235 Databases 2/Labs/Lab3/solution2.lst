@@ -1,0 +1,99 @@
+SQL> SET ECHO ON
+
+
+SQL> SET FEEDBACK ON
+SQL> SET LINESIZE 100
+SQL> SET PAGESIZE 200
+SQL> SET SERVEROUTPUT ON
+
+
+SQL> 
+SQL> /*(1) First, the script processes SELECT statement given*/
+
+
+SQL> SELECT CUSTOMER.C_CUSTKEY, COUNT(ORDERS.O_CUSTKEY) CNT
+  2  FROM CUSTOMER LEFT OUTER JOIN ORDERS
+  3   ON CUSTOMER.C_CUSTKEY = ORDERS.O_CUSTKEY
+  4  GROUP BY CUSTOMER.C_CUSTKEY
+  5  HAVING COUNT(ORDERS.O_CUSTKEY) > 20 OR
+  6   COUNT(ORDERS.O_CUSTKEY) = 0
+  7  ORDER BY CNT ASC;
+
+
+   C_CUSTKEY    CNT 
+____________ ______ 
+          12      0 
+          15      0 
+          11      0 
+          16      0 
+          13      0 
+          14      0 
+           7     21 
+           4     23 
+
+
+8 rows selected. 
+
+SQL> 
+SQL> /*(2) Next, the script stores PL/SQL function in a data dictionary*/
+
+
+SQL> CREATE OR REPLACE FUNCTION SPECIFIC_CUSTOMERS(customerKey IN NUMBER) RETURN 
+  2  VARCHAR IS
+  3      orderCount NUMBER;
+  4  BEGIN
+  5      SELECT COUNT(ORDERS.O_CUSTKEY)
+  6      INTO orderCount
+  7      FROM ORDERS
+  8      WHERE ORDERS.O_CUSTKEY=customerKey;     
+  9      RETURN(orderCount);
+ 10  EXCEPTION
+ 11    WHEN NO_DATA_FOUND THEN
+ 12     RETURN('');
+ 13  END SPECIFIC_CUSTOMERS;
+ 14  /
+
+
+
+Function SPECIFIC_CUSTOMERS compiled
+
+SQL> 
+SQL> /*(3) Next, the script processes SELECT statement that uses the stored function to retrieve
+SQL>the same results as the original statement*/
+
+
+SQL> SELECT * FROM(
+  2  SELECT C_CUSTKEY, SPECIFIC_CUSTOMERS(C_CUSTKEY) AS CNT
+  3  FROM CUSTOMER)
+  4  WHERE CNT=0 OR CNT>=20
+  5  ORDER BY CNT ASC;
+
+
+   C_CUSTKEY    CNT 
+____________ ______ 
+          12 0      
+          15 0      
+          11 0      
+          16 0      
+          13 0      
+          14 0      
+           7 21     
+           4 23     
+
+
+8 rows selected. 
+
+SQL> 
+SQL> /*(4) Finally, the script drops the stored function.*/
+
+
+SQL> DROP FUNCTION SPECIFIC_CUSTOMERS;
+
+
+
+Function SPECIFIC_CUSTOMERS dropped.
+
+SQL> 
+SQL> SPOOL OFF
+
+

@@ -1,0 +1,27 @@
+SQL> set echo on
+SQL> set feedback on
+SQL> set linesize 100
+SQL> set pagesize 300
+SQL> 
+SQL> DROP TABLE GAME PURGE;
+
+Table GAME dropped.
+
+SQL> DROP TABLE REFEREE PURGE;
+
+Table REFEREE dropped.
+
+SQL> DROP TABLE COACH PURGE;
+
+Table COACH dropped.
+
+SQL> DROP TABLE TEAM PURGE;
+
+Table TEAM dropped.
+
+SQL> DROP TABLE CITY PURGE;
+
+Table CITY dropped.
+
+SQL> 
+SQL> spool off

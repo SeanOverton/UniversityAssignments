@@ -1,0 +1,235 @@
+SQL> SET ECHO ON
+SQL> SET FEEDBACK ON
+SQL> SET LINESIZE 100
+SQL> SET PAGESIZE 200
+SQL> SET SERVEROUTPUT ON
+SQL> 
+SQL> /*Constraint prevents teams playing games before 
+SQL>their date of creation as this doesn't make any
+SQL>sense. */
+SQL> 
+SQL> CREATE OR REPLACE PROCEDURE INSERT_GAME(
+  2                          datetime IN TIMESTAMP, 
+  3                          venue IN VARCHAR, 
+  4                          htname IN VARCHAR, 
+  5                          htscore IN NUMBER, 
+  6                          atname IN VARCHAR, 
+  7                          atscore IN NUMBER,
+  8                          fname IN VARCHAR,
+  9                          lname IN VARCHAR) IS
+ 10      dateTime1 DATE;
+ 11      dateTime2 DATE;
+ 12      Fail EXCEPTION;
+ 13  BEGIN
+ 14      BEGIN
+ 15        SELECT CDATE INTO dateTime1
+ 16        FROM TEAM
+ 17        WHERE NAME = htname;
+ 18  
+ 19        SELECT CDATE INTO dateTime2
+ 20        FROM TEAM
+ 21        WHERE NAME = atname;
+ 22  
+ 23        IF datetime <= dateTime1 or datetime <= dateTime2 THEN
+ 24          DBMS_OUTPUT.PUT_LINE('ERROR ! The teams can not play before their date of creation!');
+ 25          RAISE FAIL;
+ 26        END IF;
+ 27      END;
+ 28  
+ 29      /*IF VALID INSERT INTO GAME RELATIONAL TABLE*/
+ 30      INSERT INTO GAME VALUES(datetime, venue, htname, htscore, atname, atscore, fname, lname);
+ 31      COMMIT;
+ 32  
+ 33      /*INVALID SO THROW AN ERROR*/
+ 34      /*exception block for fail or any others*/
+ 35  EXCEPTION
+ 36    WHEN Fail THEN
+ 37      DBMS_OUTPUT.PUT_LINE('Failed to insert GAME');
+ 38      ROLLBACK;
+ 39    WHEN OTHERS THEN
+ 40      DBMS_OUTPUT.PUT_LINE(SQLERRM);
+ 41      ROLLBACK;
+ 42  
+ 43  END INSERT_GAME;
+ 44  /
+
+Procedure INSERT_GAME compiled
+
+SQL> 
+SQL> CREATE OR REPLACE PROCEDURE UPDATE_GAME(
+  2                          u_datetime IN TIMESTAMP, 
+  3                          u_venue IN VARCHAR, 
+  4                          u_htname IN VARCHAR, 
+  5                          u_htscore IN NUMBER, 
+  6                          u_atname IN VARCHAR, 
+  7                          u_atscore IN NUMBER,
+  8                          u_fname IN VARCHAR,
+  9                          u_lname IN VARCHAR) IS
+ 10      dateTime1 DATE;
+ 11      dateTime2 DATE;
+ 12      Fail EXCEPTION;
+ 13  BEGIN
+ 14      BEGIN
+ 15        SELECT CDATE INTO dateTime1
+ 16        FROM TEAM
+ 17        WHERE NAME = u_htname;
+ 18  
+ 19        SELECT CDATE INTO dateTime2
+ 20        FROM TEAM
+ 21        WHERE NAME = u_atname;
+ 22  
+ 23        IF u_datetime <= dateTime1 or u_datetime <= dateTime2 THEN
+ 24          DBMS_OUTPUT.PUT_LINE('ERROR ! The teams can not play before their date of creation!');
+ 25          RAISE FAIL;
+ 26        END IF;
+ 27      END;
+ 28  
+ 29      /*IF VALID INSERT INTO GAME RELATIONAL TABLE*/
+ 30      UPDATE GAME 
+ 31          SET HTNAME = u_htname, HTSCORE = u_htscore, ATNAME = u_atname, ATSCORE = u_atscore, FNAME = u_fname, LNAME = u_lname 
+ 32          WHERE DATETIME = u_datetime AND VENUE = u_venue;
+ 33      COMMIT;
+ 34  
+ 35      /*INVALID SO THROW AN ERROR*/
+ 36      /*exception block for fail or any others*/
+ 37  EXCEPTION
+ 38    WHEN Fail THEN
+ 39      DBMS_OUTPUT.PUT_LINE('Failed to insert GAME');
+ 40      ROLLBACK;
+ 41      WHEN OTHERS THEN
+ 42      DBMS_OUTPUT.PUT_LINE(SQLERRM);
+ 43      ROLLBACK;
+ 44  
+ 45  END UPDATE_GAME;
+ 46  /
+
+Procedure UPDATE_GAME compiled
+
+SQL> 
+SQL> /*TEST PROCEDURE*/
+SQL> SELECT * FROM GAME;
+
+DATETIME                        VENUE
+------------------------------- ------------------------------------------------------------
+HTNAME                                                          HTSCORE
+------------------------------------------------------------ ----------
+ATNAME                                                          ATSCORE
+------------------------------------------------------------ ----------
+FNAME                          LNAME                         
+------------------------------ ------------------------------
+10/MAR/20 07:00:00.000000000 AM Sydney Cricket Ground                                        
+Sydney FC                                                             2 
+Melbourne Victory                                                     1 
+Ben                            Smith                         
+
+12/MAR/20 07:30:00.000000000 AM AAMI Park                                                    
+Melbourne Victory                                                     3 
+Sydney FC                                                             4 
+Ben                            Smith                         
+
+14/MAR/20 07:00:00.000000000 AM Bankwest Stadium                                             
+Western Sydney Wanderers                                              1 
+Melbourne Victory                                                     0 
+Craig                          Smith                         
+
+
+3 rows selected. 
+
+SQL> 
+SQL> /*(1) One successful insertion*/
+SQL> EXECUTE INSERT_GAME('17-MAR-2020:07:00:00', 'AAMI Park', 'Melbourne Victory', 1, 'Western Sydney Wanderers', 2, 'Craig', 'Smith');
+
+PL/SQL procedure successfully completed.
+
+SQL> EXECUTE UPDATE_GAME('14-MAR-2020:07:00:00', 'Bankwest Stadium', 'Western Sydney Wanderers', 0, 'Sydney FC', 0, 'Ben', 'Smith');
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> SELECT * FROM GAME;
+
+DATETIME                        VENUE
+------------------------------- ------------------------------------------------------------
+HTNAME                                                          HTSCORE
+------------------------------------------------------------ ----------
+ATNAME                                                          ATSCORE
+------------------------------------------------------------ ----------
+FNAME                          LNAME                         
+------------------------------ ------------------------------
+10/MAR/20 07:00:00.000000000 AM Sydney Cricket Ground                                        
+Sydney FC                                                             2 
+Melbourne Victory                                                     1 
+Ben                            Smith                         
+
+12/MAR/20 07:30:00.000000000 AM AAMI Park                                                    
+Melbourne Victory                                                     3 
+Sydney FC                                                             4 
+Ben                            Smith                         
+
+14/MAR/20 07:00:00.000000000 AM Bankwest Stadium                                             
+Western Sydney Wanderers                                              0 
+Sydney FC                                                             0 
+Ben                            Smith                         
+
+17/MAR/20 07:00:00.000000000 AM AAMI Park                                                    
+Melbourne Victory                                                     1 
+Western Sydney Wanderers                                              2 
+Craig                          Smith                         
+
+
+4 rows selected. 
+
+SQL> 
+SQL> /*(2) One unsuccessful insertion.*/
+SQL> EXECUTE INSERT_GAME('21 -MAR-1990 :07:00:00', 'Bankwest Stadium', 'Western Sydney Wanderers', 2, 'Sydney FC', 1, 'Ben', 'Smith');
+ERROR ! The teams can not play before their date of creation!
+Failed to insert GAME
+
+
+PL/SQL procedure successfully completed.
+
+SQL> EXECUTE UPDATE_GAME('14-MAR-1990:07:00:00', 'Bankwest Stadium', 'Western Sydney Wanderers', 2, 'Sydney FC', 1, 'Ben', 'Smith');
+ERROR ! The teams can not play before their date of creation!
+Failed to insert GAME
+
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> /*(3) Testing DELETE works as well*/
+SQL> DELETE FROM GAME WHERE VENUE = 'Sydney Cricket Ground';
+
+1 row deleted.
+
+SQL> 
+SQL> /*(4) Use SELECT statement to display the successfully inserted rows.*/
+SQL> SELECT * FROM GAME;
+
+DATETIME                        VENUE
+------------------------------- ------------------------------------------------------------
+HTNAME                                                          HTSCORE
+------------------------------------------------------------ ----------
+ATNAME                                                          ATSCORE
+------------------------------------------------------------ ----------
+FNAME                          LNAME                         
+------------------------------ ------------------------------
+12/MAR/20 07:30:00.000000000 AM AAMI Park                                                    
+Melbourne Victory                                                     3 
+Sydney FC                                                             4 
+Ben                            Smith                         
+
+14/MAR/20 07:00:00.000000000 AM Bankwest Stadium                                             
+Western Sydney Wanderers                                              0 
+Sydney FC                                                             0 
+Ben                            Smith                         
+
+17/MAR/20 07:00:00.000000000 AM AAMI Park                                                    
+Melbourne Victory                                                     1 
+Western Sydney Wanderers                                              2 
+Craig                          Smith                         
+
+
+3 rows selected. 
+
+SQL> 
+SQL> SPOOL OFF

@@ -1,0 +1,265 @@
+> load("CSCI235/solution2.js")
+true
+> db.task2.count()
+10
+> db.task2.find().pretty()
+{
+	"_id" : "1",
+	"REGION" : {
+		"regionName" : "AFRICA",
+		"nations" : [
+			{
+				"NATION" : {
+					"nationKey" : "1",
+					"nationName" : "SUDAN"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "0",
+					"nationName" : "ALGERIA"
+				}
+			}
+		]
+	}
+}
+{
+	"_id" : "2",
+	"REGION" : {
+		"regionName" : "ASIA",
+		"nations" : [
+			{
+				"NATION" : {
+					"nationKey" : "7",
+					"nationName" : "ETHIOPIA"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "4",
+					"nationName" : "CANADA"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "3",
+					"nationName" : "BRAZIL"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "2",
+					"nationName" : "AUSTRALIA"
+				}
+			}
+		]
+	}
+}
+{
+	"_id" : "3",
+	"REGION" : {
+		"regionName" : "AUSTRALIA",
+		"nations" : [
+			{
+				"NATION" : {
+					"nationKey" : "17",
+					"nationName" : "KENYA"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "5",
+					"nationName" : "CHINA"
+				}
+			}
+		]
+	}
+}
+{
+	"_id" : "4",
+	"REGION" : {
+		"regionName" : "CENTRAL AMERICA",
+		"nations" : [
+			{
+				"NATION" : {
+					"nationKey" : "29",
+					"nationName" : "UNITED KINGDOM"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "25",
+					"nationName" : "SAUDI ARABIA"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "28",
+					"nationName" : "RWNDA"
+				}
+			}
+		]
+	}
+}
+{
+	"_id" : "5",
+	"REGION" : {
+		"regionName" : "EUROPE",
+		"nations" : [
+			{
+				"NATION" : {
+					"nationKey" : "20",
+					"nationName" : "MOZAMBIQUE"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "19",
+					"nationName" : "MOROCCO"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "18",
+					"nationName" : "MALAWI"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "11",
+					"nationName" : "INDONESIA"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "10",
+					"nationName" : "INDIA"
+				}
+			}
+		]
+	}
+}
+{
+	"_id" : "6",
+	"REGION" : {
+		"regionName" : "MIDDLE EAST",
+		"nations" : [
+			{
+				"NATION" : {
+					"nationKey" : "22",
+					"nationName" : "POLAND"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "13",
+					"nationName" : "IRAQ"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "12",
+					"nationName" : "IRAN"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "6",
+					"nationName" : "EGYPT"
+				}
+			}
+		]
+	}
+}
+{
+	"_id" : "7",
+	"REGION" : {
+		"regionName" : "NORTH AMERICA",
+		"nations" : [ ]
+	}
+}
+{
+	"_id" : "8",
+	"REGION" : {
+		"regionName" : "OCEANIA",
+		"nations" : [
+			{
+				"NATION" : {
+					"nationKey" : "26",
+					"nationName" : "VIETNAM"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "16",
+					"nationName" : "JORDAN"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "14",
+					"nationName" : "INDIA"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "23",
+					"nationName" : "CHINA"
+				}
+			}
+		]
+	}
+}
+{
+	"_id" : "9",
+	"REGION" : {
+		"regionName" : "SOUTH AMERICA",
+		"nations" : [
+			{
+				"NATION" : {
+					"nationKey" : "21",
+					"nationName" : "PERU"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "15",
+					"nationName" : "JAPAN"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "9",
+					"nationName" : "GERMANY"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "8",
+					"nationName" : "FRANCE"
+				}
+			}
+		]
+	}
+}
+{
+	"_id" : "10",
+	"REGION" : {
+		"regionName" : "SOUTH AMERICA",
+		"nations" : [
+			{
+				"NATION" : {
+					"nationKey" : "27",
+					"nationName" : "RUSSIA"
+				}
+			},
+			{
+				"NATION" : {
+					"nationKey" : "24",
+					"nationName" : "ROMANIA"
+				}
+			}
+		]
+	}
+}
+

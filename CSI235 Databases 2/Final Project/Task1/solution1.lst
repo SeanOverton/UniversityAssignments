@@ -1,0 +1,147 @@
+SQL> set echo on
+SQL> set feedback on
+SQL> set linesize 100
+SQL> set pagesize 300
+SQL> 
+SQL> /* ---------------------------------------------------------------------------- */
+SQL> /*                                                                              */
+SQL> /* CSCI235 Database Systems                                                     */
+SQL> /* Spring 2020                                                                  */
+SQL> /* A sample database for the final project                                      */
+SQL> /*                                                                              */
+SQL> /* ---------------------------------------------------------------------------- */
+SQL> /*                                                                              */
+SQL> /* CITY                                                                         */
+SQL> /*                                                                              */
+SQL> CREATE TABLE CITY(
+  2  NAME             VARCHAR(60)    NOT NULL, /* City name                          */
+  3  POPULATION       NUMBER(9)      NOT NULL, /* Population of a city               */
+  4  COUNTRY          VARCHAR(60)    NOT NULL, /* Country where located              */
+  5     CONSTRAINT CITY_PKEY PRIMARY KEY (NAME));
+
+Table CITY created.
+
+SQL> /*                                                                              */
+SQL> /* TEAM                                                                         */
+SQL> /*                                                                              */
+SQL> CREATE TABLE TEAM(
+  2  NAME             VARCHAR(60)    NOT NULL, /* Team name                          */
+  3  CDATE            DATE           NOT NULL, /* Date when created                  */
+  4  CITY             VARCHAR(60)    NOT NULL, /* CITY NAME                          */
+  5     CONSTRAINT TEAM_PKEY PRIMARY KEY (NAME),
+  6     CONSTRAINT TEAM_FKEY FOREIGN KEY(CITY) REFERENCES CITY(NAME));
+
+Table TEAM created.
+
+SQL> /*                                                                              */
+SQL> /* COACH                                                                        */
+SQL> /*                                                                              */
+SQL> CREATE TABLE COACH(                        
+  2  MCOACH           VARCHAR(60)    NOT NULL, /* Main coach                         */
+  3  TNAME             VARCHAR(60)    NOT NULL, /* Team name                         */
+  4     CONSTRAINT COACH_PKEY PRIMARY KEY (MCOACH),
+  5     CONSTRAINT COACH_FKEY FOREIGN KEY(TNAME) REFERENCES TEAM(NAME) );
+
+Table COACH created.
+
+SQL> /*                                                                              */
+SQL> /* REFEREE                                                                      */
+SQL> /*                                                                              */
+SQL> CREATE TABLE REFEREE(
+  2  FNAME           VARCHAR(30)     NOT NULL, /* First name                         */
+  3  LNAME           VARCHAR(30)     NOT NULL, /* Last name                          */
+  4  CNAME           VARCHAR(60)     NOT NULL, /* City name                          */
+  5     CONSTRAINT REFEREE_PKEY PRIMARY KEY (FNAME, LNAME),
+  6     CONSTRAINT REFEREE_FKEY FOREIGN KEY(CNAME) REFERENCES CITY(NAME) );
+
+Table REFEREE created.
+
+SQL> /*                                                                              */
+SQL> /* GAME                                                                         */
+SQL> /*                                                                              */
+SQL> CREATE TABLE GAME(
+  2  DATETIME        TIMESTAMP       NOT NULL, /* Date and time when started         */
+  3  /* To insert a timestamp use a string that matches the following format:        */
+  4  /* 'DD-MON-YYYY:HH:MI:SS', for example,'12-MAR-2020:10:40:00'                   */
+  5  VENUE           VARCHAR(60)     NOT NULL, /* Service type                       */
+  6  HTNAME          VARCHAR(60)     NOT NULL, /* Home team name                     */
+  7  HTSCORE         NUMBER(2)       NOT NULL, /* Home team score                    */
+  8  ATNAME          VARCHAR(60)     NOT NULL, /* Away team name                     */
+  9  ATSCORE         NUMBER(2)       NOT NULL, /* Away team score                    */
+ 10  FNAME           VARCHAR(30)     NOT NULL, /* Referee first name                 */
+ 11  LNAME           VARCHAR(30)     NOT NULL, /* Referee last name                  */
+ 12     CONSTRAINT GAME_PKEY PRIMARY KEY(DATETIME, VENUE),
+ 13     CONSTRAINT GAME_FKEY1 FOREIGN KEY (HTNAME) REFERENCES TEAM(NAME),
+ 14     CONSTRAINT GAME_FKEY2 FOREIGN KEY (ATNAME) REFERENCES TEAM(NAME),
+ 15     CONSTRAINT GAME_FKEY3 FOREIGN KEY (FNAME,LNAME) REFERENCES REFEREE(FNAME,LNAME),
+ 16     CONSTRAINT GAME_CHECK UNIQUE(HTNAME, ATNAME) );
+
+Table GAME created.
+
+SQL> /*                                                                              */
+SQL> /* ------------------------- End of script ------------------------------------ */
+SQL> /*                                                                              */
+SQL> 
+SQL> INSERT INTO CITY VALUES ('Sydney', 200000000, 'Australia');
+
+1 row inserted.
+
+SQL> INSERT INTO CITY VALUES ('Melbourne', 150000000, 'Australia');
+
+1 row inserted.
+
+SQL> INSERT INTO CITY VALUES ('Adelaide', 800000000, 'Australia');
+
+1 row inserted.
+
+SQL> INSERT INTO TEAM VALUES ('Western Sydney Wanderers', TO_DATE('1997/01/01 12:00:00', 'yyyy/mm/dd hh24:mi:ss'), 'Sydney');
+
+1 row inserted.
+
+SQL> INSERT INTO TEAM VALUES ('Sydney FC', TO_DATE('2000/01/01 12:00:00', 'yyyy/mm/dd hh24:mi:ss'), 'Sydney');
+
+1 row inserted.
+
+SQL> INSERT INTO TEAM VALUES ('Melbourne Victory', TO_DATE('2002/01/01 12:00:00', 'yyyy/mm/dd hh24:mi:ss'), 'Melbourne');
+
+1 row inserted.
+
+SQL> INSERT INTO COACH VALUES ('Joe Doe', 'Western Sydney Wanderers');
+
+1 row inserted.
+
+SQL> INSERT INTO COACH VALUES ('John Smith', 'Sydney FC');
+
+1 row inserted.
+
+SQL> INSERT INTO COACH VALUES ('Wreck-it Ralph', 'Melbourne Victory');
+
+1 row inserted.
+
+SQL> INSERT INTO REFEREE VALUES ('Ben', 'Smith', 'Adelaide');
+
+1 row inserted.
+
+SQL> INSERT INTO REFEREE VALUES ('Craig', 'Smith', 'Melbourne');
+
+1 row inserted.
+
+SQL> INSERT INTO GAME VALUES ('10-MAR-2020:07:00:00', 'Sydney Cricket Ground', 'Sydney FC', 2, 'Melbourne Victory', 1, 'Ben', 'Smith');
+
+1 row inserted.
+
+SQL> INSERT INTO GAME VALUES ('12-MAR-2020:07:30:00', 'AAMI Park', 'Melbourne Victory', 3, 'Sydney FC', 4, 'Ben', 'Smith');
+
+1 row inserted.
+
+SQL> INSERT INTO GAME VALUES ('14-MAR-2020:07:00:00', 'Bankwest Stadium', 'Western Sydney Wanderers', 1, 'Melbourne Victory', 0, 'Craig', 'Smith');
+
+1 row inserted.
+
+SQL> 
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> 
+SQL> spool off

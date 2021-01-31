@@ -1,0 +1,10 @@
+Customer name: Sean, Table Number: 26
+
+Tropicana Pizza      Quantity: 2	$20.0     
+BBQ Meat Lovers Pizza      Quantity: 1	$16.0     
+Steak Sandwich      Quantity: 1	$18.5     
+Side salad      Quantity: 3	$15.0     Vegetarian
+Sweet potato fries (Bowl)      Quantity: 2	$13.0     Vegetarian
+
+--------------
+Total Price: $82.5

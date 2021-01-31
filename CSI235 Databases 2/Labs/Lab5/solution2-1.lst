@@ -1,0 +1,92 @@
+SQL> SET FEEDBACK ON
+SQL> SET LINESIZE 100
+SQL> SET PAGESIZE 200
+SQL> SET SERVEROUTPUT ON
+SQL> 
+SQL> /*anonymous pl/sql block for solution 2*/
+SQL> DECLARE
+  2      regionName VARCHAR(152);
+  3      nationName  VARCHAR(152);
+  4      regionKey REGION.R_REGIONKEY%TYPE;
+  5      nationKey NATION.N_NATIONKEY%TYPE;
+  6      r_index number := 1;
+  7      n_index number := 0;
+  8  BEGIN
+  9      FOR rrow IN(SELECT R_NAME, R_REGIONKEY
+ 10                  FROM REGION
+ 11                  ORDER BY R_NAME)
+ 12      LOOP
+ 13          regionName := TRIM(rrow.R_NAME);
+ 14          regionKey := TRIM(rrow.R_REGIONKEY);
+ 15          DBMS_OUTPUT.PUT('db.task2.insert({"_id": "' || r_index || '",');
+ 16          DBMS_OUTPUT.PUT_LINE('"REGION":{"regionName":"' || regionName || '" ,"nations":[');
+ 17          FOR nrow IN(SELECT N_NAME, N_NATIONKEY
+ 18                      FROM NATION
+ 19                      WHERE (N_REGIONKEY=regionKey)
+ 20                      ORDER BY N_NAME DESC)
+ 21          LOOP
+ 22              n_index := n_index + 1;
+ 23              nationName := TRIM(nrow.N_NAME);
+ 24              nationKey := TRIM(nrow.N_NATIONKEY);
+ 25              IF (n_index != 1) THEN
+ 26                  DBMS_OUTPUT.PUT(',');
+ 27                  DBMS_OUTPUT.PUT_LINE('');
+ 28              END IF;
+ 29              DBMS_OUTPUT.PUT('{"NATION": {"nationKey":"' || nationKey || '", ');
+ 30              DBMS_OUTPUT.PUT('"nationName": "' || nationNamE || '"} }');
+ 31          END LOOP;
+ 32      n_index := 0;
+ 33      r_index := r_index + 1;
+ 34      DBMS_OUTPUT.PUT(']} } );');
+ 35      DBMS_OUTPUT.PUT_LINE('');
+ 36      END LOOP;
+ 37       COMMIT;
+ 38  END;
+ 39  /
+db.task2.insert({"_id": "1","REGION":{"regionName":"AFRICA" ,"nations":[
+{"NATION": {"nationKey":"1", "nationName": "SUDAN"} },
+{"NATION": {"nationKey":"0", "nationName": "ALGERIA"} }]} } );
+db.task2.insert({"_id": "2","REGION":{"regionName":"ASIA" ,"nations":[
+{"NATION": {"nationKey":"7", "nationName": "ETHIOPIA"} },
+{"NATION": {"nationKey":"4", "nationName": "CANADA"} },
+{"NATION": {"nationKey":"3", "nationName": "BRAZIL"} },
+{"NATION": {"nationKey":"2", "nationName": "AUSTRALIA"} }]} } );
+db.task2.insert({"_id": "3","REGION":{"regionName":"AUSTRALIA" ,"nations":[
+{"NATION": {"nationKey":"17", "nationName": "KENYA"} },
+{"NATION": {"nationKey":"5", "nationName": "CHINA"} }]} } );
+db.task2.insert({"_id": "4","REGION":{"regionName":"CENTRAL AMERICA" ,"nations":[
+{"NATION": {"nationKey":"29", "nationName": "UNITED KINGDOM"} },
+{"NATION": {"nationKey":"25", "nationName": "SAUDI ARABIA"} },
+{"NATION": {"nationKey":"28", "nationName": "RWNDA"} }]} } );
+db.task2.insert({"_id": "5","REGION":{"regionName":"EUROPE" ,"nations":[
+{"NATION": {"nationKey":"20", "nationName": "MOZAMBIQUE"} },
+{"NATION": {"nationKey":"19", "nationName": "MOROCCO"} },
+{"NATION": {"nationKey":"18", "nationName": "MALAWI"} },
+{"NATION": {"nationKey":"11", "nationName": "INDONESIA"} },
+{"NATION": {"nationKey":"10", "nationName": "INDIA"} }]} } );
+db.task2.insert({"_id": "6","REGION":{"regionName":"MIDDLE EAST" ,"nations":[
+{"NATION": {"nationKey":"22", "nationName": "POLAND"} },
+{"NATION": {"nationKey":"13", "nationName": "IRAQ"} },
+{"NATION": {"nationKey":"12", "nationName": "IRAN"} },
+{"NATION": {"nationKey":"6", "nationName": "EGYPT"} }]} } );
+db.task2.insert({"_id": "7","REGION":{"regionName":"NORTH AMERICA" ,"nations":[
+]} } );
+db.task2.insert({"_id": "8","REGION":{"regionName":"OCEANIA" ,"nations":[
+{"NATION": {"nationKey":"26", "nationName": "VIETNAM"} },
+{"NATION": {"nationKey":"16", "nationName": "JORDAN"} },
+{"NATION": {"nationKey":"14", "nationName": "INDIA"} },
+{"NATION": {"nationKey":"23", "nationName": "CHINA"} }]} } );
+db.task2.insert({"_id": "9","REGION":{"regionName":"SOUTH AMERICA" ,"nations":[
+{"NATION": {"nationKey":"21", "nationName": "PERU"} },
+{"NATION": {"nationKey":"15", "nationName": "JAPAN"} },
+{"NATION": {"nationKey":"9", "nationName": "GERMANY"} },
+{"NATION": {"nationKey":"8", "nationName": "FRANCE"} }]} } );
+db.task2.insert({"_id": "10","REGION":{"regionName":"SOUTH AMERICA" ,"nations":[
+{"NATION": {"nationKey":"27", "nationName": "RUSSIA"} },
+{"NATION": {"nationKey":"24", "nationName": "ROMANIA"} }]} } );
+
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL>  SPOOL OFF

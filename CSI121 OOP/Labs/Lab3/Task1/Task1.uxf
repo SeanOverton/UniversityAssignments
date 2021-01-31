@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>11</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>242</x>
+      <y>605</y>
+      <w>429</w>
+      <h>187</h>
+    </coordinates>
+    <panel_attributes>Undegraduate
+--
+-currentCourse: String
+-expectedCompletionSession: String
+--
++Undegraduate(String, String, Address, int, int, String, String)
++getCurrentCourse(): String
++getExpectedCompletionSession(): String
++setCurrentCourse(String): void
++setExpectedCompletionSession(String): void
++toString(): String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>693</x>
+      <y>605</y>
+      <w>495</w>
+      <h>286</h>
+    </coordinates>
+    <panel_attributes>Graduate
+--
+-currentCourse: String
+-expectedCompletionSession: String
+-previousDegree: String
+-dateOfCompletionForUndegrad: String
+--
++Graduate(String, String, Address, int, int, String, String, String, String)
++getCurrentCourse(): String
++getExpectedCompletionSession(): String
++setCurrentCourse(String): void
++setExpectedCompletionSession(String): void
++getPreviousDegree(): String
++getDateOfCompletionForUdegrad(): String
++setPreviousDegree(String): void
++setDateOfCompletionForUdegrad(String): void
++toString(): String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>572</x>
+      <y>209</y>
+      <w>407</w>
+      <h>308</h>
+    </coordinates>
+    <panel_attributes>/Student/
+--
+-name: String
+-final DOB: String
+-address: Address
+-mobileNumber: int
+-final STUDENTID: int
+--
++Student()
++Student(String, String, Address, int, int)
++getName(): String
++getDOB(): String
++getAddress(): Address
++getMobileNumber(): int
++getStudentID(): int
++setName(): String
++setAddress(): Address
++setMobileNumber(): int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1001</x>
+      <y>253</y>
+      <w>330</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>StudentSystem
+--
+-students: ArrayList&lt;Student&gt;
+--
++StudentSystem()
++search(int): void
++addStudent(Student): void
++removeStudent(Student): void
++getStudentList(): Student[]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>165</x>
+      <y>187</y>
+      <w>319</w>
+      <h>407</h>
+    </coordinates>
+    <panel_attributes>Address
+--
+-streetNumber: int
+-streetName: String
+-city: String
+-state: String
+-postCode: int
+-country: String
+--
++Address()
++Address(int, String, String, String, int, String)
++getStreetNumber(): int
++getStreetName(): String
++getCity(): String
++getState(): String
++getPostCode(): int
++getCountry(): String
++setStreetNumber(int): void
++setStreetName(String): void
++setCity(String): void
++setState(String): void
++setPostCode(int): void
++setCountry(String): void
++toString(): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1056</x>
+      <y>462</y>
+      <w>308</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>TestCode
+--
+--
+_+main(String[] args): void_
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>605</x>
+      <y>506</y>
+      <w>55</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+m2=0..1
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>803</x>
+      <y>506</y>
+      <w>55</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+m2=0..1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>968</x>
+      <y>198</y>
+      <w>275</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=*
+Contains</panel_attributes>
+    <additional_attributes>180.0;50.0;180.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>473</x>
+      <y>462</y>
+      <w>121</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=*
+Lives at
+</panel_attributes>
+    <additional_attributes>90.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>968</x>
+      <y>495</y>
+      <w>110</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+Uses</panel_attributes>
+    <additional_attributes>80.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1078</x>
+      <y>385</y>
+      <w>66</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+Uses</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>660</x>
+      <y>517</y>
+      <w>440</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+Uses</panel_attributes>
+    <additional_attributes>380.0;10.0;380.0;70.0;10.0;70.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1122</x>
+      <y>517</y>
+      <w>66</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+Uses</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+</diagram>

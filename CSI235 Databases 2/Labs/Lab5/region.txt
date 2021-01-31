@@ -1,0 +1,1 @@
+db.regions.insert({"__id": "1","REGION":{"regionName":"EAST COUNTRIES","regionComment":"bla bla","nations":[{"NATION": {"nationKey": "x","nationName": "x","nationComment": "x"} },{"NATION": {"nationKey": "x","nationName": "x","nationComment": "x"} } ]} } );

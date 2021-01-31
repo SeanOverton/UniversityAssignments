@@ -1,0 +1,104 @@
+SQL> SET ECHO ON
+
+
+SQL> SET FEEDBACK ON
+SQL> SET LINESIZE 200
+SQL> SET PAGESIZE 400
+SQL> SET SERVEROUTPUT ON
+
+
+SQL> 
+SQL> /*(1) First, the script creates a relational table to store information about a new order key
+SQL>and a name of user who created a new order.*/
+
+
+SQL> CREATE TABLE ORDER_EDITOR(
+  2  ORDER_NAME VARCHAR(30) NOT NULL,  
+  3  ORDERKEY NUMBER(12)  NOT NULL,
+  4      CONSTRAINT ORDER_EDITOR_PK PRIMARY KEY (ORDERKEY),
+  5      CONSTRAINT ORDER_EDITOR_FKEY2 FOREIGN KEY (ORDERKEY) 
+  6          REFERENCES ORDERS(O_ORDERKEY));
+
+
+
+Table ORDER_EDITOR created.
+
+SQL> 
+SQL> 
+SQL> /*(2) Next, the script creates a database trigger, that automatically inserts into a relational
+SQL>table created in the previous step, a key of a new order and a name of a user who
+SQL>created the order. If an order is deleted then the trigger must automatically delete
+SQL>information about an order key and a user who earlier created the order. A type of a
+SQL>trigger is up to you.*/
+
+
+SQL> 
+SQL> CREATE OR REPLACE TRIGGER updateORDEREDITOR
+  2  AFTER INSERT OR DELETE ON ORDERS
+  3      FOR EACH ROW
+  4      BEGIN
+  5          IF INSERTING THEN           
+  6                  INSERT INTO ORDER_EDITOR VALUES(USER, :NEW.O_ORDERKEY);
+  7          END IF;
+  8          IF DELETING THEN
+  9              DELETE FROM ORDER_EDITOR WHERE ORDERKEY = :OLD.O_ORDERKEY;
+ 10          END IF;
+ 11      END; 
+ 12  /
+
+
+
+Trigger UPDATEORDEREDITOR compiled
+
+SQL> 
+SQL> /*(3) Next, the script comprehensively tests the trigger. A test must include listing of the
+SQL>contents of a table with order keys and user names, insertion of an order, listing of
+SQL>the contents of the table again, deletion of an order, and listing of the contents of the
+SQL>table again.*/
+
+
+SQL> 
+SQL> SELECT * FROM ORDER_EDITOR;
+
+
+
+
+0 rows selected. 
+
+SQL> 
+SQL> INSERT INTO ORDERS VALUES(300, 1,'F',25000,TO_DATE('1998-05-11','YYYY-MM-DD'),'3-MEDIUM','Clerk#000123456',0,'Please leave in the letter box.');
+
+
+
+1 row inserted.
+
+SQL> 
+SQL> SELECT * FROM ORDER_EDITOR;
+
+
+   ORDER_NAME    ORDERKEY 
+_____________ ___________ 
+GUEST208S             300 
+
+
+1 row selected. 
+
+SQL> 
+SQL> DELETE FROM ORDERS WHERE O_ORDERKEY=300;
+
+
+
+1 row deleted.
+
+SQL> 
+SQL> SELECT * FROM ORDER_EDITOR;
+
+
+
+
+0 rows selected. 
+
+SQL> 
+SQL> SPOOL OFF;
+
+

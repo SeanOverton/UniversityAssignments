@@ -1,0 +1,426 @@
+> /* (1)  Find all parts that belongs to a given brand. */;
+> 
+> db.tpchr.createIndex({"PART.brand": 1});
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
+> db.tpchr.getIndexes();
+[
+	{
+		"v" : 2,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "test.tpchr"
+	},
+	{
+		"v" : 2,
+		"key" : {
+			"PART.brand" : 1
+		},
+		"name" : "PART.brand_1",
+		"ns" : "test.tpchr"
+	}
+]
+> db.tpchr.find({"PART.brand": "Brand#13"}).explain();
+{
+	"queryPlanner" : {
+		"plannerVersion" : 1,
+		"namespace" : "test.tpchr",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			"PART.brand" : {
+				"$eq" : "Brand#13"
+			}
+		},
+		"queryHash" : "8AE0CFA2",
+		"planCacheKey" : "5510E844",
+		"winningPlan" : {
+			"stage" : "FETCH",
+			"inputStage" : {
+				"stage" : "IXSCAN",
+				"keyPattern" : {
+					"PART.brand" : 1
+				},
+				"indexName" : "PART.brand_1",
+				"isMultiKey" : false,
+				"multiKeyPaths" : {
+					"PART.brand" : [ ]
+				},
+				"isUnique" : false,
+				"isSparse" : false,
+				"isPartial" : false,
+				"indexVersion" : 2,
+				"direction" : "forward",
+				"indexBounds" : {
+					"PART.brand" : [
+						"[\"Brand#13\", \"Brand#13\"]"
+					]
+				}
+			}
+		},
+		"rejectedPlans" : [ ]
+	},
+	"serverInfo" : {
+		"host" : "csci235-VirtualBox",
+		"port" : 4000,
+		"version" : "4.2.2",
+		"gitVersion" : "a0bbbff6ada159e19298d37946ac8dc4b497eadf"
+	},
+	"ok" : 1
+}
+> db.tpchr.dropIndex("PART.brand_1");
+{ "nIndexesWas" : 2, "ok" : 1 }
+> 
+> /* (2)  Find all parts that has a retail price greater than a given value. */;
+> 
+> db.tpchr.createIndex({"PART.retailprice": 1});
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
+> db.tpchr.getIndexes();
+[
+	{
+		"v" : 2,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "test.tpchr"
+	},
+	{
+		"v" : 2,
+		"key" : {
+			"PART.retailprice" : 1
+		},
+		"name" : "PART.retailprice_1",
+		"ns" : "test.tpchr"
+	}
+]
+> db.tpchr.find({"PART.retailprice": {$gt: 901}}).explain();
+{
+	"queryPlanner" : {
+		"plannerVersion" : 1,
+		"namespace" : "test.tpchr",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			"PART.retailprice" : {
+				"$gt" : 901
+			}
+		},
+		"queryHash" : "AE40E823",
+		"planCacheKey" : "E5D44645",
+		"winningPlan" : {
+			"stage" : "FETCH",
+			"inputStage" : {
+				"stage" : "IXSCAN",
+				"keyPattern" : {
+					"PART.retailprice" : 1
+				},
+				"indexName" : "PART.retailprice_1",
+				"isMultiKey" : false,
+				"multiKeyPaths" : {
+					"PART.retailprice" : [ ]
+				},
+				"isUnique" : false,
+				"isSparse" : false,
+				"isPartial" : false,
+				"indexVersion" : 2,
+				"direction" : "forward",
+				"indexBounds" : {
+					"PART.retailprice" : [
+						"(901.0, inf.0]"
+					]
+				}
+			}
+		},
+		"rejectedPlans" : [ ]
+	},
+	"serverInfo" : {
+		"host" : "csci235-VirtualBox",
+		"port" : 4000,
+		"version" : "4.2.2",
+		"gitVersion" : "a0bbbff6ada159e19298d37946ac8dc4b497eadf"
+	},
+	"ok" : 1
+}
+> db.tpchr.dropIndex("PART.retailprice_1");
+{ "nIndexesWas" : 2, "ok" : 1 }
+> 
+> /* (3)  Find the names of all suppliers. */;
+> 
+> db.tpchr.createIndex({"SUPPLIER": 1});
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
+> db.tpchr.getIndexes();
+[
+	{
+		"v" : 2,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "test.tpchr"
+	},
+	{
+		"v" : 2,
+		"key" : {
+			"SUPPLIER" : 1
+		},
+		"name" : "SUPPLIER_1",
+		"ns" : "test.tpchr"
+	}
+]
+> db.tpchr.find({"SUPPLIER":{$exists: true}}, {"SUPPLIER.name": 1}).explain();
+{
+	"queryPlanner" : {
+		"plannerVersion" : 1,
+		"namespace" : "test.tpchr",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			"SUPPLIER" : {
+				"$exists" : true
+			}
+		},
+		"queryHash" : "6CA12D49",
+		"planCacheKey" : "D236553F",
+		"winningPlan" : {
+			"stage" : "PROJECTION_DEFAULT",
+			"transformBy" : {
+				"SUPPLIER.name" : 1
+			},
+			"inputStage" : {
+				"stage" : "FETCH",
+				"filter" : {
+					"SUPPLIER" : {
+						"$exists" : true
+					}
+				},
+				"inputStage" : {
+					"stage" : "IXSCAN",
+					"keyPattern" : {
+						"SUPPLIER" : 1
+					},
+					"indexName" : "SUPPLIER_1",
+					"isMultiKey" : false,
+					"multiKeyPaths" : {
+						"SUPPLIER" : [ ]
+					},
+					"isUnique" : false,
+					"isSparse" : false,
+					"isPartial" : false,
+					"indexVersion" : 2,
+					"direction" : "forward",
+					"indexBounds" : {
+						"SUPPLIER" : [
+							"[MinKey, MaxKey]"
+						]
+					}
+				}
+			}
+		},
+		"rejectedPlans" : [ ]
+	},
+	"serverInfo" : {
+		"host" : "csci235-VirtualBox",
+		"port" : 4000,
+		"version" : "4.2.2",
+		"gitVersion" : "a0bbbff6ada159e19298d37946ac8dc4b497eadf"
+	},
+	"ok" : 1
+}
+> db.tpchr.dropIndex("SUPPLIER_1");
+{ "nIndexesWas" : 2, "ok" : 1 }
+> 
+> /* (4)  Find the brands and types of all parts. */;
+> 
+> db.tpchr.createIndex({"PART": 1});
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
+> db.tpchr.getIndexes();
+[
+	{
+		"v" : 2,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "test.tpchr"
+	},
+	{
+		"v" : 2,
+		"key" : {
+			"PART" : 1
+		},
+		"name" : "PART_1",
+		"ns" : "test.tpchr"
+	}
+]
+> db.tpchr.find({"PART":{$exists: true}}, {"PART.brand": 1, "PART.type": 1}).explain();
+{
+	"queryPlanner" : {
+		"plannerVersion" : 1,
+		"namespace" : "test.tpchr",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			"PART" : {
+				"$exists" : true
+			}
+		},
+		"queryHash" : "6690C547",
+		"planCacheKey" : "3F38CFBB",
+		"winningPlan" : {
+			"stage" : "PROJECTION_DEFAULT",
+			"transformBy" : {
+				"PART.brand" : 1,
+				"PART.type" : 1
+			},
+			"inputStage" : {
+				"stage" : "FETCH",
+				"filter" : {
+					"PART" : {
+						"$exists" : true
+					}
+				},
+				"inputStage" : {
+					"stage" : "IXSCAN",
+					"keyPattern" : {
+						"PART" : 1
+					},
+					"indexName" : "PART_1",
+					"isMultiKey" : false,
+					"multiKeyPaths" : {
+						"PART" : [ ]
+					},
+					"isUnique" : false,
+					"isSparse" : false,
+					"isPartial" : false,
+					"indexVersion" : 2,
+					"direction" : "forward",
+					"indexBounds" : {
+						"PART" : [
+							"[MinKey, MaxKey]"
+						]
+					}
+				}
+			}
+		},
+		"rejectedPlans" : [ ]
+	},
+	"serverInfo" : {
+		"host" : "csci235-VirtualBox",
+		"port" : 4000,
+		"version" : "4.2.2",
+		"gitVersion" : "a0bbbff6ada159e19298d37946ac8dc4b497eadf"
+	},
+	"ok" : 1
+}
+> db.tpchr.dropIndex("PART_1");
+{ "nIndexesWas" : 2, "ok" : 1 }
+> 
+> /* (5)  Find the names of customers who submitted at least one order; */;
+> 
+> db.tpchr.createIndex({"CUSTOMER.submits": 1});
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
+> db.tpchr.getIndexes();
+[
+	{
+		"v" : 2,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "test.tpchr"
+	},
+	{
+		"v" : 2,
+		"key" : {
+			"CUSTOMER.submits" : 1
+		},
+		"name" : "CUSTOMER.submits_1",
+		"ns" : "test.tpchr"
+	}
+]
+> db.tpchr.find({"CUSTOMER.submits":{$gt: []}}, {"CUSTOMER.name": 1}).explain();
+{
+	"queryPlanner" : {
+		"plannerVersion" : 1,
+		"namespace" : "test.tpchr",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			"CUSTOMER.submits" : {
+				"$gt" : [ ]
+			}
+		},
+		"queryHash" : "2A61E6C1",
+		"planCacheKey" : "70E500FA",
+		"winningPlan" : {
+			"stage" : "PROJECTION_DEFAULT",
+			"transformBy" : {
+				"CUSTOMER.name" : 1
+			},
+			"inputStage" : {
+				"stage" : "FETCH",
+				"filter" : {
+					"CUSTOMER.submits" : {
+						"$gt" : [ ]
+					}
+				},
+				"inputStage" : {
+					"stage" : "IXSCAN",
+					"keyPattern" : {
+						"CUSTOMER.submits" : 1
+					},
+					"indexName" : "CUSTOMER.submits_1",
+					"isMultiKey" : true,
+					"multiKeyPaths" : {
+						"CUSTOMER.submits" : [
+							"CUSTOMER.submits"
+						]
+					},
+					"isUnique" : false,
+					"isSparse" : false,
+					"isPartial" : false,
+					"indexVersion" : 2,
+					"direction" : "forward",
+					"indexBounds" : {
+						"CUSTOMER.submits" : [
+							"([], BinData(0, ))"
+						]
+					}
+				}
+			}
+		},
+		"rejectedPlans" : [ ]
+	},
+	"serverInfo" : {
+		"host" : "csci235-VirtualBox",
+		"port" : 4000,
+		"version" : "4.2.2",
+		"gitVersion" : "a0bbbff6ada159e19298d37946ac8dc4b497eadf"
+	},
+	"ok" : 1
+}
+> db.tpchr.dropIndex("CUSTOMER.submits_1");
+{ "nIndexesWas" : 2, "ok" : 1 }
+

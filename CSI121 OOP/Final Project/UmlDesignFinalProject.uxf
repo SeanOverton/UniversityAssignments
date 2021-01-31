@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>882</x>
+      <y>294</y>
+      <w>203</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>Menu
+--
+-pizzas: ArrayList&lt;Item&gt;
+-burgers: ArrayList&lt;Item&gt;
+-sides: ArrayList&lt;Item&gt;
+--
++Menu()
++getPizzas(): ArrayList&lt;Item&gt;
++getBurgers(): ArrayList&lt;Item&gt;
++getSides(): ArrayList&lt;Item&gt;
++setPizzas(ArrayList&lt;Item&gt;): void
++setBurgers(ArrayList&lt;Item&gt;): void 
++setSides(ArrayList&lt;Item&gt;): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>581</x>
+      <y>224</y>
+      <w>238</w>
+      <h>385</h>
+    </coordinates>
+    <panel_attributes>MenuFrame
+--
+-layout: GridLayout
+-menu: Menu
+-categoryPanel: CategoryPanel
+-itemPanel: ItemPanel
+-namePanel: InputPanel
+-tableNumberPanel: InputPanel
+-quantityPanel: InputPanel
+-orderPanel: orderPanel
+-descriptionPanel: DescriptionPanel
+-buttonPanel: ButtonPanel
+--
++MenuFrame()
++getMenu(): Menu
++setMenu(Menu): void
++getCategoryPanel(): CategoryPanel
++getDescriptionPanel(): DescriptionPanel
++getItemPanel(): ItemPanel
++getNamePanel(): InputPanel
++getTableNumberPanel(): InputPanel
++getQuantityPanel(): InputPanel
++getOrderPanel(): OrderPanel
++getButtonPanel(): ButtonPanel
++reset(): void
++validateCustomerName(): void
++validateTableNumber(): void
++successfulSubmitHandler(): void
++unsuccessfulSubmitHandler(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>623</x>
+      <y>0</y>
+      <w>196</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>Order
+--
+-totalPrice: double
+-items: ArrayList&lt;Item&gt;
+-customerName: String
+-tableNumber: int
+--
++Order()
++setCustomerName(String): void
++getCustomerName(): void
++setTableNumber(int): void
++getTableNumber(): int
++getItem(int): Item
++addItem(Item): void
++getTotalPrice(): double
++toString(): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>903</x>
+      <y>14</y>
+      <w>168</w>
+      <h>238</h>
+    </coordinates>
+    <panel_attributes>Item
+--
+-name: String
+-description: String
+-price: double
+-quantity: int
+--
++Item()
++Item(String, String, double)
++setName(String): void
++getName(): String
++setDescription(String): void
++getDescription(): String
++setPrice(double): void
++getPrice(): double
++setQuantity(int): void
++getQuantity(): int
++toString(): String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>308</x>
+      <y>84</y>
+      <w>217</w>
+      <h>196</h>
+    </coordinates>
+    <panel_attributes>CafeOrderSystem
+--
+_-order: Order_
+_-mainFrame: MenuFrame_
+_-output: Formatter_
+--
+_+main(String[] args): void_
+_+createMenu(): void_
+_+getMainFrame(): MenuFrame_
+_+getOrder(): Order_
+_+openTextFile(String, String): void_
+_+closeTextFile(): void_
+_+addItems(): void_
+_+saveOrder(): void_
+_+reset(): void_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>910</x>
+      <y>483</y>
+      <w>126</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>OrderPanel
+--
+-title: JLabel 
+-order: JTextArea
+--
++OrderPanel()
++update(String): void
++reset(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>273</x>
+      <y>308</y>
+      <w>231</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>CategoryPanel
+--
+-layout: BorderLayout
+-title: JLabel 
+-options: JList
+-optionsModel: DefaultListModel
+-listener: CategorySelectionListener
+--
++CategoryPanel(String[])
+-class: CategorySelectionListener
++reset(): void
++getValue(): String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>273</x>
+      <y>469</y>
+      <w>231</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>ItemPanel
+--
+-layout: BorderLayout
+-title: JLabel 
+-options: JList
+-optionsModel: DefaultListModel
+-listener: ItemSelectionListener
+--
++ItemPanel()
+-class: ItemSelectionListener
++setTitle(String): void
++changeOptions(ArrayList&lt;Item&gt;): void
++reset(): void
++getValue(): Item
++disableListener(): void
++enableListener(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>511</x>
+      <y>644</y>
+      <w>133</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>InputPanel
+--
+-layout: FlowLayout
+-title: JLabel 
+-input: JTextField
+--
++InputPanel()
++InputPanel(String)
++setTitle(String): void
++reset(): void
++getValue(): String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>665</x>
+      <y>910</y>
+      <w>217</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>SubmitButtonHandler
+--
++actionPerformed(ActionEvent): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>567</x>
+      <y>812</y>
+      <w>217</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>ResetButtonHandler
+--
++actionPerformed(ActionEvent): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>616</x>
+      <y>861</y>
+      <w>217</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>AddButtonHandler
+--
++actionPerformed(ActionEvent): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>518</x>
+      <y>77</y>
+      <w>119</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+contains</panel_attributes>
+    <additional_attributes>10.0;30.0;150.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>812</x>
+      <y>42</y>
+      <w>105</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=*
+contains</panel_attributes>
+    <additional_attributes>10.0;30.0;130.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>868</x>
+      <y>217</y>
+      <w>105</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+contains
+m2=*</panel_attributes>
+    <additional_attributes>130.0;110.0;130.0;80.0;10.0;80.0;10.0;10.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>812</x>
+      <y>301</y>
+      <w>84</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+contains</panel_attributes>
+    <additional_attributes>10.0;30.0;100.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>497</x>
+      <y>350</y>
+      <w>98</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+contains</panel_attributes>
+    <additional_attributes>120.0;30.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>497</x>
+      <y>497</y>
+      <w>98</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+contains</panel_attributes>
+    <additional_attributes>120.0;30.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>511</x>
+      <y>532</y>
+      <w>84</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=3
+contains</panel_attributes>
+    <additional_attributes>100.0;30.0;10.0;30.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>700</x>
+      <y>777</y>
+      <w>70</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+contains</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>791</x>
+      <y>777</y>
+      <w>70</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+contains</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>847</x>
+      <y>777</y>
+      <w>70</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+contains</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>518</x>
+      <y>126</y>
+      <w>105</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+contains</panel_attributes>
+    <additional_attributes>10.0;30.0;130.0;30.0;130.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>812</x>
+      <y>497</y>
+      <w>112</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+contains</panel_attributes>
+    <additional_attributes>10.0;30.0;140.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>875</x>
+      <y>623</y>
+      <w>168</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>DescriptionPanel
+--
+-layout: BorderLayout
+-title: JLabel 
+-description: JTextArea
+--
++DescriptionPanel()
++changeValue(String): void
++reset(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>651</x>
+      <y>644</y>
+      <w>217</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>ButtonPanel
+--
+-addButton: JButton
+-submitButton: JButton
+-resetButton: JButton
+--
++ButtonPanel()
++getAddButton(): JButton
++getSubmitButton(): JButton
++getResetButton(): JButton
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>693</x>
+      <y>602</y>
+      <w>70</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+contains</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>812</x>
+      <y>553</y>
+      <w>77</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+contains</panel_attributes>
+    <additional_attributes>10.0;30.0;90.0;30.0;90.0;100.0</additional_attributes>
+  </element>
+</diagram>

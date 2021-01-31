@@ -1,0 +1,396 @@
+SQL> SET FEEDBACK ON
+SQL> SET LINESIZE 300
+SQL> SET PAGESIZE 200
+SQL> 
+SQL> /*question 1*/
+SQL> /*(i) Find and list a query processing plan for SELECT statement without an index.*/
+SQL> EXPLAIN PLAN FOR
+  2      SELECT O_ORDERDATE, O_CUSTKEY
+  3      FROM ORDERS
+  4      WHERE O_ORDERDATE > '31-DEC-1994' AND
+  5       O_ORDERDATE < '01-JAN-1996';
+
+Explained.
+
+SQL> 
+SQL> SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+PLAN_TABLE_OUTPUT                                                                                                                                                                                                                                                                                           
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Plan hash value: 1275100350
+ 
+----------------------------------------------------------------------------
+| Id  | Operation         | Name   | Rows  | Bytes | Cost (%CPU)| Time     |
+----------------------------------------------------------------------------
+|   0 | SELECT STATEMENT  |        |    14 |   308 |     3   (0)| 00:00:01 |
+|*  1 |  TABLE ACCESS FULL| ORDERS |    14 |   308 |     3   (0)| 00:00:01 |
+----------------------------------------------------------------------------
+ 
+Predicate Information (identified by operation id):
+---------------------------------------------------
+ 
+   1 - filter("O_ORDERDATE">TO_DATE(' 1994-12-31 00:00:00', 
+              'syyyy-mm-dd hh24:mi:ss') AND "O_ORDERDATE"<TO_DATE(' 1996-01-01 
+              00:00:00', 'syyyy-mm-dd hh24:mi:ss'))
+ 
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+19 rows selected. 
+
+SQL> 
+SQL> /*(ii) Create an index.*/
+SQL> CREATE INDEX ORDERS_IDX ON ORDERS(O_ORDERDATE, O_CUSTKEY);
+
+Index ORDERS_IDX created.
+
+SQL> 
+SQL> /*(iii) Find and list a query processing plan for SELECT statement with an index.*/
+SQL> EXPLAIN PLAN FOR
+  2      SELECT O_ORDERDATE, O_CUSTKEY
+  3      FROM ORDERS
+  4      WHERE O_ORDERDATE > '31-DEC-1994' AND
+  5       O_ORDERDATE < '01-JAN-1996';
+
+Explained.
+
+SQL> 
+SQL> SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+PLAN_TABLE_OUTPUT                                                                                                                                                                                                                                                                                           
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Plan hash value: 1323323054
+ 
+-------------------------------------------------------------------------------
+| Id  | Operation        | Name       | Rows  | Bytes | Cost (%CPU)| Time     |
+-------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT |            |    14 |   308 |     1   (0)| 00:00:01 |
+|*  1 |  INDEX RANGE SCAN| ORDERS_IDX |    14 |   308 |     1   (0)| 00:00:01 |
+-------------------------------------------------------------------------------
+ 
+Predicate Information (identified by operation id):
+---------------------------------------------------
+ 
+   1 - access("O_ORDERDATE">TO_DATE(' 1994-12-31 00:00:00', 
+              'syyyy-mm-dd hh24:mi:ss') AND "O_ORDERDATE"<TO_DATE(' 1996-01-01 
+              00:00:00', 'syyyy-mm-dd hh24:mi:ss'))
+ 
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+19 rows selected. 
+
+SQL> 
+SQL> /*(iv) Drop an index.*/
+SQL> DROP INDEX ORDERS_IDX;
+
+Index ORDERS_IDX dropped.
+
+SQL> 
+SQL> /*question 2*/
+SQL> /*(i) Find and list a query processing plan for SELECT statement without an index.*/
+SQL> EXPLAIN PLAN FOR 
+  2      SELECT L_PARTKEY, L_SUPPKEY
+  3      FROM LINEITEM
+  4      WHERE ( L_TAX IN (0.02, 0.06) OR L_DISCOUNT> 0.4 ) AND
+  5      L_EXTENDEDPRICE = 7232;
+
+Explained.
+
+SQL> 
+SQL> SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+PLAN_TABLE_OUTPUT                                                                                                                                                                                                                                                                                           
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Plan hash value: 98068815
+ 
+------------------------------------------------------------------------------
+| Id  | Operation         | Name     | Rows  | Bytes | Cost (%CPU)| Time     |
+------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT  |          |     1 |    65 |     5   (0)| 00:00:01 |
+|*  1 |  TABLE ACCESS FULL| LINEITEM |     1 |    65 |     5   (0)| 00:00:01 |
+------------------------------------------------------------------------------
+ 
+Predicate Information (identified by operation id):
+---------------------------------------------------
+ 
+   1 - filter("L_EXTENDEDPRICE"=7232 AND ("L_DISCOUNT">0.4 OR 
+              ("L_TAX"=0.02 OR "L_TAX"=0.06)))
+ 
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+18 rows selected. 
+
+SQL> 
+SQL> /*(ii) Create an index.*/
+SQL> CREATE INDEX LINEITEM_IDX ON LINEITEM(L_EXTENDEDPRICE);
+
+Index LINEITEM_IDX created.
+
+SQL> 
+SQL> /*(iii) Find and list a query processing plan for SELECT statement with an index.*/
+SQL> EXPLAIN PLAN FOR 
+  2      SELECT L_PARTKEY, L_SUPPKEY
+  3      FROM LINEITEM
+  4      WHERE ( L_TAX IN (0.02, 0.06) OR L_DISCOUNT> 0.4 ) AND
+  5      L_EXTENDEDPRICE = 7232;
+
+Explained.
+
+SQL> 
+SQL> SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+PLAN_TABLE_OUTPUT                                                                                                                                                                                                                                                                                           
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Plan hash value: 1265307978
+ 
+----------------------------------------------------------------------------------------------------
+| Id  | Operation                           | Name         | Rows  | Bytes | Cost (%CPU)| Time     |
+----------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                    |              |     1 |    65 |     3   (0)| 00:00:01 |
+|*  1 |  TABLE ACCESS BY INDEX ROWID BATCHED| LINEITEM     |     1 |    65 |     3   (0)| 00:00:01 |
+|*  2 |   INDEX RANGE SCAN                  | LINEITEM_IDX |     2 |       |     1   (0)| 00:00:01 |
+----------------------------------------------------------------------------------------------------
+ 
+Predicate Information (identified by operation id):
+---------------------------------------------------
+ 
+   1 - filter("L_DISCOUNT">0.4 OR "L_TAX"=0.02 OR "L_TAX"=0.06)
+   2 - access("L_EXTENDEDPRICE"=7232)
+ 
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+19 rows selected. 
+
+SQL> 
+SQL> /*(iv) Drop an index.*/
+SQL> DROP INDEX LINEITEM_IDX;
+
+Index LINEITEM_IDX dropped.
+
+SQL> 
+SQL> /*question 3*/
+SQL> /*(i) Find and list a query processing plan for SELECT statement without an index.*/
+SQL> EXPLAIN PLAN FOR
+  2      SELECT DISTINCT PS_AVAILQTY, PS_SUPPLYCOST, PS_SUPPKEY
+  3      FROM PARTSUPP;
+
+Explained.
+
+SQL> 
+SQL> SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+PLAN_TABLE_OUTPUT                                                                                                                                                                                                                                                                                           
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Plan hash value: 720660522
+ 
+-------------------------------------------------------------------------------
+| Id  | Operation          | Name     | Rows  | Bytes | Cost (%CPU)| Time     |
+-------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT   |          |    40 |  1560 |     4  (25)| 00:00:01 |
+|   1 |  HASH UNIQUE       |          |    40 |  1560 |     4  (25)| 00:00:01 |
+|   2 |   TABLE ACCESS FULL| PARTSUPP |    40 |  1560 |     3   (0)| 00:00:01 |
+-------------------------------------------------------------------------------
+ 
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+13 rows selected. 
+
+SQL> 
+SQL> /*(ii) Create an index.*/
+SQL> CREATE INDEX PARTSUPP_IDX ON PARTSUPP(PS_AVAILQTY, PS_SUPPLYCOST, PS_SUPPKEY);
+
+Index PARTSUPP_IDX created.
+
+SQL> 
+SQL> /*(iii) Find and list a query processing plan for SELECT statement with an index.*/
+SQL> EXPLAIN PLAN FOR
+  2      SELECT DISTINCT PS_AVAILQTY, PS_SUPPLYCOST, PS_SUPPKEY
+  3      FROM PARTSUPP;
+
+Explained.
+
+SQL> 
+SQL> SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+PLAN_TABLE_OUTPUT                                                                                                                                                                                                                                                                                           
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Plan hash value: 889854993
+ 
+-----------------------------------------------------------------------------------
+| Id  | Operation          | Name         | Rows  | Bytes | Cost (%CPU)| Time     |
+-----------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT   |              |    40 |  1560 |     2  (50)| 00:00:01 |
+|   1 |  SORT UNIQUE NOSORT|              |    40 |  1560 |     2  (50)| 00:00:01 |
+|   2 |   INDEX FULL SCAN  | PARTSUPP_IDX |    40 |  1560 |     1   (0)| 00:00:01 |
+-----------------------------------------------------------------------------------
+ 
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+13 rows selected. 
+
+SQL> 
+SQL> /*(iv) Drop an index.*/
+SQL> DROP INDEX PARTSUPP_IDX;
+
+Index PARTSUPP_IDX dropped.
+
+SQL> 
+SQL> /*question 4*/
+SQL> /*(i) Find and list a query processing plan for SELECT statement without an index.*/
+SQL> EXPLAIN PLAN FOR
+  2      SELECT P_BRAND, AVG(P_RETAILPRICE)
+  3      FROM PART
+  4      GROUP BY P_BRAND;
+
+Explained.
+
+SQL> 
+SQL> SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+PLAN_TABLE_OUTPUT                                                                                                                                                                                                                                                                                           
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Plan hash value: 3898611309
+ 
+---------------------------------------------------------------------------
+| Id  | Operation          | Name | Rows  | Bytes | Cost (%CPU)| Time     |
+---------------------------------------------------------------------------
+|   0 | SELECT STATEMENT   |      |    10 |   250 |     4  (25)| 00:00:01 |
+|   1 |  HASH GROUP BY     |      |    10 |   250 |     4  (25)| 00:00:01 |
+|   2 |   TABLE ACCESS FULL| PART |    10 |   250 |     3   (0)| 00:00:01 |
+---------------------------------------------------------------------------
+ 
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+13 rows selected. 
+
+SQL> 
+SQL> /*(ii) Create an index.*/
+SQL> CREATE INDEX PART_IDX ON PART(P_BRAND);
+
+Index PART_IDX created.
+
+SQL> 
+SQL> /*(iii) Find and list a query processing plan for SELECT statement with an index.*/
+SQL> EXPLAIN PLAN FOR
+  2      SELECT P_BRAND, AVG(P_RETAILPRICE)
+  3      FROM PART
+  4      GROUP BY P_BRAND;
+
+Explained.
+
+SQL> 
+SQL> SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+PLAN_TABLE_OUTPUT                                                                                                                                                                                                                                                                                           
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Plan hash value: 3703788837
+ 
+-----------------------------------------------------------------------------------------
+| Id  | Operation                    | Name     | Rows  | Bytes | Cost (%CPU)| Time     |
+-----------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT             |          |    10 |   250 |     2   (0)| 00:00:01 |
+|   1 |  SORT GROUP BY NOSORT        |          |    10 |   250 |     2   (0)| 00:00:01 |
+|   2 |   TABLE ACCESS BY INDEX ROWID| PART     |    10 |   250 |     2   (0)| 00:00:01 |
+|   3 |    INDEX FULL SCAN           | PART_IDX |    10 |       |     1   (0)| 00:00:01 |
+-----------------------------------------------------------------------------------------
+ 
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+14 rows selected. 
+
+SQL> 
+SQL> /*(iv) Drop an index.*/
+SQL> DROP INDEX PART_IDX;
+
+Index PART_IDX dropped.
+
+SQL> 
+SQL> /*question 5*/
+SQL> /*(i) Find and list a query processing plan for SELECT statement without an index.*/
+SQL> EXPLAIN PLAN FOR
+  2      SELECT *
+  3      FROM SUPPLIER
+  4      ORDER BY S_NAME, S_NATIONKEY;
+
+Explained.
+
+SQL> 
+SQL> SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+PLAN_TABLE_OUTPUT                                                                                                                                                                                                                                                                                           
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Plan hash value: 3317074190
+ 
+-------------------------------------------------------------------------------
+| Id  | Operation          | Name     | Rows  | Bytes | Cost (%CPU)| Time     |
+-------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT   |          |     5 |   785 |     4  (25)| 00:00:01 |
+|   1 |  SORT ORDER BY     |          |     5 |   785 |     4  (25)| 00:00:01 |
+|   2 |   TABLE ACCESS FULL| SUPPLIER |     5 |   785 |     3   (0)| 00:00:01 |
+-------------------------------------------------------------------------------
+ 
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+13 rows selected. 
+
+SQL> 
+SQL> /*(ii) Create an index.*/
+SQL> CREATE INDEX SUPPLIER_IDX ON SUPPLIER(S_NAME, S_NATIONKEY);
+
+Index SUPPLIER_IDX created.
+
+SQL> 
+SQL> /*(iii) Find and list a query processing plan for SELECT statement with an index.*/
+SQL> EXPLAIN PLAN FOR
+  2      SELECT *
+  3      FROM SUPPLIER
+  4      ORDER BY S_NAME, S_NATIONKEY;
+
+Explained.
+
+SQL> 
+SQL> SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+PLAN_TABLE_OUTPUT                                                                                                                                                                                                                                                                                           
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Plan hash value: 1435419994
+ 
+--------------------------------------------------------------------------------------------
+| Id  | Operation                   | Name         | Rows  | Bytes | Cost (%CPU)| Time     |
+--------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT            |              |     5 |   785 |     2   (0)| 00:00:01 |
+|   1 |  TABLE ACCESS BY INDEX ROWID| SUPPLIER     |     5 |   785 |     2   (0)| 00:00:01 |
+|   2 |   INDEX FULL SCAN           | SUPPLIER_IDX |     5 |       |     1   (0)| 00:00:01 |
+--------------------------------------------------------------------------------------------
+ 
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+13 rows selected. 
+
+SQL> 
+SQL> /*(iv) Drop an index.*/
+SQL> DROP INDEX SUPPLIER_IDX;
+
+Index SUPPLIER_IDX dropped.
+
+SQL> 
+SQL> SPOOL OFF

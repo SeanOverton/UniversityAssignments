@@ -1,0 +1,149 @@
+SQL> SET SERVEROUTPUT ON
+
+
+SQL> SET ECHO ON
+
+
+SQL> SET FEEDBACK ON
+SQL> SET LINESIZE 200
+SQL> SET PAGESIZE 400
+SQL> 
+SQL> /*INSERT_ITEM(order_key,part_key,supplier_key,quantity,price, discount,tax);*/
+
+
+SQL> 
+SQL> /*CREATE STORED PROCEDURE*/
+
+
+SQL> CREATE OR REPLACE PROCEDURE INSERT_ITEM(order_key IN NUMBER, 
+  2                          part_key IN NUMBER, 
+  3                          quantity IN INTEGER, 
+  4                          price IN NUMBER, 
+  5                          discount IN NUMBER, 
+  6                          tax IN NUMBER) IS
+  7                          
+  8      lineNumber LINEITEM.L_LINENUMBER%TYPE;
+  9      shipDate LINEITEM.L_SHIPDATE%TYPE;
+ 10      receiptDate LINEITEM.L_RECEIPTDATE%TYPE;
+ 11      todayDate        DATE := SYSDATE;
+ 12      randomData INTEGER;
+ 13      Fail EXCEPTION;
+ 14  BEGIN
+ 15      /*ENFORCE CONSISTENCY CONSTRAINTS*/
+ 16      /*The same part manufactured by the same supplier cannot be included more than one
+ 17  time in the same order*/
+ 18      BEGIN
+ 19          SELECT COUNT(*) INTO randomData
+ 20              FROM LINEITEM o JOIN
+ 21              (SELECT L_ORDERKEY, L_PARTKEY, L_SUPPKEY FROM LINEITEM GROUP BY L_ORDERKEY, L_PARTKEY, L_SUPPKEY HAVING COUNT(1)>=1) t
+ 22              ON  o.L_ORDERKEY=t.L_ORDERKEY AND o.L_PARTKEY=t.L_PARTKEY AND o.L_SUPPKEY=t.L_SUPPKEY
+ 23              WHERE o.L_ORDERKEY=order_key AND o.L_PARTKEY=part_key;   
+ 24          IF randomData != 0 THEN
+ 25              DBMS_OUTPUT.PUT_LINE('ERROR ! The part key and supplier key already exist in the order.');
+ 26              RAISE FAIL;
+ 27          END IF;
+ 28      END;
+ 29  
+ 30      /*A value of an attribute L_LINENUMBER must be automatically generated.*/
+ 31      SELECT COUNT(*)+1 
+ 32      INTO lineNumber 
+ 33      FROM LINEITEM
+ 34      WHERE L_ORDERKEY=order_key;
+ 35  
+ 36      /*A value of attribute L_SHIPDATE must be tomorrow's date.*/
+ 37      shipDate := trunc(sysdate+1);
+ 38  
+ 39      /*A value of attribute L_RECEIPTDATE must be one week after shipment date.*/
+ 40      receiptDate := trunc(sysdate+7);
+ 41  
+ 42      /*IF VALID INSERT INTO LINEITEM RELATIONAL TABLE*/
+ 43      INSERT INTO LINEITEM VALUES(order_key, part_key, 1, lineNumber, quantity, price, discount, tax , 'A', 'A', shipDate, todayDate, receiptDate, 'A', 'A', 'A');
+ 44      COMMIT;
+ 45  
+ 46      /*INVALID SO THROW AN ERROR*/
+ 47      /*exception block for fail or any others*/
+ 48  EXCEPTION
+ 49    WHEN Fail THEN
+ 50      DBMS_OUTPUT.PUT_LINE('Failed to insert line item');
+ 51      ROLLBACK;
+ 52    WHEN OTHERS THEN
+ 53      DBMS_OUTPUT.PUT_LINE(SQLERRM);
+ 54      ROLLBACK;
+ 55  
+ 56  END INSERT_ITEM;
+ 57  /
+
+
+
+Procedure INSERT_ITEM compiled
+
+SQL> 
+SQL> /*TEST STORED PROCEDURE*/
+
+
+SQL> /*(1) One successful insertion must be performed into an already existing order.*/
+
+
+SQL> EXECUTE INSERT_ITEM(1, 6, 2, 0, 0, 0);
+
+
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> /*(2) One successful insertion must be performed into a new order, and it means that you
+SQL>must insert a new order into a relational table ORDERS first.*/
+
+
+SQL> 
+SQL> /*CREATE NEW ORDER*/
+
+
+SQL> INSERT INTO ORDERS VALUES(300, 5, 'O', 130000, SYSDATE, '2-HIGH', 'Clerk#000234', 0, 'yeh hope this works hey');
+
+
+
+1 row inserted.
+
+SQL> 
+SQL> /*INSERT INTO NEW ORDER*/
+
+
+SQL> EXECUTE INSERT_ITEM(300, 6, 2, 0, 0, 0);
+
+
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> /*(3) One unsuccessful insertion must be performed into an already existing order.*/
+
+
+SQL> EXECUTE INSERT_ITEM(1, 6, 2, 0, 0, 0);
+
+
+ERROR ! The part key and supplier key already exist in the order.
+Failed to insert line item
+
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> /*(4) Use SELECT statement to display the successfully inserted rows.*/
+
+
+SQL> SELECT * FROM LINEITEM WHERE L_EXTENDEDPRICE=0;
+
+
+   L_ORDERKEY    L_PARTKEY    L_SUPPKEY    L_LINENUMBER    L_QUANTITY    L_EXTENDEDPRICE    L_DISCOUNT    L_TAX    L_RETURNFLAG    L_LINESTATUS    L_SHIPDATE    L_COMMITDATE    L_RECEIPTDATE               L_SHIPINSTRUCT    L_SHIPMODE    L_COMMENT 
+_____________ ____________ ____________ _______________ _____________ __________________ _____________ ________ _______________ _______________ _____________ _______________ ________________ ____________________________ _____________ ____________ 
+            1            6            1               1             2                  0             0        0 A               A               09/SEP/20     08/SEP/20       15/SEP/20        A                            A             A            
+          300            6            1               1             2                  0             0        0 A               A               09/SEP/20     08/SEP/20       15/SEP/20        A                            A             A            
+
+
+2 rows selected. 
+
+SQL> 
+SQL> SPOOL OFF
+
+

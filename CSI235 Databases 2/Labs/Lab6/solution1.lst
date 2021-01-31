@@ -1,0 +1,18 @@
+> db.createCollection("task1",{"validator":{$jsonSchema:{"bsonType":"object","properties":{"_id":{"bsonType":"string"},"TRANSPORTATION COMPANY":{"bsonType":"object","properties":{"name":{"bsonType":"string"},"budget":{"bsonType":"double"},"Owns":{"bsonType":"array","items":{"bsonType":"object","properties":{"registration":{"bsonType":"string"},"manufacturer":{"bsonType":"string"},"speed":{"bsonType":"double"}},"required":["registration","manufacturer","speed"],"additionalProperties":false}},"Employs":{"bsonType":"array","items":{"bsonType":"object","properties":{"license":{"bsonType":"string"},"full name":{"bsonType":"string"},"date of birth":{"bsonType":"date"}},"required":["license","full name","date of birth"],"additionalProperties":false}}},"required":["name","budget","Owns"],"additionalProperties":false}}}}});
+{ "ok" : 1 }
+> 
+> db.task1.insert({"_id":"ObjectId()","TRANSPORTATION COMPANY":{"name":"Average Joes Trucks","budget":1000000,"Owns":[{"registration":"MAD123","manufacturer":"TOYOTA","speed":120},{"registration":"YEW000","manufacturer":"HYUNDAI","speed":110}],"Employs":[{"license":"45635","full name":"John Smith","date of birth":new Date("1994-03-27")},{"license":"34534","full name":"Jake Greentree","date of birth":new Date("1990-08-12")}]}});
+WriteResult({ "nInserted" : 1 })
+> 
+> db.task1.insert({"_id":"ObjectId()","TRANSPORTATION COMPANY":{"name":"Jon Henriks deliveries","Owns":[{"registration":"JOGON9","manufacturer":"PORSCHE","speed":1000},{"registration":"MATE21","manufacturer":"FERRARI", "speed": 1100}],"Employs": [{"license":"57978","full name": "Jack Banana","date of birth": new Date("1800-03-27")},{"license":"23768","full name": "Paul Kelly","date of birth": new Date("1900-08-12"), }]}});
+WriteResult({
+	"nInserted" : 0,
+	"writeError" : {
+		"code" : 121,
+		"errmsg" : "Document failed validation"
+	}
+})
+> 
+> print("The document was missing a 'required' property: 'budget'.");
+The document was missing a 'required' property: 'budget'.
+

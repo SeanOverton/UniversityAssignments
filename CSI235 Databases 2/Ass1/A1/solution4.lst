@@ -1,0 +1,47 @@
+SQL> SET FEEDBACK ON
+SQL> SET LINESIZE 200
+SQL> SET PAGESIZE 400
+SQL> SET SERVEROUTPUT ON
+SQL> 
+SQL>  /*anonymous pl/sql block for solution 4*/
+SQL> DECLARE
+  2     regionName REGION.R_NAME%TYPE;
+  3     nationName  NATION.N_NAME%TYPE;
+  4     regionKey REGION.R_REGIONKEY%TYPE;
+  5  BEGIN
+  6      FOR rrow IN(SELECT R_NAME, R_REGIONKEY
+  7                  FROM REGION
+  8                  ORDER BY R_NAME)
+  9      LOOP
+ 10          regionName := rrow.R_NAME;
+ 11          regionKey := rrow.R_REGIONKEY;
+ 12          DBMS_OUTPUT.PUT(regionName || ' : ');
+ 13          FOR nrow IN(SELECT N_NAME
+ 14                      FROM NATION
+ 15                      WHERE (N_REGIONKEY=regionKey AND ROWNUM <=3)
+ 16                      ORDER BY N_NAME DESC)
+ 17          LOOP
+ 18              nationName := nrow.N_NAME;
+ 19              DBMS_OUTPUT.PUT(nationName || ' ');
+ 20          END LOOP;
+ 21      DBMS_OUTPUT.PUT_LINE('');
+ 22      END LOOP;
+ 23      COMMIT;
+ 24  END;
+ 25  /
+AFRICA                    : SUDAN                     ALGERIA                   
+ASIA                      : CANADA                    BRAZIL                    AUSTRALIA                 
+AUSTRALIA                 : KENYA                     CHINA                     
+CENTRAL AMERICA           : UNITED KINGDOM            SAUDI ARABIA              RWNDA                     
+EUROPE                    : MALAWI                    INDONESIA                 INDIA                     
+MIDDLE EAST               : IRAQ                      IRAN                      EGYPT                     
+NORTH AMERICA             : 
+OCEANIA                   : JORDAN                    INDIA                     CHINA                     
+SOUTH AMERICA             : JAPAN                     GERMANY                   FRANCE                    
+SOUTH AMERICA             : RUSSIA                    ROMANIA                   
+
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL>  SPOOL OFF

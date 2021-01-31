@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>400</x>
+      <y>80</y>
+      <w>296</w>
+      <h>288</h>
+    </coordinates>
+    <panel_attributes>Course
+--
+-name: String
+-coreSubjectList: Subject[]
+-electiveSubjectList: Subject[]
+-majorList: Major[]
+-minimumCreditPoints: int
+--
++Course(String)
++getName(): String
++setName(String): void
++getSubjectList(String): Subject[]
++changeSubjects(Subject[], String): void
++changeMajors(Major[]): void 
++setMinimumCreditPoints(int): void
++getMinimumCreditPoints(): int
++printElectives(): void
++printData(): void
+bg=#dddddd</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>744</x>
+      <y>360</y>
+      <w>264</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>Subject
+--
+-name: String
+-code: String 
+-creditPoint: int
+--
++Subject(String, String, int)
++getName(): String
++setName(String name): void
++getCreditPoint(): int
++setCreditPoint(int): void
++getCode(): String
++toString(): String
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>48</x>
+      <y>80</y>
+      <w>328</w>
+      <h>456</h>
+    </coordinates>
+    <panel_attributes>Student
+--
+-name: String
+-DOB: String
+-sex: String
+-studentNumber: int
+-course: Course
+-major: Major
+-coreSubjects: ArrayList&lt;Subject&gt;
+-elecSubjects: ArrayList&lt;Subject&gt;
+-creditPoints: int
+--
++Student(String, String, String, int)
++getName(): String
++setName(String name): void
++getDOB(): String
++getstudentNumber(): String
++setCourse(Course): void
++getCourse(): Course
++addSubject(Subject, String): void
++deleteSubject(Subject, String): void
++setMajor(Major): void
++getMajor(): Major
++getCreditPoints(): int
++isStudentAlreadyEnroled(Subject): boolean
++howManyElectivesLeft(): int
++printData(): void
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>344</x>
+      <y>528</y>
+      <w>416</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=*
+Enrols in</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;500.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>688</x>
+      <y>304</y>
+      <w>144</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=*
+Contains</panel_attributes>
+    <additional_attributes>10.0;30.0;150.0;30.0;150.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>368</x>
+      <y>360</y>
+      <w>120</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=*
+Enrols in</panel_attributes>
+    <additional_attributes>10.0;100.0;120.0;100.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>456</x>
+      <y>464</y>
+      <w>272</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Enrolment
+--
+_+main(String[] args): void_
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>776</x>
+      <y>48</y>
+      <w>216</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>Major
+--
+-name: String
+-subjectList: Subject[]
+-creditPoints: int
+--
++Major(String, Subject[])
++getName(): String
++setName(String): void
++getCreditPoints(): int
++contains(Subject): boolean
++printData(): void
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>896</x>
+      <y>232</y>
+      <w>88</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=4..5
+Contains</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>688</x>
+      <y>144</y>
+      <w>104</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=5
+Contains</panel_attributes>
+    <additional_attributes>10.0;30.0;110.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>544</x>
+      <y>360</y>
+      <w>56</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+Uses
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>368</x>
+      <y>488</y>
+      <w>104</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+Enrols
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes>10.0;30.0;110.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>24</y>
+      <w>464</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=
+Selects</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;30.0;560.0;30.0;540.0;30.0</additional_attributes>
+  </element>
+</diagram>

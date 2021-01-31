@@ -1,0 +1,72 @@
+> /* (1) Save information about a customer key, name, and nation of all customers from SUDAN or ROMANIA or CANADA into a collection SUROCAN. Display in a pretty format without document identifiers the contents of a collection SUROCAN. */;
+> db.tpchr.aggregate([{$match: {$or: [{"CUSTOMER.nation": "SUDAN"}, {"CUSTOMER.nation": "ROMANIA"}, {"CUSTOMER.nation": "CANADA"}]}}, {$project: {"CUSTOMER.customer key": 1, "CUSTOMER.name": 1, "CUSTOMER.nation": 1}}, {$out:"SUROCAN"}]);
+
+> 
+> db.SUROCAN.find({}, {"_id": 0}).pretty();
+{
+	"CUSTOMER" : {
+		"customer key" : 3,
+		"name" : "Customer#000000003",
+		"nation" : "SUDAN"
+	}
+}
+{
+	"CUSTOMER" : {
+		"customer key" : 5,
+		"name" : "Customer#000000005",
+		"nation" : "CANADA"
+	}
+}
+{
+	"CUSTOMER" : {
+		"customer key" : 6,
+		"name" : "Customer#000000006",
+		"nation" : "ROMANIA"
+	}
+}
+{
+	"CUSTOMER" : {
+		"customer key" : 9,
+		"name" : "Customer#000000003",
+		"nation" : "SUDAN"
+	}
+}
+{
+	"CUSTOMER" : {
+		"customer key" : 10,
+		"name" : "Customer#000000004",
+		"nation" : "CANADA"
+	}
+}
+> 
+> /* (2) Save all information about the supply costs (supplycost)of a part with a name floral moccasin royal powder burnished into a collection supplycosts that consists of the documents like {"supply cost": a-value-of-supply-cost}.Display in a pretty format without document identifiers all documents in a collection "supplycosts. */;
+> db.tpchr.aggregate([{$match: {"PART.name": "floral moccasin royal powder burnished"}}, {$unwind: "$PART.shipped"}, {$project: {"supply cost": "$PART.shipped.PARTSUPP.supplycost", "_id": 0}}, {$out: "supplycosts"}]);
+> 
+> db.supplycosts.find({}, {"_id": 0}).pretty();
+> 
+> /* (3) Find the total number of part shipments of the parts of type LARGE BURNISHED STEEL or SMALL BURNISHED STEEL. Display a result in a format {"total number  of shipments":integer-value}. */
+... db.tpchr.aggregate([{$match: {$or: [{"PART.type": "LARGE BURNISHED STEEL"}, {"PART.type": "SMALL BURNISHED STEEL"}]}}, {$unwind:"$PART.shipped"}, {$count:"total number of shipments"}]);
+{ "total number of shipments" : 4 }
+> 
+> /* (4) Find the total number of shipments per each part. List the results in a format {"total number of shipments":integer-value,"part key":integer-value"} */
+> db.tpchr.aggregate([{$match: {"PART.shipped": {$not: {$eq: null}}}}, {$project: {"total number of shipments": {$size: "$PART.shipped"}, "part key": "$PART.part key", "_id": 0}}]);
+{ "total number of shipments" : 4, "part key" : 1 }
+{ "total number of shipments" : 4, "part key" : 2 }
+{ "total number of shipments" : 4, "part key" : 3 }
+{ "total number of shipments" : 4, "part key" : 4 }
+{ "total number of shipments" : 4, "part key" : 5 }
+{ "total number of shipments" : 4, "part key" : 6 }
+{ "total number of shipments" : 4, "part key" : 7 }
+{ "total number of shipments" : 4, "part key" : 8 }
+{ "total number of shipments" : 4, "part key" : 9 }
+> 
+> /* (5) Find 5 largest extended prices (extended price) from all orders. List the results in a format {"customer key": integer-value,"order key":integer-value,"line number":integer-value,"price":floating-point-value}  */;
+> 
+> db.tpchr.aggregate([{$unwind: "$CUSTOMER.submits"}, {$unwind: "$CUSTOMER.submits.ORDER.contains"}, {$sort:{"CUSTOMER.submits.ORDER.contains.LINEITEM.extended price":-1}}, {$project: {"customer key": "$CUSTOMER.customer key", "order key":"$CUSTOMER.submits.ORDER.order key", "line number":"$CUSTOMER.submits.ORDER.contains.LINEITEM.line number", "price": "$CUSTOMER.submits.ORDER.contains.LINEITEM.extended price", "_id": 0}}, {$limit: 5}]);
+{ "customer key" : 4, "order key" : 5, "line number" : 3, "price" : 45100 }
+{ "customer key" : 7, "order key" : 3, "line number" : 2, "price" : 44149 }
+{ "customer key" : 2, "order key" : 7, "line number" : 3, "price" : 41630 }
+{ "customer key" : 1, "order key" : 71, "line number" : 3, "price" : 40590 }
+{ "customer key" : 7, "order key" : 3, "line number" : 1, "price" : 40545 }
+
+

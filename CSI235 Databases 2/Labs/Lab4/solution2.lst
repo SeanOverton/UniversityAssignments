@@ -1,0 +1,121 @@
+SQL> SET ECHO ON
+
+
+SQL> SET FEEDBACK ON
+SQL> SET LINESIZE 100
+SQL> SET PAGESIZE 200
+SQL> SET SERVEROUTPUT ON
+
+
+SQL> 
+SQL> /*(1) First, the script creates a database trigger that fires whenever a new item is added to
+SQL>an order. The trigger must verify if a user who creates a new item is the same user
+SQL>who created an order into which a new item is added.
+SQL>If a user who attempts to insert a new item into an order created by another user the
+SQL>trigger must abort the transaction and must display an error message. Otherwise, the
+SQL>trigger does nothing.*/
+
+
+SQL> 
+SQL> CREATE OR REPLACE TRIGGER checkUserName
+  2  BEFORE INSERT ON LINEITEM
+  3      FOR EACH ROW
+  4      DECLARE 
+  5          results1 NUMBER := 0;
+  6          results2 NUMBER := 0;
+  7          FAIL EXCEPTION;
+  8      BEGIN
+  9          /*THIS CONFIRMS ORDER EXISTS AT ALL*/
+ 10          SELECT COUNT(*) INTO results1 FROM ORDERS WHERE O_ORDERKEY= :NEW.L_ORDERKEY;
+ 11  
+ 12          /*THIS CHECKS WHETHER ORDER WAS CREATED BY THE CORRECT USER*/
+ 13          SELECT COUNT(*) INTO results2 FROM ORDER_EDITOR WHERE ORDER_NAME = USER AND ORDERKEY = :NEW.L_ORDERKEY;
+ 14  
+ 15          /*checks if order exists and user wasn't original creator otherwise if order doesn't exist it is fine or if it does exist and user was creator it is fine*/
+ 16          IF results1 > 0 AND results2 = 0 THEN
+ 17              RAISE FAIL;  
+ 18          END IF; 
+ 19  
+ 20          EXCEPTION
+ 21              WHEN Fail THEN
+ 22                  raise_application_error(-20000, 'The order was created by another user or an unknown user');
+ 23          COMMIT;
+ 24      END;
+ 25  /
+
+
+
+Trigger CHECKUSERNAME compiled
+
+SQL> 
+SQL> /*(2) Next, the script tests the trigger.
+SQL>A test must include creation of two new orders.
+SQL>Then, insertion of a new item into one of the orders created a moment ago must be
+SQL>successful.
+SQL>Next, the script updates one of the user names in a relational table created in Task 1.
+SQL>Next, insertion of another item into an order created by a user whose name has been
+SQL>updated fails the access control rule.
+SQL>Finally, insertion of an item to an order whose creator is unknown must also fail the
+SQL>access control rule.*/
+
+
+SQL> 
+SQL> INSERT INTO ORDERS VALUES(300, 1,'F',25000,TO_DATE('1998-05-11','YYYY-MM-DD'),'3-MEDIUM','Clerk#000123456',0,'Please leave in the letter box.');
+
+
+
+1 row inserted.
+
+SQL> INSERT INTO ORDERS VALUES(301, 3,'F',15000,TO_DATE('1998-05-11','YYYY-MM-DD'),'2-HIGH','Clerk#00064321',0,'Please leave around the side of the house.');
+
+
+
+1 row inserted.
+
+SQL> 
+SQL> INSERT INTO LINEITEM VALUES(300,7,1,1,1,38094.00,0.02,0.02,'A','F',TO_DATE('2005-04-19','YYYY-MM-DD'),TO_DATE('2005-05-18','YYYY-MM-DD'),TO_DATE('2005-04-20','YYYY-MM-DD'),'NONE','RAIL','BLAH BLAH THIS IS A GOOD EXAMPLE');
+
+
+
+1 row inserted.
+
+SQL> 
+SQL> UPDATE ORDER_EDITOR
+  2  SET ORDER_NAME='JOHN'
+  3  WHERE ORDERKEY=300;
+
+
+
+1 row updated.
+
+SQL> INSERT INTO LINEITEM VALUES(300,7,1,2,2,38094.00,0.02,0.02,'A','F',TO_DATE('2005-04-19','YYYY-MM-DD'),TO_DATE('2005-05-18','YYYY-MM-DD'),TO_DATE('2005-04-20','YYYY-MM-DD'),'NONE','RAIL','BLAH BLAH THIS IS A GOOD EXAMPLE');
+
+
+
+Error starting at line : 59 File @ C:\Users\Sean\Documents\CSI235 Databases 2\Labs\Lab4\solution2.sql
+In command -
+INSERT INTO LINEITEM VALUES(300,7,1,2,2,38094.00,0.02,0.02,'A','F',TO_DATE('2005-04-19','YYYY-MM-DD'),TO_DATE('2005-05-18','YYYY-MM-DD'),TO_DATE('2005-04-20','YYYY-MM-DD'),'NONE','RAIL','BLAH BLAH THIS IS A GOOD EXAMPLE')
+Error report -
+ORA-20000: The order was created by another user or an unknown user
+ORA-06512: at "GUEST208S.CHECKUSERNAME", line 19
+ORA-04088: error during execution of trigger 'GUEST208S.CHECKUSERNAME'
+
+SQL> 
+SQL> 
+SQL> 
+SQL> INSERT INTO LINEITEM VALUES(291,7,1,4,1,38094.00,0.02,0.02,'A','F',TO_DATE('2005-04-19','YYYY-MM-DD'),TO_DATE('2005-05-18','YYYY-MM-DD'),TO_DATE('2005-04-20','YYYY-MM-DD'),'NONE','RAIL','BLAH BLAH THIS IS A GOOD EXAMPLE');
+
+
+
+Error starting at line : 63 File @ C:\Users\Sean\Documents\CSI235 Databases 2\Labs\Lab4\solution2.sql
+In command -
+INSERT INTO LINEITEM VALUES(291,7,1,4,1,38094.00,0.02,0.02,'A','F',TO_DATE('2005-04-19','YYYY-MM-DD'),TO_DATE('2005-05-18','YYYY-MM-DD'),TO_DATE('2005-04-20','YYYY-MM-DD'),'NONE','RAIL','BLAH BLAH THIS IS A GOOD EXAMPLE')
+Error report -
+ORA-20000: The order was created by another user or an unknown user
+ORA-06512: at "GUEST208S.CHECKUSERNAME", line 19
+ORA-04088: error during execution of trigger 'GUEST208S.CHECKUSERNAME'
+
+SQL> 
+SQL> SPOOL OFF
+
+

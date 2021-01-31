@@ -1,0 +1,90 @@
+//validation schema 
+db.createCollection("task1",
+					{"validator":{$jsonSchema:
+					{"bsonType":"object",  
+					"properties":{"_id":{"bsonType":"string"},
+					              "GAMES":{"bsonType":"object",
+											    "properties":{"datetime":{"bsonType": "String" },
+															"venue":{"bsonType": "number" },
+															"hometeam":{"bsonType":"object",
+																	"properties":{"name":{"bsonType":"String" },
+                                                                                  "dateCreated":{"bsonType":"Date" },
+                                                                                  "mainCoach":{"bsonType":"String"},
+                                                                                  "score":{"bsonType":"Number"},
+                                                                                  "city":{"bsonType":"object",
+                                                                                        "properties":{
+                                                                                                "name":{"bsonType":"String"},
+                                                                                                "population":{"bsonType":"Number"},
+                                                                                                "country":{"bsonType":"String"}
+                                                                                            },
+                                                                                        "required":["name", "population", "country"],
+                                                                                        "addittionalProperties": false   
+                                                                                    }
+                                                                                 },
+                                                                    "required":["name", "dateCreated", "mainCoach", "score", "city"],
+                                                                    "addittionalProperties": false
+                                                                },
+                                                            "awayteam":{"bsonType":"object",
+																	"properties":{"name":{"bsonType":"String" },
+                                                                                  "dateCreated":{"bsonType":"Date" },
+                                                                                  "mainCoach":{"bsonType":"String"},
+                                                                                  "score":{"bsonType":"Number"},
+                                                                                  "city":{"bsonType":"object",
+                                                                                        "properties":{
+                                                                                                "name":{"bsonType":"String"},
+                                                                                                "population":{"bsonType":"Number"},
+                                                                                                "country":{"bsonType":"String"}
+                                                                                            },
+                                                                                        "required":["name", "population", "country"],
+                                                                                        "addittionalProperties": false   
+                                                                                    }
+                                                                                 },
+                                                                    "required":["name", "dateCreated", "mainCoach", "score", "city"],
+                                                                    "addittionalProperties": false
+                                                                },
+                                                            "referee":{"bsonType":"object",
+																	"properties":{"firstName":{"bsonType":"String" },
+                                                                                  "lastName":{"bsonType":"String" },
+                                                                                  "city":{"bsonType":"object",
+                                                                                        "properties":{
+                                                                                                "name":{"bsonType":"String"},
+                                                                                                "population":{"bsonType":"Number"},
+                                                                                                "country":{"bsonType":"String"}
+                                                                                            }   
+                                                                                        },
+                                                                                        "required":["name", "population", "country"],
+                                                                                        "addittionalProperties": false
+                                                                                 },
+                                                                    "required":["firstName", "lastName", "city"],
+                                                                    "addittionalProperties": false
+                                                                },
+                                                            },
+                                                "required":["datetime", "venue", "hometeam", "awayteam", "referee"],
+                                                "addittionalProperties": false
+                                            }
+                                }
+                    }
+                    }
+                });
+
+//question2
+db.task1.insert({"_id": ObjectId(),
+                "TRANSPORTATION COMPANY":{"name": "Average Joes Trucks",
+                                          "budget": 1000000,
+                                          "Owns": [{"registration": "MAD123", 
+                                                    "manufacturer": "TOYOTA", 
+                                                    "speed": 120},
+                                                   {"registration": "YEW000", 
+                                                    "manufacturer": "HYUNDAI", 
+                                                    "speed": 110}],
+                                          "Employs": [{"license":"45635",
+                                                       "full name": "John Smith",
+                                                       "date of birth":  new Date("1994-03-27"), 
+                                                        },
+                                                      {"license":"34534",
+                                                       "full name": "Jake Greentree",
+                                                       "date of birth": new Date("1990-08-12"), 
+                                                        }]}
+            });
+
+//question 4

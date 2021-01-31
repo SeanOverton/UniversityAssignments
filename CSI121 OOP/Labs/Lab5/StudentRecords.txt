@@ -1,0 +1,98 @@
+Student: Sean (12351, male, 12/12/2000)
+
+Course Name: Bachelor of Computer Science, (ACTIVE) 
+
+Cores: 
+CSIT111 (Programming Fundamentals, 6pt)
+CSIT113 (Problem solving, 6pt)
+CSIT114 (System Analysis, 6pt)
+CSIT115 (Data Management and Security, 6pt)
+CSIT121 (Object Oriented Design and Programming, 6pt)
+CSIT127 (Networks and Communications, 6pt)
+CSIT128 (Introduction to Web Technology, 6pt)
+CSCI235 (Database Systems, 6pt)
+CSCI251 (Advanced Programming, 6pt)
+CSIT214 (IT Project Management, 6pt)
+MATH221 (Mathematics for Computer Science, 6pt)
+CSCI203 (Data Structures and Algorithms, 6pt)
+CSIT226 (Human Computer Interaction, 6pt)
+CSIT314 (Software Development Methodologies, 6pt)
+CSIT321 (Project, 12pt)
+
+Major: Big Data
+CSCI317 (Database Performance Tuning, 6pt)
+INFO411 (Data Mining and Knowledge Discovery, 6pt)
+CSCI316 (Big Data Mining Techniques and Implementation, 6pt)
+ISIT312 (Big Data Management, 6pt)
+
+Electives: 
+ISIT315 (Semantic Web, 6pt)
+ISIT219 (Knowledge and Information Engineering, 6pt)
+CSCI318 (Software Engineering Practices and Principles, 6pt)
+CSCI334 (Software Design, 6pt)
+-----------------
+Total Enrolled Credit: 144pt
+
+Student: James (13562, male, 14/10/1997)
+
+
+Course Name: Bachelor of Computer Science, (COMPLETE) 
+
+Cores: 
+CSIT111 (Programming Fundamentals, 6pt)
+CSIT113 (Problem solving, 6pt)
+CSIT114 (System Analysis, 6pt)
+CSIT115 (Data Management and Security, 6pt)
+CSIT121 (Object Oriented Design and Programming, 6pt)
+CSIT127 (Networks and Communications, 6pt)
+CSIT128 (Introduction to Web Technology, 6pt)
+CSCI235 (Database Systems, 6pt)
+CSCI251 (Advanced Programming, 6pt)
+CSIT214 (IT Project Management, 6pt)
+MATH221 (Mathematics for Computer Science, 6pt)
+CSCI203 (Data Structures and Algorithms, 6pt)
+CSIT226 (Human Computer Interaction, 6pt)
+CSIT314 (Software Development Methodologies, 6pt)
+CSIT321 (Project, 12pt)
+
+Major: Big Data
+CSCI317 (Database Performance Tuning, 6pt)
+INFO411 (Data Mining and Knowledge Discovery, 6pt)
+CSCI316 (Big Data Mining Techniques and Implementation, 6pt)
+ISIT312 (Big Data Management, 6pt)
+
+Electives: 
+ISIT315 (Semantic Web, 6pt)
+ISIT219 (Knowledge and Information Engineering, 6pt)
+CSCI318 (Software Engineering Practices and Principles, 6pt)
+CSCI334 (Software Design, 6pt)
+-----------------
+Total Enrolled Credit: 144pt
+
+Course Name: Master of Computer Science, (ACTIVE) 
+
+Cores: 
+CSCI814 (IT Porject Management, 6pt)
+CSCI851 (Advanced Programming, 6pt)
+CSCI803 (Algorithms and Data structures, 6pt)
+CSCI835 (Database Systems, 6pt)
+MTS9302 (Corporate Network Management, 6pt)
+CSIT940 (Research Methodology, 6pt)
+CSCI920 (Contemporary Topics in Computer Science, 6pt)
+CSCI992 (Professional Project, 12pt)
+
+Major: Software Engineering
+CSCI964 (Computational IntellisGenderce, 6pt)
+CSCI924 (Reasoning and Learning, 6pt)
+CSCI944 (Perception and Planning, 6pt)
+
+Electives: 
+INFO913 (Information Theory, 6pt)
+INFO911 (Data mining and Knowledge Discovery, 6pt)
+ECTE903 (Image and Video Processing, 6pt)
+CSCI927 (Service-orientated software engineering, 6pt)
+-----------------
+Total Enrolled Credit: 96pt
+Expected Master Graduation: Spring/2022
+
+Bachelor Degree was received (using downcasting): Spring/2019

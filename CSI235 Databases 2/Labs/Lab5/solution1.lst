@@ -1,0 +1,249 @@
+SQL> SET FEEDBACK ON
+SQL> SET LINESIZE 200
+SQL> SET PAGESIZE 400
+SQL> 
+SQL> /*THIS IS EXECUTED FROM DB.PC-32*/
+SQL> 
+SQL> CREATE DATABASE LINK "DB.DATA-PC33"
+  2  CONNECT TO guest208s
+  3  IDENTIFIED BY HH3av2
+  4  USING 'data-pc33.adeis.uow.edu.au:1521/db';
+
+SQL> 
+SQL> CREATE SYNONYM ORDERSDB33 FOR ORDERS@"DB.DATA-PC33";
+
+Synonym ORDERSDB33 created.
+
+SQL> CREATE SYNONYM LINEITEMDB33 FOR LINEITEM@"DB.DATA-PC33";
+
+Synonym LINEITEMDB33 created.
+
+SQL> 
+SQL> /*(3) Copy information about all orders and the contents of all orders submitted before 1
+SQL>March 1992 from the "host server" to the "remote server".*/
+SQL> INSERT INTO ORDERSDB33 SELECT * FROM ORDERS WHERE O_ORDERDATE < TO_DATE('1992-03-01','YYYY-MM-DD');
+
+0 rows inserted.
+
+SQL> INSERT INTO LINEITEMDB33 SELECT * FROM LINEITEM WHERE L_ORDERKEY IN (SELECT O_ORDERKEY FROM ORDERSDB33);
+
+0 rows inserted.
+
+SQL> SELECT * FROM LINEITEMDB33;
+
+L_ORDERKEY  L_PARTKEY  L_SUPPKEY L_LINENUMBER L_QUANTITY L_EXTENDEDPRICE L_DISCOUNT      L_TAX L L L_SHIPDAT L_COMMITD L_RECEIPT L_SHIPINSTRUCT            L_SHIPMODE
+---------- ---------- ---------- ------------ ---------- --------------- ---------- ---------- - - --------- --------- --------- ------------------------- ----------
+L_COMMENT                                   
+--------------------------------------------
+         6          7          1            1         37           33559        .08        .03 A F 27/APR/92 15/MAY/92 02/MAY/92 TAKE BACK RETURN          TRUCK      
+ruthlessly unusual warhorses sleep slyly af 
+
+
+1 row selected. 
+
+SQL> SELECT * FROM ORDERSDB33;
+
+O_ORDERKEY  O_CUSTKEY O O_TOTALPRICE O_ORDERDA O_ORDERPRIORITY O_CLERK         O_SHIPPRIORITY O_COMMENT                                                                      
+---------- ---------- - ------------ --------- --------------- --------------- -------------- -------------------------------------------------------------------------------
+         6          4 F      31800.5 21/FEB/92 4-NOT SPECIFIED Clerk#000000058              0 ironically bold asymptotes sleep blithely beyond the regular, clos             
+      1057         10 F    151853.96 20/FEB/92 1-URGENT        Clerk#000000124              0 furiously even packages about the bold,permanent accounts slee                 
+
+2 rows selected. 
+
+SQL> 
+SQL> /*(4) Delete from the "host server" all orders and the contents of all orders submitted
+SQL>before 1 March 1992.*/
+SQL> ALTER TABLE ORDERS
+  2  DISABLE CONSTRAINT ORDERS_FKEY1;
+
+Table ORDERS altered.
+
+SQL> ALTER TABLE LINEITEM
+  2  DISABLE CONSTRAINT LINEITEM_FKEY1;
+
+Table LINEITEM altered.
+
+SQL> 
+SQL> DELETE FROM ORDERS WHERE O_ORDERDATE < TO_DATE('1992-03-01','YYYY-MM-DD');
+
+0 rows deleted.
+
+SQL> DELETE FROM LINEITEM WHERE L_ORDERKEY IN (SELECT O_ORDERKEY FROM ORDERSDB33);
+
+0 rows deleted.
+
+SQL> 
+SQL> ALTER TABLE ORDERS
+  2  ENABLE CONSTRAINT ORDERS_FKEY1;
+
+Table ORDERS altered.
+
+SQL> ALTER TABLE LINEITEM
+  2  ENABLE CONSTRAINT LINEITEM_FKEY1;
+
+Table LINEITEM altered.
+
+SQL> 
+SQL> /*(5) Implement the following queries as SELECT statements.
+SQL>(i) Find the total number of orders recorded in both the "host server" and the
+SQL>�remote server�.*/
+SQL> SELECT (SELECT COUNT(*) FROM ORDERS) +
+  2    (SELECT COUNT(*) FROM ORDERSDB33) AS TOTAL_COUNT FROM DUAL;
+
+TOTAL_COUNT
+-----------
+         85
+
+1 row selected. 
+
+SQL> 
+SQL> /*(ii) Find all order keys and all prices of all orders in both �host server� and the
+SQL>�remote server� where a price is greater than 150000. Sort the results in the
+SQL>ascending order of order keys.*/
+SQL> (SELECT O_ORDERKEY, O_TOTALPRICE FROM ORDERS WHERE O_TOTALPRICE>150000)
+  2  UNION ALL
+  3  (SELECT O_ORDERKEY, O_TOTALPRICE FROM ORDERSDB33 WHERE O_TOTALPRICE>150000) 
+  4  ORDER BY O_ORDERKEY ASC;
+
+O_ORDERKEY O_TOTALPRICE
+---------- ------------
+         3    150408.27
+         7    151486.24
+        39    205834.99
+        68    193512.76
+        71    162698.69
+       129    173539.45
+       135    154276.74
+       164    186518.01
+       226    165956.85
+       258    162577.11
+       260    161744.75
+       261    184858.86
+      1024    231789.95
+      1027    180261.07
+      1028    229085.04
+      1057    151853.96
+
+16 rows selected. 
+
+SQL> 
+SQL> /*(iii) Find all order keys of all nonempty orders, i.e. the orders that include at least
+SQL>one item. List the order keys together with the total number of items included
+SQL>in each order. Sort the results in the descending order of the total number of
+SQL>items included in each order. Sort all orders with the same total number of
+SQL>items in the ascending order of order keys. Use both "host server" and "remote
+SQL>server".*/
+SQL> SELECT L_ORDERKEY, COUNT(*) TOTAL_ITEMS FROM LINEITEM GROUP BY L_ORDERKEY 
+  2  UNION ALL
+  3  SELECT L_ORDERKEY, COUNT(*) TOTAL_ITEMS FROM LINEITEMDB33 GROUP BY L_ORDERKEY
+  4  ORDER BY TOTAL_ITEMS DESC, L_ORDERKEY ASC;
+
+L_ORDERKEY TOTAL_ITEMS
+---------- -----------
+         7           7
+        68           7
+       129           7
+       164           7
+       194           7
+       225           7
+       226           7
+         1           6
+         3           6
+        32           6
+        35           6
+        39           6
+        67           6
+        69           6
+        70           6
+        71           6
+       134           6
+       135           6
+       163           6
+       192           6
+       197           6
+       224           6
+       229           6
+       230           6
+       258           6
+       261           6
+       100           5
+       130           5
+       165           5
+       198           5
+       259           5
+       260           5
+       288           5
+       289           5
+        33           4
+        98           4
+        99           4
+       102           4
+       103           4
+       132           4
+       133           4
+       166           4
+       195           4
+       231           4
+       290           4
+         5           3
+        34           3
+        37           3
+        65           3
+        97           3
+       101           3
+       131           3
+       160           3
+       193           3
+       256           3
+       262           3
+       263           3
+       291           3
+        66           2
+        96           2
+       167           2
+       196           2
+       199           2
+       227           2
+         2           1
+         4           1
+         6           1
+        36           1
+        38           1
+        64           1
+       128           1
+       161           1
+       162           1
+       228           1
+       257           1
+
+75 rows selected. 
+
+SQL> 
+SQL> /*(iv) Find the part keys of all parts included in at least one order located in the "host
+SQL>server" and in at least one order located in the "remote server".*/
+SQL> SELECT DISTINCT L_PARTKEY FROM LINEITEM WHERE L_PARTKEY IN (SELECT L_PARTKEY FROM LINEITEMDB33);
+
+ L_PARTKEY
+----------
+         7
+
+1 row selected. 
+
+SQL> 
+SQL> 
+SQL> /*(6) Drop the synonyms and a database links.*/
+SQL> DROP SYNONYM ORDERSDB33 FORCE;
+
+Synonym ORDERSDB33 dropped.
+
+SQL> DROP SYNONYM  LINEITEMDB33 FORCE;
+
+Synonym LINEITEMDB33 dropped.
+
+SQL> 
+SQL> ALTER SESSION CLOSE DATABASE LINK "DB.DATA-PC33";
+
+Session altered.
+
+SQL> 
+SQL> SPOOL OFF

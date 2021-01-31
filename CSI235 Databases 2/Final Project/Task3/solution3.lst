@@ -1,0 +1,105 @@
+SQL> SET ECHO ON
+SQL> SET FEEDBACK ON
+SQL> SET LINESIZE 100
+SQL> SET PAGESIZE 200
+SQL> SET SERVEROUTPUT ON
+SQL> 
+SQL> /*(1) Create a derived attribute. */
+SQL> /*new attribute is total teams in a city*/
+SQL> ALTER TABLE TEAM 
+  2  ADD AVERAGE_GOALS_AT_HOME NUMBER(2);
+
+Table TEAM altered.
+
+SQL> 
+SQL> /*(2) Create a stored PL/SQL procedure that computes the values of the derived
+SQL>attribute so it is possible to corrupt db at read-committed isolation level. */
+SQL> 
+SQL> CREATE OR REPLACE PROCEDURE UPDATE_AVERAGE_GOALS IS
+  2      totalHomeGoals INTEGER;
+  3      totalHomeGames INTEGER;
+  4  BEGIN
+  5      FOR teamRow IN (SELECT NAME FROM TEAM)
+  6          LOOP
+  7              SELECT SUM(HTSCORE) INTO totalHomeGoals
+  8                  FROM GAME t
+  9                  WHERE t.HTNAME = teamRow.NAME; 
+ 10  
+ 11              SELECT COUNT(*) INTO totalHomeGames
+ 12                  FROM GAME t
+ 13                  WHERE t.HTNAME = teamRow.NAME; 
+ 14  
+ 15              UPDATE TEAM
+ 16                  SET AVERAGE_GOALS_AT_HOME = totalHomeGoals / totalHomeGames
+ 17                  WHERE TEAM.NAME = teamRow.NAME;  
+ 18          END LOOP;     
+ 19  END UPDATE_AVERAGE_GOALS;
+ 20  /
+
+Procedure UPDATE_AVERAGE_GOALS compiled
+
+SQL> 
+SQL> --ADDING MORE GAMES TO DEMONSTATE THE PROCEDURE BETTER
+SQL> INSERT INTO GAME VALUES ('17-MAR-2020:07:00:00', 'Bankwest Stadium', 'Western Sydney Wanderers', 2, 'Sydney FC', 3, 'Craig', 'Smith');
+
+1 row inserted.
+
+SQL> INSERT INTO GAME VALUES ('18-MAR-2020:07:30:00', 'AAMI Park', 'Melbourne Victory', 1, 'Western Sydney Wanderers', 2, 'Ben', 'Smith');
+
+1 row inserted.
+
+SQL> INSERT INTO GAME VALUES ('12-MAR-2020:07:00:00', 'Sydney Cricket Ground', 'Sydney FC', 1, 'Western Sydney Wanderersy', 4, 'Ben', 'Smith');
+
+Error starting at line : 40 in command -
+INSERT INTO GAME VALUES ('12-MAR-2020:07:00:00', 'Sydney Cricket Ground', 'Sydney FC', 1, 'Western Sydney Wanderersy', 4, 'Ben', 'Smith')
+Error report -
+ORA-02291: integrity constraint (GUEST208S.GAME_FKEY2) violated - parent key not found
+
+SQL> 
+SQL> EXECUTE UPDATE_AVERAGE_GOALS();
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> /*(3) Update a sample database such that a derived attribute must be recomputed after
+SQL>the update.*/
+SQL> DELETE FROM GAME WHERE HTSCORE = 1;
+
+2 rows deleted.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> 
+SQL> /*(4) -List the values of a derived attribute
+SQL>      -process a stored procedure above to update the values of a derived attribute
+SQL>      -list the values of a derived attribute after the updates.*/
+SQL> SELECT NAME, AVERAGE_GOALS_AT_HOME FROM TEAM;
+
+NAME                                                         AVERAGE_GOALS_AT_HOME
+------------------------------------------------------------ ---------------------
+Western Sydney Wanderers                                                         2
+Sydney FC                                                                        2
+Melbourne Victory                                                                2
+
+3 rows selected. 
+
+SQL> 
+SQL> EXECUTE UPDATE_AVERAGE_GOALS();
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> SELECT NAME, AVERAGE_GOALS_AT_HOME FROM TEAM;
+
+NAME                                                         AVERAGE_GOALS_AT_HOME
+------------------------------------------------------------ ---------------------
+Western Sydney Wanderers                                                         2
+Sydney FC                                                                        2
+Melbourne Victory                                                                3
+
+3 rows selected. 
+
+SQL> 
+SQL> SPOOL OFF

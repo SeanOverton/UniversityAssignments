@@ -1,0 +1,94 @@
+> /* (1) Remove information about an address from the description of a customer who submitted an order with an order key 1031. Next list a complete description of a customer who submitted an order with an order key 1031. */
+... db.tpchr.update({"CUSTOMER.submits.ORDER.order key": 1031}, {$unset: {"CUSTOMER.address": null}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> 
+> db.tpchr.find({"CUSTOMER.submits.ORDER.order key": 1031});
+{ "_id" : "8", "CUSTOMER" : { "customer key" : 8, "name" : "Customer#000000002", "nation" : "IRAQ", "phone" : "23-768-687-3665", "acctbal" : 121.65, "mktsegment" : "AUTOMOBILE", "submits" : [ { "ORDER" : { "order key" : 1031, "status" : "F", "total price" : 141605.53, "date" : ISODate("1994-09-01T00:00:00Z"), "priority" : "3-MEDIUM", "clerk" : "Clerk#000000448", "shipping priority" : 0, "contains" : [ ] } } ] } }
+> 
+> /* (2) Rename a key "shipped" to "shipped by" in the parts that have a retail price less than 902. Next, display all information about parts that have a retail price less than 902 */
+... db.tpchr.update({"PART.retailprice": {$lt: 902}}, {$rename:{"PART.shipped": "PART.shipped by"}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> 
+> db.tpchr.find({"PART.retailprice": {$lt: 902}});
+{ "_id" : "100", "PART" : { "part key" : 1, "name" : "goldenrod lace spring peru powder", "brand" : "Brand#13  ", "type" : "PROMO BURNISHED COPPER", "size" : 7, "retailprice" : 901, "shipped by" : [ { "PARTSUPP" : { "partsupp_id" : "1_1", "availqty" : 3325, "supplycost" : 771.64, "ref supplier" : "1" } }, { "PARTSUPP" : { "partsupp_id" : "1_2", "availqty" : 8076, "supplycost" : 993.49, "ref supplier" : "2" } }, { "PARTSUPP" : { "partsupp_id" : "1_3", "availqty" : 3956, "supplycost" : 337.09, "ref supplier" : "3" } }, { "PARTSUPP" : { "partsupp_id" : "1_4", "availqty" : 4069, "supplycost" : 357.84, "ref supplier" : "4" } } ] } }
+> 
+> /* (3) Increase an account balance of all suppliers from Japan by 50% of the present value. Next, display a supplier name, nation and balance of all suppliers from Japan in a pretty format. */
+... db.tpchr.update({"SUPPLIER.nation": "JAPAN"}, {$mul: {"SUPPLIER.acctbal": 1.5}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> 
+> db.tpchr.find({"SUPPLIER.nation": "JAPAN"}, {"SUPPLIER.name": 1, "SUPPLIER.nation": 1, "SUPPLIER.acctbal": 1, "_id": 0}).pretty();
+{
+	"SUPPLIER" : {
+		"name" : "Supplier#000000003",
+		"nation" : "JAPAN",
+		"acctbal" : 52.335
+	}
+}
+> 
+> /* (4) Append to all parts that belong to a brand Brand#54 the following information about a new shipment: "partsupp_id" : "5_1","availqty" : 100,"supplycost" : 17,"ref supplier" : "1". Next list all information about all parts that belong to a brand Brand#54 in a pretty format */
+... db.tpchr.update({"PART.brand": "Brand#54  "}, {$push: {"PART.shipped": {"PARTSUPP": {"partsupp_id": "5_1", "availqty" : 100,"supplycost" : 17,"ref supplier" : "1"}}}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> 
+> db.tpchr.find({"PART.brand": "Brand#54  "}).pretty();
+{
+	"_id" : "1000",
+	"PART" : {
+		"part key" : 10,
+		"name" : "floral moccasin royal powder burnished",
+		"brand" : "Brand#54  ",
+		"type" : "LARGE BURNISHED STEEL",
+		"size" : 44,
+		"retailprice" : 910.01,
+		"shipped" : [
+			{
+				"PARTSUPP" : {
+					"partsupp_id" : "10_1",
+					"availqty" : 5691,
+					"supplycost" : 164,
+					"ref supplier" : "1"
+				}
+			},
+			{
+				"PARTSUPP" : {
+					"partsupp_id" : "10_3",
+					"availqty" : 2952,
+					"supplycost" : 996.12,
+					"ref supplier" : "3"
+				}
+			},
+			{
+				"PARTSUPP" : {
+					"partsupp_id" : "10_4",
+					"availqty" : 3335,
+					"supplycost" : 673.27,
+					"ref supplier" : "4"
+				}
+			},
+			{
+				"PARTSUPP" : {
+					"partsupp_id" : "10_5",
+					"availqty" : 841,
+					"supplycost" : 374.02,
+					"ref supplier" : "5"
+				}
+			},
+			{
+				"PARTSUPP" : {
+					"partsupp_id" : "5_1",
+					"availqty" : 100,
+					"supplycost" : 17,
+					"ref supplier" : "1"
+				}
+			}
+		]
+	}
+}
+> 
+> /* (5) Remove information about an order that has a key 1031 submitted by a customer whose key is 8. Next, list all information about all orders submitted by a customer whose key is 8 */
+... db.tpchr.update({"CUSTOMER.customer key": 8}, {$pull: {"CUSTOMER.submits":{"ORDER.order key": 1031}}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> 
+> db.tpchr.find({"CUSTOMER.customer key": 8});
+{ "_id" : "8", "CUSTOMER" : { "customer key" : 8, "name" : "Customer#000000002", "nation" : "IRAQ", "phone" : "23-768-687-3665", "acctbal" : 121.65, "mktsegment" : "AUTOMOBILE", "submits" : [ ] } }
+> 
+

@@ -1,0 +1,30 @@
+db.createCollection("TRANSPORTATION COMPANY",
+					{"validator":{$jsonSchema:
+					{"bsonType":"object"
+					"properties":{"_id":{"bsonType":"string"},
+					"TRANSPORTATION COMPANY":{"bsonType":"object",
+											  "properties":{"name":{"bsonType": "String" },
+															"budget":{"bsonType": "String" }
+															"Owns":{"bsonType":"array",
+																	"items": {"bsonType":"object",
+																			  "properties":{"name":{"registration": "String" },
+																							"name":{"manufacturer": "String" },
+																							"name":{"speed": "String" },
+																							}
+																			  }
+															"Employs":{"bsonType":"array",
+																	   "items": {"bsonType":"object",
+																			  "properties":{"license":{"registration": "String" },
+																							"full name":{"manufacturer": "String" },
+																							"date of birth":{"speed": "String" },
+																							}
+																			  }
+
+"required":["attribute 1",...,"attribute m","attribute n",...,"attribute p"],
+"additionalProperties":false } },
+"required":["CLASS B"],
+"additionalProperties":false } },
+"required":["attribute 1",...,"attribute k","attribute m",...,"attribute n","Related-to"],
+"additionalProperties":false} },
+"required":["_id","CLASS_A"],
+"additionalProperties":false } } } );

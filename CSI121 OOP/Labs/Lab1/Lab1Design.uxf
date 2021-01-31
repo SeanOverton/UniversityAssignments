@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>88</x>
+      <y>48</y>
+      <w>288</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>Course
+--
+-name: String
+-studentList: ArrayList&lt;Student&gt;
+-subjectList: ArrayList&lt;Subject&gt;
+--
+_+main(String[] args): void_
++Course()
++getName(): String
++setName(String name): void
++enrolStudent(Student name): void
++withdrawStudent(Student name): void
++addSubject(Subject name): void
++removeSubject(Subject name): void
++toString(): String
+bg=#dddddd</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>408</x>
+      <y>24</y>
+      <w>296</w>
+      <h>296</h>
+    </coordinates>
+    <panel_attributes>Subject
+--
+-name: String
+-code: String 
+-session: String
+-year: int 
+-students: ArrayList&lt;Student&gt;
+--
++Subject(String, String, String, int)
++getName(): String
++setName(String name): void
++getSession(): String 
++setSession(String session): void
++getYear(): int
++setYear(int year): void
++enrolStudent(Student name): void
++withdrawStudent(Student name): void
++toString(): String
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>112</x>
+      <y>368</y>
+      <w>256</w>
+      <h>208</h>
+    </coordinates>
+    <panel_attributes>Student
+--
+-name: String
+-DOB: String
+-sex: String
+-studentNumber: int
+--
++Student(String, String, String, int)
++getName(): String
++setName(String name): void
++getDOB(): String
++getstudentNumber(): String
++toString(): String
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>312</y>
+      <w>304</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=2..5
+m2=1..*
+Contains</panel_attributes>
+    <additional_attributes>280.0;10.0;280.0;90.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>296</x>
+      <y>280</y>
+      <w>272</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1..*
+m2=1..*
+Contains</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;290.0;80.0;290.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>208</x>
+      <y>280</y>
+      <w>88</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1..2
+m2=1..*
+Contains</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+</diagram>

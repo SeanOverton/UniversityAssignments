@@ -1,0 +1,62 @@
+SQL> SET ECHO ON
+SQL> SET FEEDBACK ON
+SQL> SET LINESIZE 100
+SQL> SET PAGESIZE 200
+SQL> 
+SQL> ALTER TABLE SUPPLIER ADD TOTAL_SUPPLIED_PARTS NUMBER(6)
+  2      CONSTRAINT SUPPLIER_CHECK2 CHECK(TOTAL_SUPPLIED_PARTS >= 0);
+
+Table SUPPLIER altered.
+
+SQL> 
+SQL> SELECT * FROM SUPPLIER;
+
+ S_SUPPKEY S_NAME                    S_ADDRESS                                S_NATIONKEY
+---------- ------------------------- ---------------------------------------- -----------
+S_PHONE          S_ACCTBAL
+--------------- ----------
+S_COMMENT
+----------------------------------------------------------------------------------------------------
+TOTAL_SUPPLIED_PARTS
+--------------------
+         1 Supplier#000000001        sdrGnXCDRcfriBvY0KL,ipCanOTyK t NN1               20 
+30-918-335-1736    5755.94 
+requests haggle carefully. accounts sublate finally. carefully ironic pa                            
+                    
+
+         2 Supplier#000000002        sdsthghjhjngjfkmyukuiklmiglmih                    10 
+30-918-335-1735    2345.95 
+requests haggle carefully. accounts sublate finally. carefully ironic pa                            
+                    
+
+         3 Supplier#000000003        imlknyuiknertyervtarcwetr                         15 
+30-918-335-1734      34.89 
+requests haggle carefully. accounts sublate finally. carefully ironic pa                            
+                    
+
+         4 Supplier#000000004        ECREWRWestcertverterSVERTV                        10 
+30-918-335-1733     574.23 
+requests haggle carefully. accounts sublate finally. carefully ironic pa                            
+                    
+
+         5 Supplier#000000005        213235235ECRSDFsdfvgdfs                            5 
+30-918-335-1732    5334.56 
+requests haggle carefully. accounts sublate finally. carefully ironic pa                            
+                    
+
+
+5 rows selected. 
+
+SQL> 
+SQL> UPDATE SUPPLIER tt
+  2  SET    (TOTAL_SUPPLIED_PARTS) = (SELECT COUNT(*)
+  3                                  FROM PARTSUPP st
+  4                                  WHERE  st.PS_SUPPKEY = tt.S_SUPPKEY)                         
+  5  WHERE  EXISTS (SELECT 1
+  6                 FROM   PARTSUPP
+  7                 WHERE  PS_SUPPKEY = tt.S_SUPPKEY);
+
+5 rows updated.
+
+SQL> 
+SQL> SPOOL OFF

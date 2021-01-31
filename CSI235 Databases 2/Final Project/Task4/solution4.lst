@@ -1,0 +1,143 @@
+> //json schema for validation
+> db.createCollection("task1",{"validator":{$jsonSchema:{"bsonType":"object","properties":{"_id":{"bsonType":"string"},"GAMES":{"bsonType":"object","properties":{"datetime":{"bsonType":"date"},"venue":{"bsonType":"string"},"hometeam":{"bsonType":"object","properties":{"name":{"bsonType":"string"},"dateCreated":{"bsonType":"date"},"mainCoach":{"bsonType":"string"},"score":{"bsonType":"double"},"city":{"bsonType":"object","properties":{"name":{"bsonType":"string"},"population":{"bsonType":"double"},"country":{"bsonType":"string"}}}}},"awayteam":{"bsonType":"object","properties":{"name":{"bsonType":"string"},"dateCreated":{"bsonType":"date"},"mainCoach":{"bsonType":"string"},"score":{"bsonType":"double"},"city":{"bsonType":"object","properties":{"name":{"bsonType":"string"},"population":{"bsonType":"double"},"country":{"bsonType":"string"}}}}},"referee":{"bsonType":"object","properties":{"firstName":{"bsonType":"string"},"lastName":{"bsonType":"string"},"city":{"bsonType":"object","properties":{"name":{"bsonType":"string"},"population":{"bsonType":"double"},"country":{"bsonType":"string"}}}}}},"required":["datetime", "venue", "hometeam", "awayteam", "referee"],"additionalProperties":false}}}}});
+{ "ok" : 1 }
+> 
+> //successful insertion of data with given schema
+> db.task1.insert({"_id":"1","GAMES":{"datetime":new Date("2002-08-12"),"venue":"SCG","hometeam":{"name":"Sydney FC","dateCreated":new Date("2000-08-12"),"mainCoach":"John Smith","score":2,"city":{"name":"Sydney","population":2000000,"country":"Australia"}},"awayteam":{"name":"Melbourne Victory","dateCreated":new Date("1999-08-12"),"mainCoach":"Joe Doe","score":1,"city":{"name":"Melbourne","population":1500000,"country":"Australia"}},"referee":{"firstName":"James","lastName":"Bond","city":{"name":"Adelaide","population":1200000,"country":"Australia"}}}});
+WriteResult({ "nInserted" : 1 })
+> 
+> db.task1.insert({"_id":"2","GAMES":{"datetime":new Date("2002-10-12"),"venue":"AAMI Park","hometeam":{"name":"Melbourne Victory","dateCreated":new Date("1999-08-12"),"mainCoach":"Joe Doe","score":2,"city":{"name":"Melbourne","population":1500000,"country":"Australia"}},"awayteam":{"name":"Sydney FC","dateCreated":new Date("2000-08-12"),"mainCoach":"John Smith","score":1,"city":{"name":"Sydney","population":2000000,"country":"Australia"}},"referee":{"firstName":"Craig","lastName":"Bent","city":{"name":"Adelaide","population":1200000,"country":"Australia"}}}});
+WriteResult({ "nInserted" : 1 })
+> 
+> db.task1.insert({"_id":"3","GAMES":{"datetime":new Date("2002-12-12"),"venue":"Bankwest Stadium","hometeam":{"name":"Western Sydney Wanderers","dateCreated":new Date("1998-08-12"),"mainCoach":"ScoMo","score":4,"city":{"name":"Sydney","population":2000000,"country":"Australia"}},"awayteam":{"name":"Sydney FC","dateCreated":new Date("2000-08-12"),"mainCoach":"John Smith","score":0,"city":{"name":"Sydney","population":2000000,"country":"Australia"}},"referee":{"firstName":"Craig","lastName":"Bent","city":{"name":"Adelaide","population":1200000,"country":"Australia"}}}});
+WriteResult({ "nInserted" : 1 })
+> 
+> //failed insert
+> 
+> db.task1.insert({"_id":"4","GAMES":{"datetime":new Date("2002-12-12"),"hometeam":{"name":"Western Sydney Wanderers","dateCreated":new Date("1998-08-12"),"mainCoach":"ScoMo","score":4,"city":{"name":"Sydney","population":2000000,"country":"Australia"}},"awayteam":{"name":"Sydney FC","dateCreated":new Date("2000-08-12"),"mainCoach":"John Smith","score":0,"city":{"name":"Sydney","population":2000000,"country":"Australia"}},"referee":{"firstName":"Craig","lastName":"Bent","city":{"name":"Adelaide","population":1200000,"country":"Australia"}}}});
+WriteResult({
+	"nInserted" : 0,
+	"writeError" : {
+		"code" : 121,
+		"errmsg" : "Document failed validation"
+	}
+})
+> 
+> //failure to insert because "venue" property not present and is in REQUIRED array
+> db.task1.find({}).pretty();
+{
+	"_id" : "1",
+	"GAMES" : {
+		"datetime" : ISODate("2002-08-12T00:00:00Z"),
+		"venue" : "SCG",
+		"hometeam" : {
+			"name" : "Sydney FC",
+			"dateCreated" : ISODate("2000-08-12T00:00:00Z"),
+			"mainCoach" : "John Smith",
+			"score" : 2,
+			"city" : {
+				"name" : "Sydney",
+				"population" : 2000000,
+				"country" : "Australia"
+			}
+		},
+		"awayteam" : {
+			"name" : "Melbourne Victory",
+			"dateCreated" : ISODate("1999-08-12T00:00:00Z"),
+			"mainCoach" : "Joe Doe",
+			"score" : 1,
+			"city" : {
+				"name" : "Melbourne",
+				"population" : 1500000,
+				"country" : "Australia"
+			}
+		},
+		"referee" : {
+			"firstName" : "James",
+			"lastName" : "Bond",
+			"city" : {
+				"name" : "Adelaide",
+				"population" : 1200000,
+				"country" : "Australia"
+			}
+		}
+	}
+}
+{
+	"_id" : "2",
+	"GAMES" : {
+		"datetime" : ISODate("2002-10-12T00:00:00Z"),
+		"venue" : "AAMI Park",
+		"hometeam" : {
+			"name" : "Melbourne Victory",
+			"dateCreated" : ISODate("1999-08-12T00:00:00Z"),
+			"mainCoach" : "Joe Doe",
+			"score" : 2,
+			"city" : {
+				"name" : "Melbourne",
+				"population" : 1500000,
+				"country" : "Australia"
+			}
+		},
+		"awayteam" : {
+			"name" : "Sydney FC",
+			"dateCreated" : ISODate("2000-08-12T00:00:00Z"),
+			"mainCoach" : "John Smith",
+			"score" : 1,
+			"city" : {
+				"name" : "Sydney",
+				"population" : 2000000,
+				"country" : "Australia"
+			}
+		},
+		"referee" : {
+			"firstName" : "Craig",
+			"lastName" : "Bent",
+			"city" : {
+				"name" : "Adelaide",
+				"population" : 1200000,
+				"country" : "Australia"
+			}
+		}
+	}
+}
+{
+	"_id" : "3",
+	"GAMES" : {
+		"datetime" : ISODate("2002-12-12T00:00:00Z"),
+		"venue" : "Bankwest Stadium",
+		"hometeam" : {
+			"name" : "Western Sydney Wanderers",
+			"dateCreated" : ISODate("1998-08-12T00:00:00Z"),
+			"mainCoach" : "ScoMo",
+			"score" : 4,
+			"city" : {
+				"name" : "Sydney",
+				"population" : 2000000,
+				"country" : "Australia"
+			}
+		},
+		"awayteam" : {
+			"name" : "Sydney FC",
+			"dateCreated" : ISODate("2000-08-12T00:00:00Z"),
+			"mainCoach" : "John Smith",
+			"score" : 0,
+			"city" : {
+				"name" : "Sydney",
+				"population" : 2000000,
+				"country" : "Australia"
+			}
+		},
+		"referee" : {
+			"firstName" : "Craig",
+			"lastName" : "Bent",
+			"city" : {
+				"name" : "Adelaide",
+				"population" : 1200000,
+				"country" : "Australia"
+			}
+		}
+	}
+}
+> 
+
